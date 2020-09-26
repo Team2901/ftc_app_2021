@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
@@ -49,7 +50,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
-@Disabled
 @Autonomous(name="ExampleMoveByEncoderCount", group = "Example")
 public class ExampleMoveByEncoderCount extends LinearOpMode {
 
@@ -57,6 +57,7 @@ public class ExampleMoveByEncoderCount extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftDrive = null;
     private DcMotor rightDrive = null;
+    private DcMotor middleDrive = null;
 
     @Override
     public void runOpMode() {
@@ -68,12 +69,17 @@ public class ExampleMoveByEncoderCount extends LinearOpMode {
         // step (using the FTC Robot Controller app on the phone).
         leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
         rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
+        middleDrive = hardwareMap.get(DcMotor.class, "middle_drive");
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motor that runs backwards when connected directly to the battery
         leftDrive.setDirection(DcMotor.Direction.FORWARD);
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
+        middleDrive.setDirection((DcMotor.Direction.FORWARD));
 
+        leftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        middleDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -90,9 +96,21 @@ public class ExampleMoveByEncoderCount extends LinearOpMode {
            leftDrive.setPower(1.0);
            rightDrive.setPower(1.0);
 
-           telemetry.addData("Encoder", "left (%d); right (%d)",
+            //middle drive stufffffffffffffffffff
+
+            /*
+            middleDrive.setTargetPosition(10260);
+
+            middleDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            middleDrive.setPower(1.0);
+
+             */
+
+           telemetry.addData("Encoder", "left (%d); right (%d); middle (%d)",
                    leftDrive.getCurrentPosition(),
-                   rightDrive.getCurrentPosition());
+                   rightDrive.getCurrentPosition(),
+                   middleDrive.getCurrentPosition());
            telemetry.update();
 
            idle();
