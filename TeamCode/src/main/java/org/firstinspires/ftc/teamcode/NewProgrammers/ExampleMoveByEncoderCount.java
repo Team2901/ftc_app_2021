@@ -96,6 +96,8 @@ public class ExampleMoveByEncoderCount extends LinearOpMode {
            rightDrive.setPower(1.0);
              */
 
+            //middle drive stufffffffffffffffffff
+
             middleDrive.setTargetPosition(10260);
 
             middleDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
