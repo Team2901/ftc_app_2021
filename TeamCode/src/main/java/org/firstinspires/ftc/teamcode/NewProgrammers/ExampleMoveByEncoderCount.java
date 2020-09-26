@@ -77,6 +77,7 @@ public class ExampleMoveByEncoderCount extends LinearOpMode {
         rightDrive.setDirection(DcMotor.Direction.REVERSE);
         middleDrive.setDirection((DcMotor.Direction.FORWARD));
 
+        middleDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
