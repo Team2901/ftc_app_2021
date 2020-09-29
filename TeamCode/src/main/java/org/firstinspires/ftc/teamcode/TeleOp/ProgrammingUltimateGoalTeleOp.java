@@ -39,10 +39,9 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             rightMotorPower = 1;
         }
 
-        // Program sets left and right motors to their respective powers.
+        // Program sets left, middle, and right motors to their respective powers.
         robot.leftMotor.setPower(leftMotorPower);
         robot.rightMotor.setPower(rightMotorPower);
-
         robot.middleMotor.setPower(leftStickX);
     }
 }
