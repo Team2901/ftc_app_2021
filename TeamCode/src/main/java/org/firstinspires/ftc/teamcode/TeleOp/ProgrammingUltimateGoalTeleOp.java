@@ -29,14 +29,10 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             // When pressing the right bumper, the robot will turn clockwise.
             leftMotorPower = 1;
             rightMotorPower = -1;
-        } else if (leftStickY < 0) {
-            //If the left stick y value is less than 0 then we will move backward.
-            leftMotorPower = -1;
-            rightMotorPower = -1;
-        } else if (leftStickY > 0) {
-            //If the left stick y value is greater than 0 then we will move forward.
-            leftMotorPower = 1;
-            rightMotorPower = 1;
+        } else {
+            // This sets the motor's power to however far the left joystick is pushed.
+            leftMotorPower = leftStickY;
+            rightMotorPower = leftStickY;
         }
 
         // Program sets left, middle, and right motors to their respective powers.
