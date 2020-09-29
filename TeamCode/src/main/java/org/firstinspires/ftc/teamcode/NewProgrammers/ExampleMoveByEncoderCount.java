@@ -86,7 +86,7 @@ public class ExampleMoveByEncoderCount extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
-
+/*
            leftDrive.setTargetPosition(8556);
            rightDrive.setTargetPosition(8556);
 
@@ -96,16 +96,18 @@ public class ExampleMoveByEncoderCount extends LinearOpMode {
            leftDrive.setPower(1.0);
            rightDrive.setPower(1.0);
 
+ */
+
             //middle drive stufffffffffffffffffff
 
-            /*
+
             middleDrive.setTargetPosition(10260);
 
             middleDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             middleDrive.setPower(1.0);
 
-             */
+
 
            telemetry.addData("Encoder", "left (%d); right (%d); middle (%d)",
                    leftDrive.getCurrentPosition(),
