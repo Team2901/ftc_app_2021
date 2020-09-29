@@ -4,13 +4,16 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
+
 @TeleOp(name = "ProgrammingUltimateGoalTeleOp")
 public class ProgrammingUltimateGoalTeleOp extends OpMode {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+
     @Override
     public void init() {
         robot.init(this.hardwareMap);
     }
+
     @Override
     public void loop() {
         float leftStickY = -1 * gamepad1.left_stick_y;
