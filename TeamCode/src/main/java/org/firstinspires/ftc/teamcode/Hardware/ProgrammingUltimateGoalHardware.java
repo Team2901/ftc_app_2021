@@ -16,6 +16,5 @@ public class ProgrammingUltimateGoalHardware {
         middleMotor = hwMap.dcMotor.get("middle_drive");
         // Setting left motor to reverse, making the robot moveable now.
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
-
     }
 }

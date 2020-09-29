@@ -16,6 +16,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        float leftStickX = gamepad1.left_stick_x;
         float leftStickY = -1 * gamepad1.left_stick_y;
         double leftMotorPower = 0;
         double rightMotorPower = 0;
@@ -41,5 +42,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         // Program sets left and right motors to their respective powers.
         robot.leftMotor.setPower(leftMotorPower);
         robot.rightMotor.setPower(rightMotorPower);
+
+        robot.middleMotor.setPower(leftStickX);
     }
 }
