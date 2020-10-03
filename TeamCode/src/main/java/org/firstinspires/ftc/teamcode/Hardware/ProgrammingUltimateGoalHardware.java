@@ -43,8 +43,11 @@ public class ProgrammingUltimateGoalHardware {
         imu.initialize(parameters);
     }
 
+    // This method returns the angle of the robot.
     public float getAngle() {
+        // Gets orientation of robot.
         Orientation angularOrientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+        // Returns the angle of the robot.
         return angularOrientation.firstAngle;
     }
 }
