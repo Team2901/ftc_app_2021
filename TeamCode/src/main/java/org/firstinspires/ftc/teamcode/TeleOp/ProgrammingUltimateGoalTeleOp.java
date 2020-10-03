@@ -16,20 +16,31 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        float rightStickX = gamepad1.right_stick_x;
+        float rightStickY = -1 * gamepad1.right_stick_y;
+        float leftStickX = gamepad1.left_stick_x;
         float leftStickY = -1 * gamepad1.left_stick_y;
-        if (leftStickY < 0) {
-            //If the left stick y value is less than 0 then we will move backward.
-            robot.leftMotor.setPower(-1);
-            robot.rightMotor.setPower(-1);
-        } else if (leftStickY > 0) {
-            //If the left stick y value is greater than 0 then we will move forward.
-            robot.leftMotor.setPower(1);
-            robot.rightMotor.setPower(1);
+        double rightStickAngle = Math.atan2(rightStickY, rightStickX);
+        double leftMotorPower = 0;
+        double rightMotorPower = 0;
+
+        if(gamepad1.left_bumper){
+            // When pressing the left bumper, the robot will turn counterclockwise.
+            leftMotorPower = -1;
+            rightMotorPower = 1;
+        } else if(gamepad1.right_bumper){
+            // When pressing the right bumper, the robot will turn clockwise.
+            leftMotorPower = 1;
+            rightMotorPower = -1;
         } else {
-            //If the left stick y is not less than or greater than 0 then we want
-            //the robot to stop.
-            robot.leftMotor.setPower(0);
-            robot.rightMotor.setPower(0);
+            // This sets the motor's power to however far the left joystick is pushed.
+            leftMotorPower = leftStickY;
+            rightMotorPower = leftStickY;
         }
+
+        // Program sets left, middle, and right motors to their respective powers.
+        robot.leftMotor.setPower(leftMotorPower);
+        robot.rightMotor.setPower(rightMotorPower);
+        robot.middleMotor.setPower(leftStickX);
     }
 }
