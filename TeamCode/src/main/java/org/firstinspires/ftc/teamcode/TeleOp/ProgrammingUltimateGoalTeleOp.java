@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
 
 @TeleOp(name = "ProgrammingUltimateGoalTeleOp")
@@ -23,6 +25,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         double rightStickAngle = Math.atan2(rightStickY, rightStickX);
         double leftMotorPower = 0;
         double rightMotorPower = 0;
+        float robotAngle = robot.getAngle();
 
         if(gamepad1.left_bumper){
             // When pressing the left bumper, the robot will turn counterclockwise.
@@ -36,6 +39,25 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             // This sets the motor's power to however far the left joystick is pushed.
             leftMotorPower = leftStickY;
             rightMotorPower = leftStickY;
+        }
+
+        if(rightStickX != 0 || rightStickY != 0){
+            boolean isDesiredAngle = robotAngle == rightStickAngle;
+            if(!isDesiredAngle){
+                // Calculate the angle difference between our desired angle and the actual angle of
+                // the robot.
+                double angleDifference = AngleUnit.normalizeDegrees(rightStickAngle - robotAngle);
+                // If the angle difference is greater than 0, the robot will turn counterclockwise.
+                if(angleDifference > 0){
+                    leftMotorPower = -1;
+                    rightMotorPower = 1;
+                }
+                // Otherwise, the robot will turn clockwise.
+                else if(angleDifference < 0){
+                    leftMotorPower = 1;
+                    rightMotorPower = -1;
+                }
+            }
         }
 
         // Program sets left, middle, and right motors to their respective powers.
