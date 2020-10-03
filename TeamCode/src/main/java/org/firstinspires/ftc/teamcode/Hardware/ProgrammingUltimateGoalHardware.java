@@ -11,11 +11,16 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 public class ProgrammingUltimateGoalHardware {
+    private static final String WEB_CAM_NAME = "Webcam 1";
+    private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
+    private static final String ELEMENT_QUAD = "Quad";
+    private static final String ELEMENT_SINGLE = "Single";
     // Instance Variables
     public DcMotor leftMotor = null;
     public DcMotor rightMotor = null;
     public DcMotor middleMotor = null;
     BNO055IMU imu;
+    public TensorFlowCamera webCamera;
 
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
@@ -42,8 +47,9 @@ public class ProgrammingUltimateGoalHardware {
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
     }
-
-    // This method returns the angle of the robot.
+    public String initWebCamera(HardwareMap hardwareMap){
+        return webCamera.initWebCamera(hardwareMap, WEB_CAM_NAME,.8, TFOD_MODEL_ASSET, ELEMENT_QUAD, ELEMENT_SINGLE);
+    }
     public float getAngle() {
         // Gets orientation of robot.
         Orientation angularOrientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
