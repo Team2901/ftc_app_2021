@@ -45,16 +45,17 @@ import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
  * the autonomous or the teleop period of an FTC match. The names of OpModes appear on the menu
  * of the FTC Driver Station. When an selection is made from the menu, the corresponding OpMode
  * class is instantiated on the Robot Controller and executed.
- *
+ * <p>
  * This particular OpMode just executes a basic Tank Drive Teleop for a two wheeled robot
  * It includes all the skeletal structure that all linear OpModes contain.
- *
+ * <p>
  * Use Android Studios to Copy this Class, and Paste it into your team's code folder with a new name.
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="Basic: Linear OpMode", group="Linear Opmode")
+@Autonomous(name = "Basic: Linear OpMode", group = "Linear Opmode")
 public class GenevieveBasicOpMode_Linear extends LinearOpMode {
+    public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -65,12 +66,37 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
     public static final double FORWARD_TICKS_PER_DRIVE_REV = TICKS_PER_MOTOR_REV * FORWARD_DRIVE_GEAR_RATIO;
     public static final double CENTER_TICKS_PER_DRIVE_REV = TICKS_PER_MOTOR_REV * CENTER_DRIVE_GEAR_RATIO;
     public static final double WHEEL_CIRCUMFERENCE_INCHES = 4 * Math.PI;
-    public static final double FORWARD_TICKS_PER_INCH = FORWARD_TICKS_PER_DRIVE_REV/WHEEL_CIRCUMFERENCE_INCHES;
-    public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV/WHEEL_CIRCUMFERENCE_INCHES;
+    public static final double FORWARD_TICKS_PER_INCH = FORWARD_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
+    public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
 
-    private ProgrammingUltimateGoalHardware hardware;
+    public void moveInchesCenter(double inches){
+        
+    }
 
-    public void moveInches(double inches){
+
+    public void moveInchesForward(double inches) {
+        int ticks = (int) (inches * FORWARD_TICKS_PER_INCH);
+
+        robot.leftMotor.setTargetPosition(robot.leftMotor.getCurrentPosition() + ticks);
+        robot.rightMotor.setTargetPosition(robot.rightMotor.getCurrentPosition() + ticks);
+
+        robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.leftMotor.setPower(.5);
+        robot.rightMotor.setPower(.5);
+
+        while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+            telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
+            telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
+            telemetry.update();
+        }
+
+        robot.leftMotor.setPower(0);
+        robot.rightMotor.setPower(0);
+
+        robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
     }
 
@@ -79,9 +105,9 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        hardware.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        hardware.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        hardware.middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         //moveInches();
 
         // Wait for the game to start (driver presses PLAY)
@@ -102,8 +128,8 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
             // POV Mode uses left stick to go forward, and right stick to turn.
             // - This uses basic math to combine motions and is easier to drive straight.
 
-            leftPower    = 0.5;
-            rightPower   = 0.5;
+            leftPower = 0.5;
+            rightPower = 0.5;
             middlePower = 0.75;
 
             // Tank Mode uses one stick to control each wheel.
@@ -120,3 +146,4 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
         }
     }
 }
+
