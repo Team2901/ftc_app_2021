@@ -22,7 +22,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         float rightStickY = -1 * gamepad1.right_stick_y;
         float leftStickX = gamepad1.left_stick_x;
         float leftStickY = -1 * gamepad1.left_stick_y;
-        double rightStickAngle = Math.atan2(rightStickY, rightStickX);
+        double rightStickAngle = AngleUnit.DEGREES.fromRadians(Math.atan2(rightStickY, rightStickX));
         double leftMotorPower = 0;
         double rightMotorPower = 0;
         float robotAngle = robot.getAngle();

@@ -15,7 +15,7 @@ public class ProgrammingUltimateGoalHardware {
     public DcMotor leftMotor = null;
     public DcMotor rightMotor = null;
     public DcMotor middleMotor = null;
-    BNO055IMU imu;
+    public BNO055IMU imu;
 
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
