@@ -70,7 +70,21 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
     public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
 
     public void moveInchesCenter(double inches){
-        
+        int ticks = (int) (inches * CENTER_TICKS_PER_INCH);
+
+        robot.middleMotor.setTargetPosition(robot.middleMotor.getCurrentPosition() + ticks);
+
+        robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.middleMotor.setPower(.75);
+
+        while (opModeIsActive() && (robot.middleMotor.isBusy())){
+            telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
+            telemetry.update();
+        }
+        robot.middleMotor.setPower(0);
+
+        robot.middleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
 
