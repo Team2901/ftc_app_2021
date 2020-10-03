@@ -119,6 +119,8 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
+        robot.init(this.hardwareMap);
+
         robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
