@@ -114,6 +114,20 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
 
     }
 
+    public void goToA() {
+        moveInchesCenter(12);
+        moveInchesForward(75);
+    }
+    public void goToB() {
+        moveInchesCenter(12);
+        moveInchesForward(99);
+        moveInchesCenter(-24);
+    }
+    public void goToC() {
+        moveInchesCenter(12);
+        moveInchesForward(123);
+    }
+
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -130,7 +144,7 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        moveInchesForward(5);
+        goToA();
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
