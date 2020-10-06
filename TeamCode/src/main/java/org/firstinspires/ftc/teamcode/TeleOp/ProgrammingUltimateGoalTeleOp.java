@@ -45,9 +45,10 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             // Calculate the angle difference between our desired angle and the actual angle of
             // the robot.
             double angleDifference = AngleUnit.normalizeDegrees(rightStickAngle - robotAngle);
-            // If the angle difference is greater than 0, the robot will turn counterclockwise.
+            // This prints out what the angle difference is.
             telemetry.addData("Angle difference", angleDifference);
-            //This prints out what the angle difference.
+
+            // If the angle difference is greater than 0, the robot will turn counterclockwise.
             if (angleDifference > 0) {
                 leftMotorPower = -1;
                 rightMotorPower = 1;
@@ -63,9 +64,11 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         robot.leftMotor.setPower(leftMotorPower);
         robot.rightMotor.setPower(rightMotorPower);
         robot.middleMotor.setPower(leftStickX);
-        //This code below prints out the robot angle,
-        // right stick angle, right motor power, the
-        // left motor power, and performs a telemetry update.
+
+        /*
+        * This code below prints out the robot angle, right stick angle, right motor power, the
+        * left motor power, and performs a telemetry update.
+         */
         telemetry.addData("Robot angle", robotAngle);
         telemetry.addData("Right Stick Angle", rightStickAngle);
         telemetry.addData("Right Motor Power", rightMotorPower);
