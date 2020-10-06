@@ -45,6 +45,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             // Calculate the angle difference between our desired angle and the actual angle of
             // the robot.
             double angleDifference = AngleUnit.normalizeDegrees(rightStickAngle - robotAngle);
+
             // This prints out what the angle difference is.
             telemetry.addData("Angle difference", angleDifference);
 
