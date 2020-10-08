@@ -114,6 +114,8 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
 
     }
 
+    public String target = "A";
+
     public void goToA() {
         moveInchesCenter(12);
         moveInchesForward(75);
@@ -144,7 +146,17 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
-        goToA();
+        if(target == "A") {
+            goToA();
+        } else if (target == "B") {
+            goToB();
+        } else if (target == "C") {
+            goToC();
+        } else {
+            telemetry.addData("error", "Invalid Target");
+            telemetry.update();
+        }
+
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
