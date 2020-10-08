@@ -13,8 +13,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 public class ProgrammingUltimateGoalHardware {
     private static final String WEB_CAM_NAME = "Webcam 1";
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
-    private static final String ELEMENT_QUAD = "Quad";
-    private static final String ELEMENT_SINGLE = "Single";
+    public static final String ELEMENT_QUAD = "Quad";
+    public static final String ELEMENT_SINGLE = "Single";
     // Instance Variables
     public DcMotor leftMotor = null;
     public DcMotor rightMotor = null;
