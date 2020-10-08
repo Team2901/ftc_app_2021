@@ -27,6 +27,12 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         double rightMotorPower = 0;
         float robotAngle = robot.getAngle();
 
+        // Determine radius of right stick through Pythagorean Theorem.
+        double rightStickXSquared = Math.pow(rightStickX,2);
+        double rightStickYSquared = Math.pow(rightStickY,2);
+        double rightStickRadiusSquared = rightStickXSquared + rightStickYSquared;
+        double rightStickRadius = Math.sqrt(rightStickRadiusSquared);
+
         if(gamepad1.left_bumper){
             // When pressing the left bumper, the robot will turn counterclockwise.
             leftMotorPower = -1;
@@ -41,7 +47,8 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             rightMotorPower = leftStickY;
         }
 
-        if(rightStickX != 0 || rightStickY != 0) {
+        // We are setting a circle of radius 0.8 to be our dead zone.
+        if(rightStickRadius > 0.8) {
             // Calculate the angle difference between our desired angle and the actual angle of
             // the robot.
             double angleDifference = AngleUnit.normalizeDegrees(rightStickAngle - robotAngle);
