@@ -114,7 +114,8 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
 
     }
 
-    public String target = "A";
+    public String target = "B";
+
 
     public void goToA() {
         moveInchesCenter(12);
