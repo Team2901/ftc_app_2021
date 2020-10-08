@@ -114,7 +114,7 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
 
     }
 
-    public String target = "B";
+    public String target = "C";
 
 
     public void goToA() {
