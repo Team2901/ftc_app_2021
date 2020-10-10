@@ -13,7 +13,6 @@ import static org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHar
 
 public class BaseUltimateGoalAuto extends LinearOpMode {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
-    private TFObjectDetector tfod;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -26,10 +25,10 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
     public int starterStackSensor() {
         int stackID = 0;
-        if (tfod != null) {
+        if (robot.webCamera.tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
-            List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+            List<Recognition> updatedRecognitions = robot.webCamera.tfod.getRecognitions();
             if (updatedRecognitions != null) {
                 telemetry.addData("# Object Detected", updatedRecognitions.size());
 
