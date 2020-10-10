@@ -19,13 +19,13 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     }
     public void init(boolean camera) {
+        robot.init(this.hardwareMap);
         if(camera){
             initAndActivateWebCameraWithTensorFlow();
         }
     }
     public int starterStackSensor() {
         int stackID = 0;
-        initAndActivateWebCameraWithTensorFlow();
         if (tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.

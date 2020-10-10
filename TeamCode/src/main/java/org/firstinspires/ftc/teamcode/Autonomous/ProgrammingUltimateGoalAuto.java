@@ -56,7 +56,6 @@ import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
 
 @Autonomous(name = "Programming Ultimate Goal Auto", group = "Linear Opmode")
 public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
-    public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -137,7 +136,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
 
-        robot.init(this.hardwareMap);
+        init(true);
 
         robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
