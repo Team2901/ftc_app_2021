@@ -50,6 +50,7 @@ public class ProgrammingUltimateGoalHardware {
     public String initWebCamera(HardwareMap hardwareMap){
         return webCamera.initWebCamera(hardwareMap, WEB_CAM_NAME,.8, TFOD_MODEL_ASSET, ELEMENT_QUAD, ELEMENT_SINGLE);
     }
+
     public float getAngle() {
         // Gets orientation of robot.
         Orientation angularOrientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
