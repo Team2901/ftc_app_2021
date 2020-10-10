@@ -37,6 +37,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Autonomous.BaseUltimateGoalAuto;
 import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
 
 
@@ -56,6 +57,7 @@ import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
 @Autonomous(name = "Basic: Linear OpMode", group = "Linear Opmode")
 public class GenevieveBasicOpMode_Linear extends LinearOpMode {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    public BaseUltimateGoalAuto camera = new BaseUltimateGoalAuto();
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -147,6 +149,7 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
         waitForStart();
         runtime.reset();
 
+        /*
         if(target == "A") {
             goToA();
         } else if (target == "B") {
@@ -155,6 +158,19 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
             goToC();
         } else {
             telemetry.addData("error", "Invalid Target");
+            telemetry.update();
+        }
+
+
+         */
+        if (camera.starterStackSensor() == 0){
+            goToA();
+        } else if (camera.starterStackSensor() == 1) {
+            goToB();
+        } else if (camera.starterStackSensor() == 2) {
+            goToC();
+        } else {
+            telemetry.addData("error", "How did this happen");
             telemetry.update();
         }
 
