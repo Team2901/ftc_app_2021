@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.teamcode.NewProgrammers;
+package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -54,10 +54,9 @@ import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name = "Basic: Linear OpMode", group = "Linear Opmode")
-public class GenevieveBasicOpMode_Linear extends LinearOpMode {
+@Autonomous(name = "Programming Ultimate Goal Auto", group = "Linear Opmode")
+public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
-    public BaseUltimateGoalAuto camera = new BaseUltimateGoalAuto();
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
@@ -163,11 +162,11 @@ public class GenevieveBasicOpMode_Linear extends LinearOpMode {
 
 
          */
-        if (camera.starterStackSensor() == 0){
+        if (starterStackSensor() == 0){
             goToA();
-        } else if (camera.starterStackSensor() == 1) {
+        } else if (starterStackSensor() == 1) {
             goToB();
-        } else if (camera.starterStackSensor() == 2) {
+        } else if (starterStackSensor() == 2) {
             goToC();
         } else {
             telemetry.addData("error", "How did this happen");
