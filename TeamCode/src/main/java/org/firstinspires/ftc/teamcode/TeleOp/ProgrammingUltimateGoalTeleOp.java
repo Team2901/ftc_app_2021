@@ -56,17 +56,21 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             // This prints out what the angle difference is.
             telemetry.addData("Angle difference", angleDifference);
 
-            //Equation for determining target speed: Speed = angle / 45.
-            double speed = angleDifference/45;
-
-            telemetry.addData("Speed",speed);
+            double speed;
 
             // If the angle difference is greater than 10 the robot will turn counterclockwise.
             // Otherwise if the angle difference is less than -10 the robot will turn clockwise.
             if (Math.abs(angleDifference) > 10) {
-                leftMotorPower = -speed;
-                rightMotorPower = speed;
+                //Equation for determining target speed: Speed = angle / 45.
+                speed = angleDifference/45;
             }
+            else {
+                speed = 0;
+            }
+
+            leftMotorPower = -speed;
+            rightMotorPower = speed;
+            telemetry.addData("Speed",speed);
         }
 
         // Program sets left, middle, and right motors to their respective powers.
