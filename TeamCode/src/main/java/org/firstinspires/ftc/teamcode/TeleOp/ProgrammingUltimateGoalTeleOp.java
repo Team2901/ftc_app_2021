@@ -61,15 +61,11 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
 
             telemetry.addData("Speed",speed);
 
-            // If the angle difference is greater than 10, the robot will turn counterclockwise.
-            if (angleDifference > 10) {
+            // If the angle difference is greater than 10 the robot will turn counterclockwise.
+            // Otherwise if the angle difference is less than -10 the robot will turn clockwise.
+            if (Math.abs(angleDifference) > 10) {
                 leftMotorPower = -speed;
                 rightMotorPower = speed;
-            }
-            // Otherwise, the robot will turn clockwise.
-            else if (angleDifference < -10) {
-                leftMotorPower = speed;
-                rightMotorPower = -speed;
             }
         }
 
