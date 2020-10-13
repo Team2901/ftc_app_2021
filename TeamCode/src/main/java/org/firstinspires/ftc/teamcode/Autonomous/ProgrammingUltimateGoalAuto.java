@@ -161,11 +161,18 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
 
 
          */
-        if (starterStackSensor() == 0){
+
+        int starterStackResult = starterStackSensor();
+
+        while (!gamepad1.a){
+
+        }
+
+        if (starterStackResult == 0){
             goToA();
-        } else if (starterStackSensor() == 1) {
+        } else if (starterStackResult == 1) {
             goToB();
-        } else if (starterStackSensor() == 2) {
+        } else if (starterStackResult == 2) {
             goToC();
         } else {
             telemetry.addData("error", "How did this happen");
