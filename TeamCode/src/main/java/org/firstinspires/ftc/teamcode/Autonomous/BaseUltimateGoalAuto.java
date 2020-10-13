@@ -40,9 +40,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
                             recognition.getLeft(), recognition.getTop());
                     telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                             recognition.getRight(), recognition.getBottom());
-                    if(stackID != 2 && recognition.getLabel().equals(ELEMENT_SINGLE) && recognition.getConfidence() >= 0.8) {
+                    if(stackID != 2 && recognition.getLabel().equals(ELEMENT_SINGLE) && recognition.getConfidence() > 0.8) {
                         stackID = 1;
-                    } else if(recognition.getLabel().equals(ELEMENT_QUAD) && recognition.getConfidence() >= 0.8) {
+                    } else if(recognition.getLabel().equals(ELEMENT_QUAD) && recognition.getConfidence() > 0.8) {
                         stackID = 2;
                     }
                 }
