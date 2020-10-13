@@ -46,6 +46,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
                         stackID = 2;
                     }
                 }
+                telemetry.addData("stackID", stackID);
                 telemetry.update();
             }
         }
