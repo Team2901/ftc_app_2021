@@ -34,9 +34,10 @@ public class TensorFlowCamera extends BaseCamera {
 
         if (tfod == null && vuforia != null) {
              TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-                tfodParameters.minimumConfidence = minimumConfidence;
+                tfodParameters.minResultConfidence = (float)minimumConfidence;
                 tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
                 tfod.loadModelFromAsset(assetName, labels);
+                tfod.setZoom(2.5,1.78);
         }
 
         return errorMessage;

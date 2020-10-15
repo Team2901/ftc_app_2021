@@ -48,7 +48,20 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         }
 
         // We are setting a circle of radius 0.8 to be our dead zone.
-        if(rightStickRadius > 0.8) {
+        if(rightStickRadius > 0.8 || gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y) {
+            if(gamepad1.y){
+                rightStickAngle = angleToTurnTo(1);
+            }
+            if(gamepad1.x){
+                rightStickAngle = angleToTurnTo(2);
+            }
+            if(gamepad1.a){
+                rightStickAngle = angleToTurnTo(3);
+            }
+            if(gamepad1.b){
+                rightStickAngle = angleToTurnTo(4);
+            }
+
             // Calculate the angle difference between our desired angle and the actual angle of
             // the robot.
             double angleDifference = AngleUnit.normalizeDegrees(rightStickAngle - robotAngle);
@@ -56,17 +69,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             // This prints out what the angle difference is.
             telemetry.addData("Angle difference", angleDifference);
 
-            double speed;
-
-            // If the angle difference is greater than 10 the robot will turn counterclockwise.
-            // Otherwise if the angle difference is less than -10 the robot will turn clockwise.
-            if (Math.abs(angleDifference) > 10) {
-                //Equation for determining target speed: Speed = angle / 45.
-                speed = angleDifference/45;
-            }
-            else {
-                speed = 0;
-            }
+            double speed = getMotorSpeed(rightStickAngle, robotAngle);
 
             leftMotorPower = -speed;
             rightMotorPower = speed;
@@ -87,5 +90,48 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Right Motor Power", rightMotorPower);
         telemetry.addData("Left Motor Power", leftMotorPower);
         telemetry.update();
+    }
+
+    public double getMotorSpeed(double rightStickAngle, double robotAngle){
+        // Calculate the angle difference between our desired angle and the actual angle of
+        // the robot.
+        double angleDifference = AngleUnit.normalizeDegrees(rightStickAngle - robotAngle);
+
+        // This prints out what the angle difference is.
+        telemetry.addData("Angle difference", angleDifference);
+
+        double speed;
+
+        // If the angle difference is greater than 10 the robot will turn counterclockwise.
+        // Otherwise if the angle difference is less than -10 the robot will turn clockwise.
+        if (Math.abs(angleDifference) > 10) {
+            //Equation for determining target speed: Speed = angle / 45.
+            speed = angleDifference/45;
+        }
+        else {
+            speed = 0;
+        }
+
+        return speed;
+    }
+
+    public int angleToTurnTo(int buttonDeterminer){
+        int angle = 0;
+
+        if(buttonDeterminer == 1){
+            angle = 90;
+        }
+        else if(buttonDeterminer == 2){
+            angle = 180;
+        }
+        else if(buttonDeterminer == 3){
+            angle = 270;
+        }
+        // Subject to deleting.
+        else if(buttonDeterminer == 4){
+            angle = 360;
+        }
+
+        return angle;
     }
 }
