@@ -25,6 +25,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
     public int starterStackSensor() {
         int stackID = 0;
+        double confidence = 0.0;
         if (robot.webCamera.tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
@@ -40,13 +41,16 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
                             recognition.getLeft(), recognition.getTop());
                     telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
                             recognition.getRight(), recognition.getBottom());
-                    if(stackID != 2 && recognition.getLabel().equals(ELEMENT_SINGLE) && recognition.getConfidence() >= 0.8) {
+                    if(stackID != 2 && recognition.getLabel().equals(ELEMENT_SINGLE) && recognition.getConfidence() > 0.8) {
                         stackID = 1;
-                    } else if(recognition.getLabel().equals(ELEMENT_QUAD) && recognition.getConfidence() >= 0.8) {
+                        confidence = recognition.getConfidence();
+                    } else if(recognition.getLabel().equals(ELEMENT_QUAD) && recognition.getConfidence() > 0.8) {
                         stackID = 2;
+                        confidence = recognition.getConfidence();
                     }
                 }
                 telemetry.addData("stackID", stackID);
+                telemetry.addData("confidence", confidence);
                 telemetry.update();
             }
         }
