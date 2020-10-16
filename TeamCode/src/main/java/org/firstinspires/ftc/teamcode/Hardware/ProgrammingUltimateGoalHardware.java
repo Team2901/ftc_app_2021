@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -19,6 +20,7 @@ public class ProgrammingUltimateGoalHardware {
     public DcMotor leftMotor = null;
     public DcMotor rightMotor = null;
     public DcMotor middleMotor = null;
+    public Servo wobbleGrabber;
     BNO055IMU imu;
     public TensorFlowCamera webCamera = new TensorFlowCamera();
 
@@ -29,6 +31,8 @@ public class ProgrammingUltimateGoalHardware {
         middleMotor = hwMap.dcMotor.get("middle_drive");
         // Setting left motor to reverse, making the robot moveable now.
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        wobbleGrabber = hwMap.servo.get("grabber");
 
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually

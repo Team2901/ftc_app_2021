@@ -147,6 +147,8 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         waitForStart();
         runtime.reset();
 
+        grabWobble();
+
         /*
         if(target == "A") {
             goToA();
@@ -158,8 +160,6 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
             telemetry.addData("error", "Invalid Target");
             telemetry.update();
         }
-
-
          */
 
         int starterStackResult = starterStackSensor();
