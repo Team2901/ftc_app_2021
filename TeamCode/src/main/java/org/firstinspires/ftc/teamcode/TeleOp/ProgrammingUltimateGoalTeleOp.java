@@ -18,6 +18,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
 
     @Override
     public void loop() {
+        // Declare variables that will be used later in this method.
         float rightStickX = gamepad1.right_stick_x;
         float rightStickY = -1 * gamepad1.right_stick_y;
         float leftStickX = gamepad1.left_stick_x;
@@ -26,6 +27,8 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         double leftMotorPower = 0;
         double rightMotorPower = 0;
         float robotAngle = robot.getAngle();
+        double desiredAngle = 0;
+        boolean isLetterOnGamepad1Pressed = gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y;
 
         // Determine radius of right stick through Pythagorean Theorem.
         double rightStickXSquared = Math.pow(rightStickX,2);
@@ -33,46 +36,64 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         double rightStickRadiusSquared = rightStickXSquared + rightStickYSquared;
         double rightStickRadius = Math.sqrt(rightStickRadiusSquared);
 
+        // When pressing the left bumper, the robot will turn counterclockwise.
         if(gamepad1.left_bumper){
-            // When pressing the left bumper, the robot will turn counterclockwise.
             leftMotorPower = -1;
             rightMotorPower = 1;
-        } else if(gamepad1.right_bumper){
-            // When pressing the right bumper, the robot will turn clockwise.
+        }
+        // When pressing the right bumper, the robot will turn clockwise.
+        else if(gamepad1.right_bumper){
             leftMotorPower = 1;
             rightMotorPower = -1;
-        } else {
-            // This sets the motor's power to however far the left joystick is pushed.
+        }
+        // This sets the motor's power to however far the left joystick is pushed.
+        else {
             leftMotorPower = leftStickY;
             rightMotorPower = leftStickY;
         }
 
-        // We are setting a circle of radius 0.8 to be our dead zone.
-        if(rightStickRadius > 0.8 || gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y) {
+        /*
+        * If the radius of the right stick is greater than the radius of our circular dead zone (0.8)
+        * or if one of the letter buttons on the controller is pressed, the robot will turn to the
+        * angle that we want it to be turned to.
+         */
+        if(rightStickRadius > 0.8 || isLetterOnGamepad1Pressed) {
+            // If y is pressed, the robot will turn by 90 degrees.
             if(gamepad1.y){
-                rightStickAngle = angleToTurnTo(1);
+                desiredAngle = angleToTurnTo(1);
             }
-            if(gamepad1.x){
-                rightStickAngle = angleToTurnTo(2);
+            // If x is pressed, the robot will turn by 180 degrees.
+            else if(gamepad1.x){
+                desiredAngle = angleToTurnTo(2);
             }
-            if(gamepad1.a){
-                rightStickAngle = angleToTurnTo(3);
+            // If a is pressed, the robot will turn by 270 degrees.
+            else if(gamepad1.a){
+                desiredAngle = angleToTurnTo(3);
             }
-            if(gamepad1.b){
-                rightStickAngle = angleToTurnTo(4);
+            // If b is pressed, the robot will turn by 360 degrees.
+            else if(gamepad1.b){
+                desiredAngle = angleToTurnTo(4);
+            }
+            // Otherwise, the robot will turn to the angle that we point the right stick down in.
+            else{
+                desiredAngle = rightStickAngle;
             }
 
             // Calculate the angle difference between our desired angle and the actual angle of
             // the robot.
-            double angleDifference = AngleUnit.normalizeDegrees(rightStickAngle - robotAngle);
+            double angleDifference = AngleUnit.normalizeDegrees(desiredAngle - robotAngle);
 
             // This prints out what the angle difference is.
             telemetry.addData("Angle difference", angleDifference);
 
-            double speed = getMotorSpeed(rightStickAngle, robotAngle);
+            // Determine the speed that the motors should be set to.
+            double speed = getMotorSpeed(desiredAngle, robotAngle);
 
+            // Set the motors to their appropriate powers.
             leftMotorPower = -speed;
             rightMotorPower = speed;
+
+            // Print out what the speed is.
             telemetry.addData("Speed",speed);
         }
 
@@ -92,46 +113,65 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         telemetry.update();
     }
 
-    public double getMotorSpeed(double rightStickAngle, double robotAngle){
+    /**
+     * This method determines the speed of a motor.
+     * @param desiredAngle our desired angle
+     * @param robotAngle the robot's current angle
+     * @return
+     */
+    public double getMotorSpeed(double desiredAngle, double robotAngle){
         // Calculate the angle difference between our desired angle and the actual angle of
         // the robot.
-        double angleDifference = AngleUnit.normalizeDegrees(rightStickAngle - robotAngle);
+        double angleDifference = AngleUnit.normalizeDegrees(desiredAngle - robotAngle);
 
         // This prints out what the angle difference is.
         telemetry.addData("Angle difference", angleDifference);
 
+        // Declare the speed variable for later use.
         double speed;
 
         // If the angle difference is greater than 10 the robot will turn counterclockwise.
-        // Otherwise if the angle difference is less than -10 the robot will turn clockwise.
+        // Otherwise, if the angle difference is less than -10 the robot will turn clockwise.
         if (Math.abs(angleDifference) > 10) {
-            //Equation for determining target speed: Speed = angle / 45.
+            // Equation for determining target speed: Speed = angle / 45.
             speed = angleDifference/45;
         }
+        // Otherwise, we don't want the robot to turn at all.
         else {
             speed = 0;
         }
 
+        // Return the speed that the motor should be turning to.
         return speed;
     }
 
+    /**
+     * This method has the robot turn to a certain angle based on the letter button that is pressed.
+     * @param buttonDeterminer the number used to determine how many degrees the robot should turn by
+     * @return
+     */
     public int angleToTurnTo(int buttonDeterminer){
+        // Declare angle variable.
         int angle = 0;
 
+        // If y is pressed, the robot will turn by 90 degrees.
         if(buttonDeterminer == 1){
             angle = 90;
         }
+        // If x is pressed, the robot will turn by 180 degrees.
         else if(buttonDeterminer == 2){
             angle = 180;
         }
+        // If a is pressed, the robot will turn by 270 degrees.
         else if(buttonDeterminer == 3){
             angle = 270;
         }
-        // Subject to deleting.
+        // If b is pressed, the robot will turn by 360 degrees.
         else if(buttonDeterminer == 4){
             angle = 360;
         }
 
+        // Return angle variable.
         return angle;
     }
 }
