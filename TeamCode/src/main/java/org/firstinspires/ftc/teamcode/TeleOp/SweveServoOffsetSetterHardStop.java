@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -9,6 +10,7 @@ import org.firstinspires.ftc.teamcode.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.Hardware.BaseSkyStoneHardware;
 import org.firstinspires.ftc.teamcode.Hardware.CompetitionSkystoneHardware;
 
+@Disabled
 @TeleOp(name = "Servo Swerve Offset Setter Hard", group = "TEST")
 public class SweveServoOffsetSetterHardStop extends OpMode {
 

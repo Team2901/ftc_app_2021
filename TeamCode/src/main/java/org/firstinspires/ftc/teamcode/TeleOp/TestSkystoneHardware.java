@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -12,8 +13,9 @@ import org.firstinspires.ftc.teamcode.Hardware.SkystoneHardware;
 
 import java.util.ArrayList;
 
+@Disabled
 @TeleOp(name = "Hardware Test", group = "TEST")
-public class TestHardware extends OpMode {
+public class TestSkystoneHardware extends OpMode {
 
     BuilderSkystoneHardware robot = new BuilderSkystoneHardware();
     ImprovedGamepad impGamepad;
