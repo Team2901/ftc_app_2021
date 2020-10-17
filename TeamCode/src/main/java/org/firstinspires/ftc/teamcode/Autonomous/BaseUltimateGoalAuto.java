@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
@@ -65,6 +66,39 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public void releaseWobble() {
         robot.configureWobbleGrabber(false);
+    }
+
+    public void turnToDesiredAngle(float desiredAngle){
+        float robotAngle = robot.getAngle();
+
+        // Determine the speed that the motors should be set to.
+        double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle);
+
+        // The robot should keep on turning until it reaches its desired angle.
+        while(speed != 0 && opModeIsActive()){
+            // Set the motors to their appropriate powers.
+            robot.leftMotor.setPower(-speed);
+            robot.rightMotor.setPower(speed);
+
+            // Print out what the speed is.
+            telemetry.addData("Speed",speed);
+
+            // This prints out what the angle difference is.
+            telemetry.addData("Angle difference", AngleUnit.normalizeDegrees(desiredAngle - robotAngle));
+
+            // This updates our telemetry to continuously print out our telemetry.
+            telemetry.update();
+
+            // Update robot angle.
+            robotAngle = robot.getAngle();
+
+            // Update speed variable.
+            speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle);
+        }
+
+        // We don't want the robot to turn anymore; therefore, we set the motors' powers to 0.
+        robot.leftMotor.setPower(0);
+        robot.rightMotor.setPower(0);
     }
 
     public void initAndActivateWebCameraWithTensorFlow() {

@@ -79,12 +79,8 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
                 desiredAngle = rightStickAngle;
             }
 
-            // Calculate the angle difference between our desired angle and the actual angle of
-            // the robot.
-            double angleDifference = AngleUnit.normalizeDegrees(desiredAngle - robotAngle);
-
             // This prints out what the angle difference is.
-            telemetry.addData("Angle difference", angleDifference);
+            telemetry.addData("Angle difference", AngleUnit.normalizeDegrees(desiredAngle - robotAngle));
 
             // Determine the speed that the motors should be set to.
             double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle);
