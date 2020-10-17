@@ -58,12 +58,13 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
 
     public void grabWobble() {
-        robot.wobbleGrabber.setPosition(0.75);
+        robot.configureWobbleGrabber(false);
         sleep(3000);
-        robot.wobbleGrabber.setPosition(0.25);
+        robot.configureWobbleGrabber(true);
     }
+
     public void releaseWobble() {
-        robot.wobbleGrabber.setPosition(0.75);
+        robot.configureWobbleGrabber(false);
     }
 
     public void initAndActivateWebCameraWithTensorFlow() {
