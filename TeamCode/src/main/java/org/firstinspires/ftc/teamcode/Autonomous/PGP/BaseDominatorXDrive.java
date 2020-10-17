@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.PGP;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -9,7 +10,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public abstract class BaseDominatorMechanum extends LinearOpMode implements Dominator {
+/**
+ * Created with Team 6183's Duckinator 3000
+ */
+
+@Autonomous(name = "BaseDominatorXDrive", group = "DuckSquad")
+public abstract class BaseDominatorXDrive extends LinearOpMode implements Dominator {
 
     private DcMotor fl;
     private DcMotor fr;
@@ -21,7 +27,7 @@ public abstract class BaseDominatorMechanum extends LinearOpMode implements Domi
     private Orientation lastAngles = new Orientation();
 
     @Override
-    public void initRobot() {
+    public void runOpMode() throws InterruptedException {
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.mode = BNO055IMU.SensorMode.IMU;
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -38,6 +44,19 @@ public abstract class BaseDominatorMechanum extends LinearOpMode implements Domi
         fr = hardwareMap.dcMotor.get("fr");
         bl = hardwareMap.dcMotor.get("bl");
         br = hardwareMap.dcMotor.get("br");
+        waitForStart();
+        if (opModeIsActive()) {
+            goForward(3071);
+            rotate(-89);
+            goForward(8531);
+            rotate(90);
+            goForward(1007);
+            rotate(179);
+            goForward(1988);
+            rotate(-89);
+            goForward(4203);
+
+        }
     }
 
     public void motorReset() {
@@ -66,10 +85,10 @@ public abstract class BaseDominatorMechanum extends LinearOpMode implements Domi
 
     public void goForward(int gofront) {
         motorReset();
-        fl.setTargetPosition((int) Math.round(1.0 * gofront));
-        fr.setTargetPosition((int) Math.round(-1.0 * gofront));
-        bl.setTargetPosition((int) Math.round(1.0 * gofront));
-        br.setTargetPosition((int) Math.round(1.0 * gofront));
+        fl.setTargetPosition((int) Math.round(1.2 * gofront));
+        fr.setTargetPosition((int) Math.round(-1.2 * gofront));
+        bl.setTargetPosition((int) Math.round(1.2 * gofront));
+        br.setTargetPosition((int) Math.round(1.2 * gofront));
         powerBusy();
     }
 

@@ -1,14 +1,15 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.PGP;
 
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
 /**
  * Created with Team 6183's Duckinator 3000
+ * Future output generated from duckinatorin response to clicking imput
  */
 
-@Autonomous(name = "DominatorTankDrive9000", group = "DuckSquad")
-public class DominatorTankDrive9000 extends BaseDominatorTankDrive {
+@Autonomous(name = "DominatorMechanum9000", group = "DuckSquad")
+public class DominatorMechanum9000 extends BaseDominatorMechanum {
     @Override
     public void runOpMode() throws InterruptedException {
         initRobot();
