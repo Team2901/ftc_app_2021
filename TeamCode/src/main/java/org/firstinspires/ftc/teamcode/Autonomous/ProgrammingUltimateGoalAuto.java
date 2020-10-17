@@ -76,7 +76,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.middleMotor.setPower(.75);
+        robot.middleMotor.setPower(1);
 
         while (opModeIsActive() && (robot.middleMotor.isBusy())){
             telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
@@ -97,8 +97,8 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.leftMotor.setPower(.5);
-        robot.rightMotor.setPower(.5);
+        robot.leftMotor.setPower(.75);
+        robot.rightMotor.setPower(.75);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
             telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
