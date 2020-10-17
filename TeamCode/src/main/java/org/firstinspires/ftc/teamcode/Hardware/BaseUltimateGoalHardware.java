@@ -23,6 +23,8 @@ public class BaseUltimateGoalHardware {
     public Servo wobbleGrabber;
     BNO055IMU imu;
     public TensorFlowCamera webCamera = new TensorFlowCamera();
+    public static double robotTurnRampDownAngle = 45;
+    public static double robotTurnStopAngle = 10;
 
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
@@ -78,9 +80,9 @@ public class BaseUltimateGoalHardware {
 
         // If the angle difference is greater than 10 the robot will turn counterclockwise.
         // Otherwise, if the angle difference is less than -10 the robot will turn clockwise.
-        if (Math.abs(angleDifference) > 10) {
-            // Equation for determining target speed: Speed = angle / 45.
-            speed = angleDifference/45;
+        if (Math.abs(angleDifference) > robotTurnStopAngle) {
+            // Equation for determining target speed: Speed = angle / robotTurnRampDownAngle.
+            speed = angleDifference/robotTurnRampDownAngle;
         }
         // Otherwise, we don't want the robot to turn at all.
         else {
