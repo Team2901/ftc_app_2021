@@ -61,4 +61,33 @@ public class BaseUltimateGoalHardware {
         // Returns the angle of the robot.
         return angularOrientation.firstAngle;
     }
+
+    /**
+     * This method determines the speed of a motor.
+     * @param desiredAngle our desired angle
+     * @param robotAngle the robot's current angle
+     * @return
+     */
+    public double getMotorTurnSpeed(double desiredAngle, double robotAngle){
+        // Calculate the angle difference between our desired angle and the actual angle of
+        // the robot.
+        double angleDifference = AngleUnit.normalizeDegrees(desiredAngle - robotAngle);
+
+        // Declare the speed variable for later use.
+        double speed;
+
+        // If the angle difference is greater than 10 the robot will turn counterclockwise.
+        // Otherwise, if the angle difference is less than -10 the robot will turn clockwise.
+        if (Math.abs(angleDifference) > 10) {
+            // Equation for determining target speed: Speed = angle / 45.
+            speed = angleDifference/45;
+        }
+        // Otherwise, we don't want the robot to turn at all.
+        else {
+            speed = 0;
+        }
+
+        // Return the speed that the motor should be turning to.
+        return speed;
+    }
 }
