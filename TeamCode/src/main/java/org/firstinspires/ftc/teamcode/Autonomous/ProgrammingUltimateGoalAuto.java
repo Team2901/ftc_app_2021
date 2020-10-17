@@ -169,9 +169,9 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         int starterStackResult = starterStackSensor();
 
-        while (opModeIsActive() && !gamepad1.a){
+        /*while (opModeIsActive() && !gamepad1.a){
 
-        }
+        }*/
 
         moveInchesCenter(12);
 
