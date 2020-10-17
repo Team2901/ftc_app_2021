@@ -125,7 +125,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
     public void goToB() {
         moveInchesCenter(12);
         moveInchesForward(99);
-        moveInchesCenter(-24);
+        moveInchesCenter(-36);
         releaseWobble();
     }
     public void goToC() {
