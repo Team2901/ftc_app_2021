@@ -38,7 +38,7 @@ public class TensorFlowCamera extends BaseCamera {
                 tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
                 tfod.loadModelFromAsset(assetName, labels);
                 tfod.setZoom(2.5,1.78);
-                tfod.setClippingMargins(0,100,100,0);
+                tfod.setClippingMargins(0,200,200,0);
         }
 
         return errorMessage;
