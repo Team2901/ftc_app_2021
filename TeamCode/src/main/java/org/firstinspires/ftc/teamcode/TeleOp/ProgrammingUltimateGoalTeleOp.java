@@ -102,6 +102,15 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         robot.rightMotor.setPower(rightMotorPower);
         robot.middleMotor.setPower(leftStickX);
 
+        // If the up button on the dpad is pressed, then the wobble grabber will close.
+        if(gamepad1.dpad_up){
+            robot.configureWobbleGrabber(true);
+        }
+        // Otherwise, if the down button on the dpad is pressed, then the wobble grabber will open.
+        else if(gamepad1.dpad_down){
+            robot.configureWobbleGrabber(false);
+        }
+
         /*
         * This code below prints out the robot angle, right stick angle, right motor power, the
         * left motor power, and performs a telemetry update.
