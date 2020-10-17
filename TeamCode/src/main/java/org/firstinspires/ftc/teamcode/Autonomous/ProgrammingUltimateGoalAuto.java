@@ -120,15 +120,18 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
     public void goToA() {
         moveInchesCenter(12);
         moveInchesForward(75);
+        releaseWobble();
     }
     public void goToB() {
         moveInchesCenter(12);
         moveInchesForward(99);
         moveInchesCenter(-24);
+        releaseWobble();
     }
     public void goToC() {
         moveInchesCenter(12);
         moveInchesForward(123);
+        releaseWobble();
     }
 
     @Override
@@ -147,7 +150,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         waitForStart();
         runtime.reset();
 
-        grabWobble();
+        //grabWobble();
 
         /*
         if(target == "A") {
@@ -162,11 +165,15 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         }
          */
 
+        moveInchesCenter(-12);
+
         int starterStackResult = starterStackSensor();
 
-        while (!gamepad1.a){
+        while (opModeIsActive() && !gamepad1.a){
 
         }
+
+        moveInchesCenter(12);
 
         if (starterStackResult == 0){
             goToA();
