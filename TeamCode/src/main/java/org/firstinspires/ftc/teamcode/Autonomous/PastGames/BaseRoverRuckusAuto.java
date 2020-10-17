@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.Autonomous.PastGames;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
@@ -21,7 +21,7 @@ import org.firstinspires.ftc.teamcode.Utility.PolarCoord;
 import org.firstinspires.ftc.teamcode.Utility.RoverRuckusUtilities;
 import org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities;
 
-import static org.firstinspires.ftc.teamcode.Autonomous.BaseRoverRuckusAuto.GoldPosition.MIDDLE;
+import static org.firstinspires.ftc.teamcode.Autonomous.PastGames.BaseRoverRuckusAuto.GoldPosition.MIDDLE;
 import static org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities.getWebCameraParameters;
 
 @SuppressLint("DefaultLocale")

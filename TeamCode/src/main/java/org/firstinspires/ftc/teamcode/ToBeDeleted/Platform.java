@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.Autonomous.BaseSkyStoneAuto;
+import org.firstinspires.ftc.teamcode.Autonomous.PastGames.BaseSkyStoneAuto;
 
 @Disabled
 @Autonomous(name= "BluePlatform2")

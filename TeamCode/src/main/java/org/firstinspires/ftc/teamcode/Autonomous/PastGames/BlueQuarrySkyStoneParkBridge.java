@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.Autonomous.BlueTeam;
+package org.firstinspires.ftc.teamcode.Autonomous.PastGames;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.Autonomous.BaseSkyStoneAuto;
+import org.firstinspires.ftc.teamcode.Autonomous.PastGames.BaseSkyStoneAuto;
 
 import static org.firstinspires.ftc.teamcode.Hardware.ExemplaryBlinkinLED.LED_BLUE;
 

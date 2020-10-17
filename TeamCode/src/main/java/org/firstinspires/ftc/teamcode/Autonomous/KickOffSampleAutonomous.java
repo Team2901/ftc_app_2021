@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.Hardware.KickOffSampleHardware;
 
 import java.util.List;
 
+@Disabled
 @Autonomous(name = "Kick-off Sample Autonomous")
 public class KickOffSampleAutonomous extends LinearOpMode {
     public KickOffSampleHardware robot = new KickOffSampleHardware();
