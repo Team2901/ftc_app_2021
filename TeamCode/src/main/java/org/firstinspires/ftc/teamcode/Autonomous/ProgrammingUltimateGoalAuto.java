@@ -40,6 +40,8 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.teamcode.Autonomous.BaseUltimateGoalAuto;
 import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
 
+import static java.lang.System.currentTimeMillis;
+
 
 /**
  * This file contains an minimal example of a Linear "OpMode". An OpMode is a 'program' that runs in either
@@ -80,6 +82,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         robot.middleMotor.setPower(1);
 
         while (opModeIsActive() && (robot.middleMotor.isBusy())){
+            telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
             telemetry.update();
         }
@@ -169,11 +172,13 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesCenter(-12);
 
+        long targetTime = currentTimeMillis() + 1000;
+
+        while (currentTimeMillis() < targetTime && opModeIsActive()){
+
+        }
+
         starterStackResult = starterStackSensor();
-
-        /*while (opModeIsActive() && !gamepad1.a){
-
-        }*/
 
         moveInchesCenter(12);
 
