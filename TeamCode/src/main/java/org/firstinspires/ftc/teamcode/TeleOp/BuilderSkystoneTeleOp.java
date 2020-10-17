@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.TeleOp;
 
 import android.annotation.SuppressLint;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.Hardware.CompetitionSkystoneHardware;
 
+@Disabled
 @SuppressLint("DefaultLocale")
 @TeleOp(name = "Competition Skystone", group = "BUILDER_SKYSTONE")
 public class BuilderSkystoneTeleOp extends OpMode {

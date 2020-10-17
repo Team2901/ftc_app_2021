@@ -49,6 +49,7 @@ import java.util.concurrent.TimeUnit;
  *
  * Displays the first pattern upon init.
  */
+@Disabled
 @TeleOp(name="TestLEDBlinkin")
 public class TestLEDBlinkin extends OpMode {
 
