@@ -24,7 +24,7 @@ public class BaseUltimateGoalHardware {
     BNO055IMU imu;
     public TensorFlowCamera webCamera = new TensorFlowCamera();
     public static double robotTurnRampDownAngle = 45;
-    public static double robotTurnStopAngle = 10;
+    public static double robotTurnStopAngle = 5;
 
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
