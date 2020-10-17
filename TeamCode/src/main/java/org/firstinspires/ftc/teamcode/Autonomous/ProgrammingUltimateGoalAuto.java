@@ -69,6 +69,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
     public static final double FORWARD_TICKS_PER_INCH = FORWARD_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
     public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
 
+    public int starterStackResult = -1;
     public void moveInchesCenter(double inches){
         int ticks = (int) (inches * CENTER_TICKS_PER_INCH);
 
@@ -101,6 +102,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         robot.rightMotor.setPower(.75);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+            telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
             telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
             telemetry.update();
@@ -167,7 +169,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesCenter(-12);
 
-        int starterStackResult = starterStackSensor();
+        starterStackResult = starterStackSensor();
 
         /*while (opModeIsActive() && !gamepad1.a){
 
