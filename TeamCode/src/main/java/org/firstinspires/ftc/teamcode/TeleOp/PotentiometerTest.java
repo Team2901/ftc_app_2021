@@ -1,12 +1,13 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
 
 @Disabled
-@Autonomous(name = "Potentiometer Tester", group = "__TEST")
+@TeleOp(name = "Potentiometer Tester", group = "TEST")
 public class PotentiometerTest extends OpMode {
 
     AnalogInput potentiometer;
