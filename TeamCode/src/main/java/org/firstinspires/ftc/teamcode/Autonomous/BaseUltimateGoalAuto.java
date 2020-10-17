@@ -69,6 +69,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
 
     public void turnToDesiredAngle(float desiredAngle){
+        // Robot's current angle
         float robotAngle = robot.getAngle();
 
         // Determine the speed that the motors should be set to.
