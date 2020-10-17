@@ -87,7 +87,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             telemetry.addData("Angle difference", angleDifference);
 
             // Determine the speed that the motors should be set to.
-            double speed = getMotorSpeed(desiredAngle, robotAngle);
+            double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle);
 
             // Set the motors to their appropriate powers.
             leftMotorPower = -speed;
@@ -120,38 +120,6 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Right Motor Power", rightMotorPower);
         telemetry.addData("Left Motor Power", leftMotorPower);
         telemetry.update();
-    }
-
-    /**
-     * This method determines the speed of a motor.
-     * @param desiredAngle our desired angle
-     * @param robotAngle the robot's current angle
-     * @return
-     */
-    public double getMotorSpeed(double desiredAngle, double robotAngle){
-        // Calculate the angle difference between our desired angle and the actual angle of
-        // the robot.
-        double angleDifference = AngleUnit.normalizeDegrees(desiredAngle - robotAngle);
-
-        // This prints out what the angle difference is.
-        telemetry.addData("Angle difference", angleDifference);
-
-        // Declare the speed variable for later use.
-        double speed;
-
-        // If the angle difference is greater than 10 the robot will turn counterclockwise.
-        // Otherwise, if the angle difference is less than -10 the robot will turn clockwise.
-        if (Math.abs(angleDifference) > 10) {
-            // Equation for determining target speed: Speed = angle / 45.
-            speed = angleDifference/45;
-        }
-        // Otherwise, we don't want the robot to turn at all.
-        else {
-            speed = 0;
-        }
-
-        // Return the speed that the motor should be turning to.
-        return speed;
     }
 
     /**
