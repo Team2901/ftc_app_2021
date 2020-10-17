@@ -80,6 +80,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         robot.middleMotor.setPower(1);
 
         while (opModeIsActive() && (robot.middleMotor.isBusy())){
+            telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
             telemetry.update();
         }
