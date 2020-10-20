@@ -104,7 +104,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
             if(robot.getAngle() < startAngle - toleranceRange) {
                 while(robot.getAngle() < startAngle - toleranceRange) {
-                    robot.rightMotor.setPower(.8);
+                    robot.rightMotor.setPower(.9);
                     telemetry.addData("Adjusting:", "To Right");
 
                     telemetry.addData("stackID", starterStackResult);
@@ -115,7 +115,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
                 robot.rightMotor.setPower(.75);
             } else if(robot.getAngle() > startAngle + toleranceRange) {
                 while(robot.getAngle() > startAngle + toleranceRange) {
-                    robot.leftMotor.setPower(.8);
+                    robot.leftMotor.setPower(.9);
                     telemetry.addData("Adjusting:", "To Left");
 
                     telemetry.addData("stackID", starterStackResult);
