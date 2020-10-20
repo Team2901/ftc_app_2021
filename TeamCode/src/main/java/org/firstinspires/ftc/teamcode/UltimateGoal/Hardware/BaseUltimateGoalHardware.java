@@ -20,8 +20,6 @@ public class BaseUltimateGoalHardware {
     // Instance Variables
     public DcMotor leftMotor = null;
     public DcMotor rightMotor = null;
-    public DcMotor middleMotor = null;
-    public Servo wobbleGrabber;
     BNO055IMU imu;
     public BaseCamera webCamera = new BaseCamera();
     public static double robotTurnRampDownAngle = 45;
@@ -31,11 +29,11 @@ public class BaseUltimateGoalHardware {
         // Define and Initialize Motors
         leftMotor = hwMap.dcMotor.get("left_drive");
         rightMotor = hwMap.dcMotor.get("right_drive");
-        middleMotor = hwMap.dcMotor.get("middle_drive");
+
         // Setting left motor to reverse, making the robot moveable now.
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
 
-        wobbleGrabber = hwMap.servo.get("grabber");
+
 
         // Set up the parameters with which we will use our IMU. Note that integration
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
