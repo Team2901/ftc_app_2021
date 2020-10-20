@@ -96,7 +96,7 @@ public class BaseSkyStoneHardware {
     public IntegratingGyroscope gyroscope;
     public double offset = 0;
 
-    public TensorFlowCamera webCamera = new TensorFlowCamera();
+    public BaseCamera webCamera = new BaseCamera();
 
     public SwerveWheel frontLeftSwerveWheel = new SwerveWheel("FL");
     public SwerveWheel frontRightSwerveWheel = new SwerveWheel("FR");
@@ -289,7 +289,11 @@ public class BaseSkyStoneHardware {
     }
 
     public String initWebCamera(HardwareMap hardwareMap) {
-        return webCamera.initWebCamera(hardwareMap, WEB_CAM_NAME,.8, TFOD_MODEL_ASSET, LABEL_BUTTER, LABEL_SKY_BUTTER);
+        return webCamera.initWebCamera(hardwareMap, WEB_CAM_NAME);
+    }
+
+    public String initTfod(){
+        return webCamera.initTfod(.8, TFOD_MODEL_ASSET, LABEL_BUTTER, LABEL_SKY_BUTTER);
     }
 
     public void initBlinkinLED(HardwareMap hardwareMap){

@@ -1,16 +1,12 @@
 package org.firstinspires.ftc.teamcode.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.Hardware.BuilderSkystoneHardware;
 import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
-import org.firstinspires.ftc.teamcode.Hardware.TensorFlowCamera;
-import org.firstinspires.ftc.teamcode.Hardware.VuforiaCamera;
 import org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities;
 
 import static org.firstinspires.ftc.teamcode.Hardware.BaseSkyStoneHardware.WEB_CAM_NAME;
@@ -26,6 +22,8 @@ public class TestWebCamera extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
         robot.initWebCamera(hardwareMap);
+
+        robot.initTfod();
 
         robot.webCamera.activateTfod();
 

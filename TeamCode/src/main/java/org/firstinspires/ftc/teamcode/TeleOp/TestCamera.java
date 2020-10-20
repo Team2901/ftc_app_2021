@@ -5,8 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.Hardware.TensorFlowCamera;
-import org.firstinspires.ftc.teamcode.Hardware.VuforiaCamera;
+import org.firstinspires.ftc.teamcode.Hardware.BaseCamera;
 
 @Disabled
 @TeleOp(name = "Camera Test", group = "TEST")
@@ -14,8 +13,7 @@ public class TestCamera extends OpMode {
 
     public ElapsedTime timer = new ElapsedTime();
 
-    public VuforiaCamera vuforiaCamera = new VuforiaCamera();
-    public TensorFlowCamera tensorFlowCamera = new TensorFlowCamera();
+    public BaseCamera tensorFlowCamera = new BaseCamera();
 
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
@@ -24,12 +22,11 @@ public class TestCamera extends OpMode {
     @Override
     public void init() {
 
-        //vuforiaCamera.initBackCamera(hardwareMap);
+        tensorFlowCamera.initBackCamera(hardwareMap);
 
-        tensorFlowCamera.initBackCamera(hardwareMap, .8, TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
+        tensorFlowCamera.initTfod(.8, TFOD_MODEL_ASSET, LABEL_GOLD_MINERAL, LABEL_SILVER_MINERAL);
 
         tensorFlowCamera.activateTfod();
-
     }
 
     @Override

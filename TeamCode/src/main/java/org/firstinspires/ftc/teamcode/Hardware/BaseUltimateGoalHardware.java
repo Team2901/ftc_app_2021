@@ -22,7 +22,7 @@ public class BaseUltimateGoalHardware {
     public DcMotor middleMotor = null;
     public Servo wobbleGrabber;
     BNO055IMU imu;
-    public TensorFlowCamera webCamera = new TensorFlowCamera();
+    public BaseCamera webCamera = new BaseCamera();
     public static double robotTurnRampDownAngle = 45;
     public static double robotTurnStopAngle = 5;
 
@@ -53,8 +53,13 @@ public class BaseUltimateGoalHardware {
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
     }
+
     public String initWebCamera(HardwareMap hardwareMap){
-        return webCamera.initWebCamera(hardwareMap, WEB_CAM_NAME,.8, TFOD_MODEL_ASSET, ELEMENT_QUAD, ELEMENT_SINGLE);
+        return webCamera.initWebCamera(hardwareMap, WEB_CAM_NAME);
+    }
+    
+    public String initTfod(){
+        return webCamera.initTfod(.8, TFOD_MODEL_ASSET, ELEMENT_QUAD, ELEMENT_SINGLE);
     }
 
     public float getAngle() {

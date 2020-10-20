@@ -207,6 +207,7 @@ public abstract class BaseSkyStoneAuto extends LinearOpMode {
 
         // Init the web camera with TensorFlow
         robot.initWebCamera(hardwareMap);
+        robot.initTfod();
 
         // Activate TensorFlow
         robot.webCamera.activateTfod();
