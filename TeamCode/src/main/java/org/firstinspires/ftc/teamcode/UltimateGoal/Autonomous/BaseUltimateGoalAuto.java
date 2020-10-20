@@ -1,16 +1,15 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+package org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
 
 import java.util.List;
 
-import static org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware.ELEMENT_SINGLE;
-import static org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware.ELEMENT_QUAD;
+import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware.ELEMENT_SINGLE;
+import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware.ELEMENT_QUAD;
 
 public class BaseUltimateGoalAuto extends LinearOpMode {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();

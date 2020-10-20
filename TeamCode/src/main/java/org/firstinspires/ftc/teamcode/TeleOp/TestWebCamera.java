@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.Hardware.ProgrammingUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities;
 
 import static org.firstinspires.ftc.teamcode.Hardware.BaseSkyStoneHardware.WEB_CAM_NAME;
