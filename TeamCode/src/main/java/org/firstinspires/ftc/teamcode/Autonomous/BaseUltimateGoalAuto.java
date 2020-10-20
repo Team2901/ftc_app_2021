@@ -55,6 +55,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
                 telemetry.update();
             }
         }
+        robot.webCamera.deactivateTfod();
         return stackID;
     }
 
