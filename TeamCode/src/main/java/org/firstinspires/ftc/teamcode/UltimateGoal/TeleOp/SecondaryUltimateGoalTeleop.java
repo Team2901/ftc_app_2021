@@ -1,0 +1,89 @@
+package org.firstinspires.ftc.teamcode.UltimateGoal.TeleOp;
+
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous.BaseUltimateGoalAuto;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
+
+@TeleOp(name = "CustomUltimateGoalTeleOp")
+public class SecondaryUltimateGoalTeleop extends OpMode {
+    public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    public BaseUltimateGoalAuto auto = new BaseUltimateGoalAuto();
+    //variables for use in PID loop
+    float angleAfterTurn = robot.getAngle();
+    double angleCorrection = 0.0;
+    int driveChoice = 0;
+
+    @Override
+    public void init() {
+        robot.init(this.hardwareMap);
+    }
+
+    @Override
+    public void loop() {
+        telemetry.addData("Enter Mode", "A for H-Drive and B for Tank Drive");
+
+        if(gamepad1.a) {
+            driveChoice = 1;
+        }
+        if(gamepad1.b) {
+            driveChoice = 2;
+        }
+
+        if(driveChoice == 1) {
+            hLoop();
+            telemetry.addData("Active Mode", "H-Drive");
+        }
+        if(driveChoice == 2) {
+            telemetry.addData("Active Mode", "Tank Drive");
+        }
+
+        telemetry.update();
+    }
+
+    public void hLoop() {
+        // Declare variables that will be used later in this method.
+        float rightStickX = gamepad1.right_stick_x;
+        float rightStickY = -1 * gamepad1.right_stick_y;
+        float leftStickX = gamepad1.left_stick_x;
+        float leftStickY = -1 * gamepad1.left_stick_y;
+        double rightStickAngle = AngleUnit.DEGREES.fromRadians(Math.atan2(rightStickY, rightStickX));
+        double leftMotorPower = 0;
+        double rightMotorPower = 0;
+        float robotAngle = robot.getAngle();
+        boolean isLetterOnGamepad1Pressed = gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y;
+
+        // Determine radius of right stick through Pythagorean Theorem.
+        double rightStickXSquared = Math.pow(rightStickX,2);
+        double rightStickYSquared = Math.pow(rightStickY,2);
+        double rightStickRadiusSquared = rightStickXSquared + rightStickYSquared;
+        double rightStickRadius = Math.sqrt(rightStickRadiusSquared);
+
+        if(rightStickX > 0.1 || rightStickX < -.1){
+            leftMotorPower = rightStickX;
+            rightMotorPower = -rightStickX;
+            angleAfterTurn = robotAngle;
+        } else {
+            //PID loop to keep going straight
+            angleCorrection = auto.pidTune(angleAfterTurn, robotAngle);
+            leftMotorPower = leftStickY + angleCorrection;
+            rightMotorPower = leftStickY - angleCorrection;
+            if(leftMotorPower > 1){
+                leftMotorPower = 1;
+            }
+            if(rightMotorPower > 1){
+                rightMotorPower = 1;
+            }
+        }
+
+        robot.leftMotor.setPower(leftMotorPower);
+        robot.rightMotor.setPower(rightMotorPower);
+        robot.middleMotor.setPower(leftStickX);
+    }
+
+    public void tankLoop() {
+
+    }
+}

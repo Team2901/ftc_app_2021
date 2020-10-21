@@ -150,7 +150,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.rightMotor.setPower(-angleTuning + .75);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
-            angleTuning = (robot.getAngle() - startAngle) / 100;
+            angleTuning = pidTune(startAngle, robot.getAngle());
 
             telemetry.addData("Adjusting:", angleTuning);
             telemetry.addData("stackID", starterStackResult);
@@ -168,6 +168,32 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+    }
+
+    //PID tuning to
+    public double pidTune(float startingAngle, float currentAngle){
+        double correction = pidTuneOverflow((double)startingAngle, (double)currentAngle);
+        return correction;
+    }
+
+    public double pidTune(double startingAngle, float currentAngle){
+        double correction = pidTuneOverflow((double)startingAngle, (double)currentAngle);
+        return correction;
+    }
+
+    public double pidTune(float startingAngle, double currentAngle){
+        double correction = pidTuneOverflow((double)startingAngle, (double)currentAngle);
+        return correction;
+    }
+
+    public double pidTune(double startingAngle, double currentAngle){
+        double correction = pidTuneOverflow((double)startingAngle, (double)currentAngle);
+        return correction;
+    }
+
+    public double pidTuneOverflow(double startingAngle, double currentAngle){
+        double correction = (currentAngle - startingAngle) / 100;
+        return correction;
     }
 
     public void initAndActivateWebCameraWithTensorFlow() {
