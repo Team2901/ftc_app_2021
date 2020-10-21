@@ -91,6 +91,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         int ticks = (int) (inches * FORWARD_TICKS_PER_INCH);
         double startAngle = robot.getAngle();
         double toleranceRange = 10.0;
+        double driveSpeed = 0;
 
         robot.leftMotor.setTargetPosition(robot.leftMotor.getCurrentPosition() + ticks);
         robot.rightMotor.setTargetPosition(robot.rightMotor.getCurrentPosition() + ticks);
@@ -98,38 +99,20 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.leftMotor.setPower(.75);
-        robot.rightMotor.setPower(.75);
+        robot.leftMotor.setPower(driveSpeed + .75);
+        robot.rightMotor.setPower(-driveSpeed + .75);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
-            if(robot.getAngle() < startAngle - toleranceRange) {
-                while(robot.getAngle() < startAngle - toleranceRange) {
-                    robot.rightMotor.setPower(.9);
-                    telemetry.addData("Adjusting:", "To Right");
+            driveSpeed = (robot.getAngle() - startAngle) / 100;
 
-                    telemetry.addData("stackID", starterStackResult);
-                    telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
-                    telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
-                    telemetry.update();
-                }
-                robot.rightMotor.setPower(.75);
-            } else if(robot.getAngle() > startAngle + toleranceRange) {
-                while(robot.getAngle() > startAngle + toleranceRange) {
-                    robot.leftMotor.setPower(.9);
-                    telemetry.addData("Adjusting:", "To Left");
-
-                    telemetry.addData("stackID", starterStackResult);
-                    telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
-                    telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
-                    telemetry.update();
-                }
-                robot.leftMotor.setPower(.75);
-            }
-            telemetry.addData("Adjusting:", "Straight");
+            telemetry.addData("Adjusting:", driveSpeed);
             telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
             telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
             telemetry.update();
+
+            robot.leftMotor.setPower(driveSpeed + .75);
+            robot.rightMotor.setPower(-driveSpeed + .75);
         }
 
         robot.leftMotor.setPower(0);
