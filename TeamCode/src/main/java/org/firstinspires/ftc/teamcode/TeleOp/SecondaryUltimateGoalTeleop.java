@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.UltimateGoal.TeleOp;
+package org.firstinspires.ftc.teamcode.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -12,7 +12,7 @@ public class SecondaryUltimateGoalTeleop extends OpMode {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
     public BaseUltimateGoalAuto auto = new BaseUltimateGoalAuto();
     //variables for use in PID loop
-    float angleAfterTurn = robot.getAngle();
+    //float angleAfterTurn = robot.getAngle();
     double angleCorrection = 0.0;
     int driveChoice = 0;
 
@@ -23,6 +23,7 @@ public class SecondaryUltimateGoalTeleop extends OpMode {
 
     @Override
     public void loop() {
+
         telemetry.addData("Enter Mode", "A for H-Drive and B for Tank Drive");
 
         if(gamepad1.a) {
@@ -45,6 +46,8 @@ public class SecondaryUltimateGoalTeleop extends OpMode {
     }
 
     public void hLoop() {
+        float angleAfterTurn = robot.getAngle();
+
         // Declare variables that will be used later in this method.
         float rightStickX = gamepad1.right_stick_x;
         float rightStickY = -1 * gamepad1.right_stick_y;
@@ -85,6 +88,7 @@ public class SecondaryUltimateGoalTeleop extends OpMode {
     }
 
     public void tankLoop() {
+
         // Declare variables that will be used later in this method.
         float rightStickX = gamepad1.right_stick_x;
         float rightStickY = -1 * gamepad1.right_stick_y;
