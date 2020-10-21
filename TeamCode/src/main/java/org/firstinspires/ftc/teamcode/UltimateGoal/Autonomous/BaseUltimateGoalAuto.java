@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -11,8 +12,19 @@ import java.util.List;
 import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware.ELEMENT_SINGLE;
 import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware.ELEMENT_QUAD;
 
+
 public class BaseUltimateGoalAuto extends LinearOpMode {
+    public static final double TICKS_PER_MOTOR_REV = 1140;
+    public static final double FORWARD_DRIVE_GEAR_RATIO = 2;
+    public static final double CENTER_DRIVE_GEAR_RATIO = 3;
+    public static final double FORWARD_TICKS_PER_DRIVE_REV = TICKS_PER_MOTOR_REV * FORWARD_DRIVE_GEAR_RATIO;
+    public static final double CENTER_TICKS_PER_DRIVE_REV = TICKS_PER_MOTOR_REV * CENTER_DRIVE_GEAR_RATIO;
+    public static final double WHEEL_CIRCUMFERENCE_INCHES = 4 * Math.PI;
+    public static final double FORWARD_TICKS_PER_INCH = FORWARD_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
+    public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
+
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    public int starterStackResult = -1;
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -100,6 +112,62 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         // We don't want the robot to turn anymore; therefore, we set the motors' powers to 0.
         robot.leftMotor.setPower(0);
         robot.rightMotor.setPower(0);
+    }
+
+    public void moveInchesCenter(double inches){
+        int ticks = (int) (inches * CENTER_TICKS_PER_INCH);
+
+        robot.middleMotor.setTargetPosition(robot.middleMotor.getCurrentPosition() + ticks);
+
+        robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.middleMotor.setPower(1);
+
+        while (opModeIsActive() && (robot.middleMotor.isBusy())){
+            telemetry.addData("stackID", starterStackResult);
+            telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
+            telemetry.update();
+        }
+        robot.middleMotor.setPower(0);
+
+        robot.middleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+
+    public void moveInchesForward(double inches) {
+        int ticks = (int) (inches * FORWARD_TICKS_PER_INCH);
+        double startAngle = robot.getAngle();
+        double toleranceRange = 10.0;
+        double angleTuning = 0;
+
+        robot.leftMotor.setTargetPosition(robot.leftMotor.getCurrentPosition() + ticks);
+        robot.rightMotor.setTargetPosition(robot.rightMotor.getCurrentPosition() + ticks);
+
+        robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.leftMotor.setPower(angleTuning + .75);
+        robot.rightMotor.setPower(-angleTuning + .75);
+
+        while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+            angleTuning = (robot.getAngle() - startAngle) / 100;
+
+            telemetry.addData("Adjusting:", angleTuning);
+            telemetry.addData("stackID", starterStackResult);
+            telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
+            telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
+            telemetry.update();
+
+            robot.leftMotor.setPower(angleTuning + .75);
+            robot.rightMotor.setPower(-angleTuning + .75);
+        }
+
+        robot.leftMotor.setPower(0);
+        robot.rightMotor.setPower(0);
+
+        robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
     }
 
     public void initAndActivateWebCameraWithTensorFlow() {
