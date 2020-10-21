@@ -170,7 +170,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     }
 
-    //PID tuning to
+    //PID tuning to keep straight line driving on track
     public double pidTune(float startingAngle, float currentAngle){
         double correction = pidTuneOverflow((double)startingAngle, (double)currentAngle);
         return correction;
@@ -191,6 +191,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         return correction;
     }
 
+    //a single PID overflow so that we only have to change the value in one place
     public double pidTuneOverflow(double startingAngle, double currentAngle){
         double correction = (currentAngle - startingAngle) / 100;
         return correction;
