@@ -84,6 +84,27 @@ public class SecondaryUltimateGoalTeleop extends OpMode {
     }
 
     public void tankLoop() {
+        // Declare variables that will be used later in this method.
+        float rightStickX = gamepad1.right_stick_x;
+        float rightStickY = -1 * gamepad1.right_stick_y;
+        float leftStickX = gamepad1.left_stick_x;
+        float leftStickY = -1 * gamepad1.left_stick_y;
+        double rightStickAngle = AngleUnit.DEGREES.fromRadians(Math.atan2(rightStickY, rightStickX));
+        double leftMotorPower = 0;
+        double rightMotorPower = 0;
+        float robotAngle = robot.getAngle();
+        boolean isLetterOnGamepad1Pressed = gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y;
 
+        // Determine radius of right stick through Pythagorean Theorem.
+        double rightStickXSquared = Math.pow(rightStickX,2);
+        double rightStickYSquared = Math.pow(rightStickY,2);
+        double rightStickRadiusSquared = rightStickXSquared + rightStickYSquared;
+        double rightStickRadius = Math.sqrt(rightStickRadiusSquared);
+
+        leftMotorPower = leftStickY;
+        rightMotorPower = -rightStickY;
+
+        robot.leftMotor.setPower(leftMotorPower);
+        robot.rightMotor.setPower(rightMotorPower);
     }
 }
