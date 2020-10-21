@@ -37,6 +37,7 @@ public class SecondaryUltimateGoalTeleop extends OpMode {
             telemetry.addData("Active Mode", "H-Drive");
         }
         if(driveChoice == 2) {
+            tankLoop();
             telemetry.addData("Active Mode", "Tank Drive");
         }
 
