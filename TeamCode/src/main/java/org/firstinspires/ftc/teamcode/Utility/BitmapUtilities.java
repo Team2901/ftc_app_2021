@@ -9,7 +9,7 @@ import android.graphics.Paint;
 import com.vuforia.Image;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.Autonomous.PastGames.BaseRoverRuckusAuto;
+import org.firstinspires.ftc.teamcode.RoverRuckus.Autonomous.BaseRoverRuckusAuto;
 
 import java.io.IOException;
 import java.util.List;

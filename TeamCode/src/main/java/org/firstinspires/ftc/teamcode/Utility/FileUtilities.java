@@ -6,7 +6,7 @@ import android.os.Environment;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Autonomous.PastGames.BaseRoverRuckusAuto;
+import org.firstinspires.ftc.teamcode.RoverRuckus.Autonomous.BaseRoverRuckusAuto;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

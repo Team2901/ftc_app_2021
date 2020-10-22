@@ -4,16 +4,15 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
-import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.teamcode.Hardware.BaseCamera;
+import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
 
 public class BaseUltimateGoalHardware {
-    private static final String WEB_CAM_NAME = "Webcam 1";
+    public static final String WEB_CAM_NAME = "Webcam 1";
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
     public static final String ELEMENT_QUAD = "Quad";
     public static final String ELEMENT_SINGLE = "Single";
