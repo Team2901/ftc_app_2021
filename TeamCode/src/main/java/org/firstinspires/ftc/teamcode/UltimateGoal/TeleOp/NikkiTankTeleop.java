@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.TeleOp;
+package org.firstinspires.ftc.teamcode.UltimateGoal.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -7,8 +7,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous.BaseUltimateGoalAuto;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
 
-@TeleOp(name = "TankTeleOp")
-public class TankTeleop extends OpMode {
+@TeleOp(name = "NikkiTankTeleOp")
+public class NikkiTankTeleop extends OpMode {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
     public BaseUltimateGoalAuto auto = new BaseUltimateGoalAuto();
     //variables for use in PID loop
