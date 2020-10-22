@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.firstinspires.ftc.teamcode.Shared.Hardware.ExemplaryBlinkinLED.CONFIG_TEAM_COLOR_FILENAME;
 import static org.firstinspires.ftc.teamcode.Shared.Hardware.ExemplaryBlinkinLED.LED_ERROR;
 import static org.firstinspires.ftc.teamcode.Utility.AngleUtilities.getNormalizedAngle;
 
@@ -36,7 +37,6 @@ public class BaseSkyStoneHardware {
     public static final String CONFIG_FILENAME = "servo_offset_config.txt";
     public static final String CONFIG_MIN_MAX_FILENAME = "servo_min_max_values_config.txt";
     public static final String CONFIG_POTENTIOMETER_FILENAME = "servo_potentiometer_values_config.txt";
-    public static final String CONFIG_TEAM_COLOR_FILENAME = "team_color_config.txt";
 
     public static final double BASE_POWER_RATIO = 0.025;
     public static final double STALL_POWER_RATIO = 0;
@@ -87,25 +87,20 @@ public class BaseSkyStoneHardware {
     public Servo wrist;
     public Servo leftGrabber;
     public Servo rightGrabber;
-
-    AnalogInput flPotentiometer;
-    AnalogInput frPotentiometer;
-    AnalogInput blPotentiometer;
-    AnalogInput brPotentiometer;
-
     //Sensors and Things
     public BNO055IMU imu;
     public IntegratingGyroscope gyroscope;
     public double offset = 0;
-
     public BaseCamera webCamera = new BaseCamera();
-
     public SwerveWheel frontLeftSwerveWheel = new SwerveWheel("FL");
     public SwerveWheel frontRightSwerveWheel = new SwerveWheel("FR");
     public SwerveWheel backLeftSwerveWheel = new SwerveWheel("BL");
     public SwerveWheel backRightSwerveWheel = new SwerveWheel("BR");
-
     public SwerveWheel[] swerveWheels = {frontLeftSwerveWheel, frontRightSwerveWheel, backLeftSwerveWheel, backRightSwerveWheel};
+    AnalogInput flPotentiometer;
+    AnalogInput frPotentiometer;
+    AnalogInput blPotentiometer;
+    AnalogInput brPotentiometer;
 
     public BaseSkyStoneHardware(double widthOfRobot,
                                 double lengthOfRobot,
@@ -117,94 +112,7 @@ public class BaseSkyStoneHardware {
         this.widthOfRobot = widthOfRobot;
         this.lengthOfRobot = lengthOfRobot;
         this.servoMaxAngle = servoMaxAngle;
-        this.turnAngle = Math.atan(widthOfRobot/lengthOfRobot);
-    }
-
-    public class SwerveWheel {
-
-        public List<Double> configValues = new ArrayList<>();
-
-        public String name;
-        public Servo servo;
-        public DcMotor motor;
-        public AnalogInput potentiometer;
-        public Double potentiometerTarget;
-
-        public double hardMinWheelPositionRelToZero = 0;
-        public double hardMaxWheelPositionRelToZero = 0;
-        public double targetAngle = 0;
-        public int modifier = 1;
-        public double offset = 0;
-        public double minWheelAngle=0;
-        public double maxWheelAngle = 0;
-
-        public double hardMinWheelAngle = 0;
-        public double hardMaxWheelAngle = 0;
-
-        public SwerveWheel (String name) {
-            this.name = name;
-        }
-
-        public SwerveWheel(String name, double hardMinWheelPositionRelToZero, double hardMaxWheelPositionRelToZero) {
-            this.name = name;
-            this.hardMinWheelPositionRelToZero = hardMinWheelPositionRelToZero;
-            this.hardMaxWheelPositionRelToZero = hardMaxWheelPositionRelToZero;
-
-            for (int i = 0; i < 3; i++) {
-                configValues.add(0.0);
-            }
-        }
-
-        public void setOffset(double offset) {
-            this.offset = offset;
-            minWheelAngle = servoPositionToWheelAngle(0);
-            maxWheelAngle = servoPositionToWheelAngle(1);
-
-            hardMinWheelAngle = servoPositionToWheelAngle(offset + hardMinWheelPositionRelToZero);
-            hardMaxWheelAngle = servoPositionToWheelAngle(offset + hardMaxWheelPositionRelToZero);
-        }
-
-        public void setTargetAndModifier(double targetAngle, int modifier) {
-            this.targetAngle = targetAngle;
-            this.modifier = modifier;
-        }
-
-        public void setTargetAndModifier(double[] targetAngleAndModifier) {
-            this.targetAngle = targetAngleAndModifier[0];
-            this.modifier = (int) targetAngleAndModifier[1];
-        }
-
-        public double wheelAngleToServoPosition(double wheelAngle) {
-            /*
-            y=mx+b
-            ServoPosition = [gearRatio*wheelAngle]/ServoMaxAngle] + offset
-            wheelAngle is x
-            */
-            double servoAngle = wheelAngleToServoAngle(wheelAngle);
-            return servoAngleToServoPosition(servoAngle);
-        }
-
-        public double wheelAngleToServoPosition() {
-            return wheelAngleToServoPosition(targetAngle);
-        }
-
-        public double wheelAngleToServoAngle(double wheelAngle) {
-            return wheelAngle / wheelServoGearRatio;
-        }
-
-        public double servoAngleToServoPosition(double servoAngle) {
-            return (servoAngle / servoMaxAngle) + offset;
-        }
-
-        public double servoPositionToWheelAngle(double servoPosition){
-            return (wheelServoGearRatio*servoMaxAngle)*(servoPosition-offset);
-
-        }
-
-        @Override
-        public String toString() {
-            return String.format("%s angle: %.2f, mod: %d, pos: %.2f, offset: %.2f encoder: %d", name, targetAngle, modifier, wheelAngleToServoPosition(), offset, motor.getCurrentPosition());
-        }
+        this.turnAngle = Math.atan(widthOfRobot / lengthOfRobot);
     }
 
     public void init(HardwareMap hwMap) {
@@ -294,28 +202,28 @@ public class BaseSkyStoneHardware {
         return webCamera.initWebCamera(hardwareMap, WEB_CAM_NAME);
     }
 
-    public String initTfod(){
+    public String initTfod() {
         return webCamera.initTfod(.8, TFOD_MODEL_ASSET, LABEL_BUTTER, LABEL_SKY_BUTTER);
     }
 
-    public void initBlinkinLED(HardwareMap hardwareMap){
-        blinkinLED.init(hardwareMap,"LED");
+    public void initBlinkinLED(HardwareMap hardwareMap) {
+        blinkinLED.init(hardwareMap, "LED");
         blinkinLED.color = this.readTeamColor();
     }
 
-    public String writeTeamColor(){
-        try{
+    public String writeTeamColor() {
+        try {
             FileUtilities.writeConfigFile(CONFIG_TEAM_COLOR_FILENAME, this.blinkinLED.color);
-        } catch (Exception e){
+        } catch (Exception e) {
             return String.format("Error writing to file. %s", e.getMessage());
         }
         return null;
     }
 
-    public int readTeamColor(){
+    public int readTeamColor() {
         try {
             return FileUtilities.readTeamColor(CONFIG_TEAM_COLOR_FILENAME);
-        } catch (Exception e){
+        } catch (Exception e) {
             return LED_ERROR;
         }
     }
@@ -474,7 +382,7 @@ public class BaseSkyStoneHardware {
         frontRight.setMode(runMode);
     }
 
-    public void setGrabberPositition (double leftGrabberPos, double rightGrabberPos){
+    public void setGrabberPositition(double leftGrabberPos, double rightGrabberPos) {
         leftGrabber.setPosition(leftGrabberPos);
         rightGrabber.setPosition(rightGrabberPos);
     }
@@ -492,7 +400,7 @@ public class BaseSkyStoneHardware {
     }
 
     public boolean isOkayToOpen() {
-        if(crane.getPosition()> .3) {
+        if (crane.getPosition() > .3) {
             if (lift.getCurrentPosition() == 0) {
                 if (wrist.getPosition() > .25) {
                     return false;
@@ -505,7 +413,7 @@ public class BaseSkyStoneHardware {
         return true;
     }
 
-    public void moveStraight (double setPower, int targetPosition){
+    public void moveStraight(double setPower, int targetPosition) {
 
         frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -528,14 +436,13 @@ public class BaseSkyStoneHardware {
         //call whileMotorisBusy
 
 
-
     }
 
-    public void setWheelTargetPositions(int position){
-        frontLeft.setTargetPosition(position* frontLeftSwerveWheel.modifier);
-        frontRight.setTargetPosition(position* frontRightSwerveWheel.modifier);
-        backLeft.setTargetPosition(position* backLeftSwerveWheel.modifier);
-        backRight.setTargetPosition(position* backRightSwerveWheel.modifier);
+    public void setWheelTargetPositions(int position) {
+        frontLeft.setTargetPosition(position * frontLeftSwerveWheel.modifier);
+        frontRight.setTargetPosition(position * frontRightSwerveWheel.modifier);
+        backLeft.setTargetPosition(position * backLeftSwerveWheel.modifier);
+        backRight.setTargetPosition(position * backRightSwerveWheel.modifier);
     }
 
     public void angleCheck(double goal, BaseSkyStoneHardware.SwerveWheel swerveWheel) {
@@ -730,6 +637,93 @@ public class BaseSkyStoneHardware {
         double stallPower = STALL_POWER_RATIO * Math.signum(remainingDistance);
 
         return -Range.clip(basePower + stallPower, -Math.abs(maxPower), Math.abs(maxPower));
+    }
+
+    public class SwerveWheel {
+
+        public List<Double> configValues = new ArrayList<>();
+
+        public String name;
+        public Servo servo;
+        public DcMotor motor;
+        public AnalogInput potentiometer;
+        public Double potentiometerTarget;
+
+        public double hardMinWheelPositionRelToZero = 0;
+        public double hardMaxWheelPositionRelToZero = 0;
+        public double targetAngle = 0;
+        public int modifier = 1;
+        public double offset = 0;
+        public double minWheelAngle = 0;
+        public double maxWheelAngle = 0;
+
+        public double hardMinWheelAngle = 0;
+        public double hardMaxWheelAngle = 0;
+
+        public SwerveWheel(String name) {
+            this.name = name;
+        }
+
+        public SwerveWheel(String name, double hardMinWheelPositionRelToZero, double hardMaxWheelPositionRelToZero) {
+            this.name = name;
+            this.hardMinWheelPositionRelToZero = hardMinWheelPositionRelToZero;
+            this.hardMaxWheelPositionRelToZero = hardMaxWheelPositionRelToZero;
+
+            for (int i = 0; i < 3; i++) {
+                configValues.add(0.0);
+            }
+        }
+
+        public void setOffset(double offset) {
+            this.offset = offset;
+            minWheelAngle = servoPositionToWheelAngle(0);
+            maxWheelAngle = servoPositionToWheelAngle(1);
+
+            hardMinWheelAngle = servoPositionToWheelAngle(offset + hardMinWheelPositionRelToZero);
+            hardMaxWheelAngle = servoPositionToWheelAngle(offset + hardMaxWheelPositionRelToZero);
+        }
+
+        public void setTargetAndModifier(double targetAngle, int modifier) {
+            this.targetAngle = targetAngle;
+            this.modifier = modifier;
+        }
+
+        public void setTargetAndModifier(double[] targetAngleAndModifier) {
+            this.targetAngle = targetAngleAndModifier[0];
+            this.modifier = (int) targetAngleAndModifier[1];
+        }
+
+        public double wheelAngleToServoPosition(double wheelAngle) {
+            /*
+            y=mx+b
+            ServoPosition = [gearRatio*wheelAngle]/ServoMaxAngle] + offset
+            wheelAngle is x
+            */
+            double servoAngle = wheelAngleToServoAngle(wheelAngle);
+            return servoAngleToServoPosition(servoAngle);
+        }
+
+        public double wheelAngleToServoPosition() {
+            return wheelAngleToServoPosition(targetAngle);
+        }
+
+        public double wheelAngleToServoAngle(double wheelAngle) {
+            return wheelAngle / wheelServoGearRatio;
+        }
+
+        public double servoAngleToServoPosition(double servoAngle) {
+            return (servoAngle / servoMaxAngle) + offset;
+        }
+
+        public double servoPositionToWheelAngle(double servoPosition) {
+            return (wheelServoGearRatio * servoMaxAngle) * (servoPosition - offset);
+
+        }
+
+        @Override
+        public String toString() {
+            return String.format("%s angle: %.2f, mod: %d, pos: %.2f, offset: %.2f encoder: %d", name, targetAngle, modifier, wheelAngleToServoPosition(), offset, motor.getCurrentPosition());
+        }
     }
 }
 

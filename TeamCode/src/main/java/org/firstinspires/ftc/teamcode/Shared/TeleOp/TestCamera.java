@@ -8,16 +8,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
 
 @Disabled
-@TeleOp(name = "Camera Test", group = "TEST")
+@TeleOp(name = "Camera Test", group = "Shared Test")
 public class TestCamera extends OpMode {
-
-    public ElapsedTime timer = new ElapsedTime();
-
-    public BaseCamera tensorFlowCamera = new BaseCamera();
 
     private static final String TFOD_MODEL_ASSET = "RoverRuckus.tflite";
     private static final String LABEL_GOLD_MINERAL = "Gold Mineral";
     private static final String LABEL_SILVER_MINERAL = "Silver Mineral";
+    public ElapsedTime timer = new ElapsedTime();
+    public BaseCamera tensorFlowCamera = new BaseCamera();
 
     @Override
     public void init() {

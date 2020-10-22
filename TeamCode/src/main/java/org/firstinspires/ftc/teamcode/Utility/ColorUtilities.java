@@ -4,9 +4,6 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
-import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 public class ColorUtilities {
     //TODO create constants for the saturation and light value thresholds and for the RED hue
@@ -51,22 +48,22 @@ public class ColorUtilities {
 
     /**
      * create a Hue distribution for the image passed in.
-     *
+     * <p>
      * Any color with a saturation less than 70%
      * is considered to be in the center white-gray-black cylinder. If the light value is greater
      * then 80% then the colour is considered to be white and is counted as RED Hue. If any other gray
      * scale value, its not counted at all.
-     *
+     * <p>
      * Any Color with a saturation greater than or equal to 70% is counted in its associated
      * hue entry.
-     *
+     * <p>
      * Hue values are integer values ranging from 0 to 360
      *
      * @param bitmap bitmap to compute hue distribution over
      * @param opMode opMode used to work around stuckInStop bug
      * @return An array of 360 hue counts
      * @throws InterruptedException thrown if stuckInStop is encountered because excessive time
-     * has been spent processing the image
+     *                              has been spent processing the image
      */
     public static int[] getHueDistribution(Bitmap bitmap, LinearOpMode opMode) throws InterruptedException {
         int[] colorCounts = new int[361];

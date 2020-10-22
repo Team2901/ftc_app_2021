@@ -7,11 +7,10 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.SkyStone.Hardware.CompetitionSkystoneHardware;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.ExemplaryBlinkinLED;
+import org.firstinspires.ftc.teamcode.SkyStone.Hardware.CompetitionSkystoneHardware;
 import org.firstinspires.ftc.teamcode.Utility.AngleUtilities;
 
 import java.util.List;
@@ -28,7 +27,7 @@ public abstract class BaseSkyStoneAuto extends LinearOpMode {
     public CompetitionSkystoneHardware robot = new CompetitionSkystoneHardware();
 
     public void turnTo(double angle) {
-        turnTo(angle, .5, 0 , 0);
+        turnTo(angle, .5, 0, 0);
     }
 
     public void turnTo(double angle, double power) {
@@ -140,7 +139,7 @@ public abstract class BaseSkyStoneAuto extends LinearOpMode {
         //Prequel Step 1 clear wall by 2 inches, center on waffle
 
         moveInchesAbsolute(0, SAFE_WALL_DISTANCE_INCHES, .5);
-        moveInchesAbsolute(colorAngle,12, .5);
+        moveInchesAbsolute(colorAngle, 12, .5);
 
         //Step one: turn wheels 90 degrees counterclockwise and go forward 28.5 inches and lower grabbers.
         moveInchesAbsolute(colorAngle, 26.5, 0.5);
@@ -221,47 +220,47 @@ public abstract class BaseSkyStoneAuto extends LinearOpMode {
     }
 
     public void scanForSkystone(double towardsQuarryAngle) {
-            //robot.crane.setPosition(1);
-            //robot.wrist.setPosition(.5);
-            // Save the robot's current position prior to search for a skystone
-            robot.setWheelMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-            robot.setWheelMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        //robot.crane.setPosition(1);
+        //robot.wrist.setPosition(.5);
+        // Save the robot's current position prior to search for a skystone
+        robot.setWheelMotorMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.setWheelMotorMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            // Step 1) Move forwards/backwards until a skystone location is within 10% of the center of the camera's view
-            Float skyStoneCenterPercentDiff = findSkyStone();
-            Float skyStoneOffsetPercentDiff = skyStoneCenterPercentDiff == null ? null : skyStoneCenterPercentDiff + 45;
+        // Step 1) Move forwards/backwards until a skystone location is within 10% of the center of the camera's view
+        Float skyStoneCenterPercentDiff = findSkyStone();
+        Float skyStoneOffsetPercentDiff = skyStoneCenterPercentDiff == null ? null : skyStoneCenterPercentDiff + 45;
 
-            while (skyStoneOffsetPercentDiff == null /* don't see skystone yet */
-                    || Math.abs(skyStoneOffsetPercentDiff) > CONFIDENCE_PERCENTAGE /* overshot or undershot */) {
-                telemetry.addData("loop is running", "");
-                telemetry.addData("percent dif.", skyStoneCenterPercentDiff);
-                telemetry.addData("percent offset", skyStoneOffsetPercentDiff);
-                telemetry.update();
-
-                if (skyStoneOffsetPercentDiff == null) {
-                    // If we don't see a skystone: Move forwards
-                    robot.swerveStraightAbsolute(towardsQuarryAngle, 0.2);
-                } else if (skyStoneOffsetPercentDiff < 0) {
-                    // If the skystone is to the left: Move backwards
-                    robot.swerveStraightAbsolute(towardsQuarryAngle, 0.3);
-                } else {
-                    // If the skystone is to the right: Move forwards
-                    robot.swerveStraightAbsolute(towardsQuarryAngle, -0.3);
-                }
-
-                // Update the skystone location
-                skyStoneCenterPercentDiff = findSkyStone();
-                skyStoneOffsetPercentDiff = skyStoneCenterPercentDiff == null ? null : skyStoneCenterPercentDiff + 45;
-            }
-
-            robot.swerveStraightAbsolute(0, 0);
-
-            turnTo(0, .5, 5, 1000);
-
-            telemetry.addData("out of loop", "");
+        while (skyStoneOffsetPercentDiff == null /* don't see skystone yet */
+                || Math.abs(skyStoneOffsetPercentDiff) > CONFIDENCE_PERCENTAGE /* overshot or undershot */) {
+            telemetry.addData("loop is running", "");
             telemetry.addData("percent dif.", skyStoneCenterPercentDiff);
             telemetry.addData("percent offset", skyStoneOffsetPercentDiff);
             telemetry.update();
+
+            if (skyStoneOffsetPercentDiff == null) {
+                // If we don't see a skystone: Move forwards
+                robot.swerveStraightAbsolute(towardsQuarryAngle, 0.2);
+            } else if (skyStoneOffsetPercentDiff < 0) {
+                // If the skystone is to the left: Move backwards
+                robot.swerveStraightAbsolute(towardsQuarryAngle, 0.3);
+            } else {
+                // If the skystone is to the right: Move forwards
+                robot.swerveStraightAbsolute(towardsQuarryAngle, -0.3);
+            }
+
+            // Update the skystone location
+            skyStoneCenterPercentDiff = findSkyStone();
+            skyStoneOffsetPercentDiff = skyStoneCenterPercentDiff == null ? null : skyStoneCenterPercentDiff + 45;
+        }
+
+        robot.swerveStraightAbsolute(0, 0);
+
+        turnTo(0, .5, 5, 1000);
+
+        telemetry.addData("out of loop", "");
+        telemetry.addData("percent dif.", skyStoneCenterPercentDiff);
+        telemetry.addData("percent offset", skyStoneOffsetPercentDiff);
+        telemetry.update();
     }
 
     public void quarrySkyStoneParkBridge(boolean isRed, boolean scanForSkystone, boolean placeStoneOnWaffle) {
@@ -282,8 +281,8 @@ public abstract class BaseSkyStoneAuto extends LinearOpMode {
 
         this.moveInchesAbsolute(0, 5, .2);
 
-        double towardsQuarryAngle = isRed? 90 : -90;
-        double towardsFoundationAngle = isRed? -90 : 90;
+        double towardsQuarryAngle = isRed ? 90 : -90;
+        double towardsFoundationAngle = isRed ? -90 : 90;
 
         robot.swerveStraightAbsolute(towardsQuarryAngle, 0);
 
@@ -362,7 +361,7 @@ public abstract class BaseSkyStoneAuto extends LinearOpMode {
             initAndActivateWebCameraWithTensorFlow();
         }
 
-        if(initRobot){
+        if (initRobot) {
             robot.init(hardwareMap);
 
             if (setLiftServos) {
@@ -376,7 +375,7 @@ public abstract class BaseSkyStoneAuto extends LinearOpMode {
             }
         }
 
-        if(initBlinkinLED){
+        if (initBlinkinLED) {
             robot.initBlinkinLED(hardwareMap);
         }
 
@@ -391,14 +390,14 @@ public abstract class BaseSkyStoneAuto extends LinearOpMode {
         telemetry.update();
     }
 
-    public void park(int forwardInches, double directionAngle){
+    public void park(int forwardInches, double directionAngle) {
         this.moveInchesAbsolute(0.0, forwardInches, .2);
 
         robot.wait(1000, this);
         robot.swerveStraight(directionAngle, 0);
 
         robot.wait(1000, this);
-        this.moveInchesAbsolute(directionAngle,24, .2);
+        this.moveInchesAbsolute(directionAngle, 24, .2);
     }
 }
 

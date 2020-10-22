@@ -11,13 +11,13 @@ import org.firstinspires.ftc.teamcode.Shared.Hardware.FlagBotHardware;
  */
 
 @Disabled
-@TeleOp(name = "Flagbot", group = "TeleOp")
+@TeleOp(name = "Flagbot", group = "Shared")
 public class FlagBotTeleOp extends OpMode {
 
     final double CLAW_SPEED = 0.05;
+    final FlagBotHardware robot = new FlagBotHardware();
     double clawOffset = 0.0;
     boolean turbo = false;
-    final FlagBotHardware robot = new FlagBotHardware();
 
     @Override
     public void init() {
@@ -27,7 +27,7 @@ public class FlagBotTeleOp extends OpMode {
     @Override
     public void loop() {
 
-        if(gamepad1.right_trigger > .1) {
+        if (gamepad1.right_trigger > .1) {
             turbo = !turbo;
         }
 

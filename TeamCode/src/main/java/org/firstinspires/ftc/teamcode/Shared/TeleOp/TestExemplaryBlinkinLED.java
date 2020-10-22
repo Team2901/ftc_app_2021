@@ -50,7 +50,7 @@ import java.util.concurrent.TimeUnit;
  * Displays the first pattern upon init.
  */
 @Disabled
-@TeleOp(name="TestExemplaryLEDBlinkin")
+@TeleOp(name = "TestExemplaryLEDBlinkin", group = "Shared Test")
 public class TestExemplaryBlinkinLED extends OpMode {
 
     /*
@@ -72,18 +72,12 @@ public class TestExemplaryBlinkinLED extends OpMode {
     Deadline ledCycleDeadline;
     Deadline gamepadRateLimit;
 
-    protected enum DisplayKind {
-        MANUAL,
-        AUTO
-    }
-
     @Override
-    public void init()
-    {
+    public void init() {
         displayKind = DisplayKind.AUTO;
 
         exemplaryBlinkinLED = new ExemplaryBlinkinLED();
-        exemplaryBlinkinLED.init(hardwareMap,"LED");
+        exemplaryBlinkinLED.init(hardwareMap, "LED");
         exemplaryBlinkinLED.setTeamPattern(ExemplaryBlinkinLED.TeamColorPattern.SOLID);
 
         teamColorPattern = ExemplaryBlinkinLED.TeamColorPattern.END_TO_END_BLEND_TO_BLACK;
@@ -97,8 +91,7 @@ public class TestExemplaryBlinkinLED extends OpMode {
     }
 
     @Override
-    public void loop()
-    {
+    public void loop() {
         handleGamepad();
 
         if (displayKind == DisplayKind.AUTO) {
@@ -121,8 +114,7 @@ public class TestExemplaryBlinkinLED extends OpMode {
      * A: Manual mode, Right bumper displays the next pattern, left bumper displays the previous pattern.
      * B: Auto mode, pattern cycles, changing every LED_PERIOD seconds.
      */
-    protected void handleGamepad()
-    {
+    protected void handleGamepad() {
         if (!gamepadRateLimit.hasExpired()) {
             return;
         }
@@ -144,14 +136,12 @@ public class TestExemplaryBlinkinLED extends OpMode {
         }
     }
 
-    protected void setDisplayKind(DisplayKind displayKind)
-    {
+    protected void setDisplayKind(DisplayKind displayKind) {
         this.displayKind = displayKind;
         display.setValue(displayKind.toString());
     }
 
-    protected void doAutoDisplay()
-    {
+    protected void doAutoDisplay() {
         if (ledCycleDeadline.hasExpired()) {
             teamColorPattern = teamColorPattern.next();
             displayPattern();
@@ -159,9 +149,13 @@ public class TestExemplaryBlinkinLED extends OpMode {
         }
     }
 
-    protected void displayPattern()
-    {
+    protected void displayPattern() {
         exemplaryBlinkinLED.setTeamPattern(teamColorPattern);
         patternName.setValue(teamColorPattern.toString());
+    }
+
+    protected enum DisplayKind {
+        MANUAL,
+        AUTO
     }
 }

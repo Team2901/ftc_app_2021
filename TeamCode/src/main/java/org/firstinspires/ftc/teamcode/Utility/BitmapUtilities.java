@@ -23,30 +23,24 @@ public class BitmapUtilities {
                                                                       int[] rightHueTotal) {
         BaseRoverRuckusAuto.GoldPosition winner = BaseRoverRuckusAuto.GoldPosition.MIDDLE;
         int leftColor, middleColor, rightColor;
-        if(leftHueTotal[0]/*yellow counts*/ > leftHueTotal[1]/*white counts*/)
-        {
+        if (leftHueTotal[0]/*yellow counts*/ > leftHueTotal[1]/*white counts*/) {
             leftColor = Color.YELLOW;
             winner = BaseRoverRuckusAuto.GoldPosition.LEFT;
-        }
-        else {
-            leftColor= Color.WHITE;
+        } else {
+            leftColor = Color.WHITE;
         }
 
-        if(middleHueTotal[0]/*yellow counts*/ > middleHueTotal[1]/*white counts*/)
-        {
+        if (middleHueTotal[0]/*yellow counts*/ > middleHueTotal[1]/*white counts*/) {
             middleColor = Color.YELLOW;
             winner = BaseRoverRuckusAuto.GoldPosition.MIDDLE;
+        } else {
+            middleColor = Color.WHITE;
         }
-        else {
-            middleColor= Color.WHITE;
-        }
-        if(rightHueTotal[0]/*yellow counts*/ > rightHueTotal[1]/*white counts*/)
-        {
+        if (rightHueTotal[0]/*yellow counts*/ > rightHueTotal[1]/*white counts*/) {
             rightColor = Color.YELLOW;
             winner = BaseRoverRuckusAuto.GoldPosition.RIGHT;
-        }
-        else {
-            rightColor= Color.WHITE;
+        } else {
+            rightColor = Color.WHITE;
         }
 
         return winner;
@@ -58,64 +52,43 @@ public class BitmapUtilities {
         int middleColor, rightColor;
 
 
-        if(middleHueTotal[0]/*yellow counts*/ > middleHueTotal[1]/*white counts*/)
-        {
+        if (middleHueTotal[0]/*yellow counts*/ > middleHueTotal[1]/*white counts*/) {
             middleColor = Color.YELLOW;
             winner = BaseRoverRuckusAuto.GoldPosition.MIDDLE;
+        } else {
+            middleColor = Color.WHITE;
         }
-        else {
-            middleColor= Color.WHITE;
-        }
-        if(rightHueTotal[0]/*yellow counts*/ > rightHueTotal[1]/*white counts*/)
-        {
+        if (rightHueTotal[0]/*yellow counts*/ > rightHueTotal[1]/*white counts*/) {
             rightColor = Color.YELLOW;
             winner = BaseRoverRuckusAuto.GoldPosition.RIGHT;
-        }
-        else {
-            rightColor= Color.WHITE;
+        } else {
+            rightColor = Color.WHITE;
         }
         return winner;
     }
 
-    public static BaseRoverRuckusAuto.GoldPosition findCorrectGoldLocation (int[] middleHueTotal,
-                                                                      int[] rightHueTotal) {
+    public static BaseRoverRuckusAuto.GoldPosition findCorrectGoldLocation(int[] middleHueTotal,
+                                                                           int[] rightHueTotal) {
         BaseRoverRuckusAuto.GoldPosition winner = BaseRoverRuckusAuto.GoldPosition.LEFT;
         int middleColor, rightColor;
 
 
-        if(middleHueTotal[0]/*yellow counts*/ > 0)
-        {
+        if (middleHueTotal[0]/*yellow counts*/ > 0) {
             middleColor = Color.YELLOW;
             winner = BaseRoverRuckusAuto.GoldPosition.MIDDLE;
+        } else {
+            middleColor = Color.WHITE;
         }
-        else {
-            middleColor= Color.WHITE;
-        }
-        if(rightHueTotal[0]/*yellow counts*/ > 0)
-        {
+        if (rightHueTotal[0]/*yellow counts*/ > 0) {
             rightColor = Color.YELLOW;
             winner = BaseRoverRuckusAuto.GoldPosition.RIGHT;
-        }
-        else {
-            rightColor= Color.WHITE;
+        } else {
+            rightColor = Color.WHITE;
         }
         return winner;
     }
 
-    BaseRoverRuckusAuto.GoldPosition findGoldPosition(int leftHueTotal,
-                                                      int middleHueTotal,
-                                                      int rightHueTotal) {
-        //TODO
-        return null;
-    }
-
-    BaseRoverRuckusAuto.GoldPosition findGoldPosition(int middleHueTotal,
-                                                      int rightHueTotal) {
-        //TODO
-        return null;
-    }
-
-    public static Bitmap getBabyBitmap(Bitmap bitmap,List<Integer> config) {
+    public static Bitmap getBabyBitmap(Bitmap bitmap, List<Integer> config) {
         return getBabyBitmap(bitmap, config.get(0), config.get(1), config.get(2), config.get(3));
     }
 
@@ -131,7 +104,6 @@ public class BitmapUtilities {
 
         return Bitmap.createBitmap(bitmap, startXPx, startYPx, width, height);
     }
-
 
     public static Bitmap drawSamplingBox(String filename, Bitmap bitmap,
                                          int sampleLeftXPct, int sampleTopYPct,
@@ -171,6 +143,19 @@ public class BitmapUtilities {
                 return null;
             }
         }
+        return null;
+    }
+
+    BaseRoverRuckusAuto.GoldPosition findGoldPosition(int leftHueTotal,
+                                                      int middleHueTotal,
+                                                      int rightHueTotal) {
+        //TODO
+        return null;
+    }
+
+    BaseRoverRuckusAuto.GoldPosition findGoldPosition(int middleHueTotal,
+                                                      int rightHueTotal) {
+        //TODO
         return null;
     }
 }

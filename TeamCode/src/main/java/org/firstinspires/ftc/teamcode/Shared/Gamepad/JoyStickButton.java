@@ -30,14 +30,14 @@ public class JoyStickButton extends FloatButton {
         this.rawAngle = (float) AngleUtilities.getAngle(y.getRawValue(), -x.getRawValue());
 
         if (this.isPressed()) {
-         this.angle = rawAngle;
+            this.angle = rawAngle;
         } else {
             // Retain last pressed angle
         }
     }
 
     public float getRawAngle() {
-     return rawAngle;
+        return rawAngle;
     }
 
     public float getAngel() {

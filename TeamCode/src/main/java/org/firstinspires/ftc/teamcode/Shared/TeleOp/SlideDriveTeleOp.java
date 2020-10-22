@@ -1,24 +1,23 @@
-package org.firstinspires.ftc.teamcode.BaseSampleCode;
+package org.firstinspires.ftc.teamcode.Shared.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Shared.Hardware.SlideDriveHardware;
+
 /**
  * Created by Kearneyg20428 on 2/7/2017.
  */
 @Disabled
-@TeleOp(name="SlideDriveTeleOp", group="TeleOp")
+@TeleOp(name = "Slide Drive", group = "Shared")
 public class SlideDriveTeleOp extends OpMode {
 
-
-    SlideDrive robot = new SlideDrive();
+    SlideDriveHardware robot = new SlideDriveHardware();
 
     @Override
     public void init() {
-
         robot.init(hardwareMap);
-
     }
 
     @Override
@@ -34,6 +33,4 @@ public class SlideDriveTeleOp extends OpMode {
         robot.centerMotor.setPower(xJoystick);
 
     }
-
-
 }

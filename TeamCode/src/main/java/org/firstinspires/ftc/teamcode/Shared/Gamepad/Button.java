@@ -7,12 +7,10 @@ public abstract class Button<T> {
     protected T rawValue;
 
     protected Boolean pressed = null;
-
-    private int pressedCounts = 0;
-    private int releaseCounts = 0;
-
     protected Double lastUpdateTime;
     protected Double lastChangeTime = null;
+    private int pressedCounts = 0;
+    private int releaseCounts = 0;
 
     public Button(final String name) {
         this.name = name;
@@ -41,6 +39,7 @@ public abstract class Button<T> {
 
     /**
      * Get the button's name
+     *
      * @return the button's name
      */
     public String getName() {
@@ -49,6 +48,7 @@ public abstract class Button<T> {
 
     /**
      * Get the timestamp at which the button's state was last updated
+     *
      * @return the timestamp at which the button's state was last updated
      */
     public Double getLastUpdateTime() {
@@ -57,6 +57,7 @@ public abstract class Button<T> {
 
     /**
      * Get the timestamp at which the button last transitioned states
+     *
      * @return the timestamp at which the button last transitioned states
      */
     public Double getLastChangeTime() {
@@ -65,6 +66,7 @@ public abstract class Button<T> {
 
     /**
      * Get if the button is in the pressed state
+     *
      * @return true if the button is in the pressed state
      */
     public boolean isPressed() {
@@ -73,6 +75,7 @@ public abstract class Button<T> {
 
     /**
      * Get if the button is in the released state
+     *
      * @return true if the button is in the released state (unpressed)
      */
     public boolean isReleased() {
@@ -81,6 +84,7 @@ public abstract class Button<T> {
 
     /**
      * Get the length of time that the button has been in its current pressed/released state
+     *
      * @return the length of time that the button has been in its current pressed/released state
      */
     public double getValueElapseTime() {
@@ -89,6 +93,7 @@ public abstract class Button<T> {
 
     /**
      * Returns if the button is transitioning from one state to another
+     *
      * @return true if the button is transitioning from one state to another
      */
     public boolean isInitialValueChange() {
@@ -97,6 +102,7 @@ public abstract class Button<T> {
 
     /**
      * Returns if the button is transitioning from the released to pressed state
+     *
      * @return true if the button is transitioning from the released to pressed state
      */
     public boolean isInitialPress() {
@@ -105,6 +111,7 @@ public abstract class Button<T> {
 
     /**
      * Returns if the button is transitioning from the released to pressed state
+     *
      * @return true if the button is transitioning from the pressed to released state
      */
     public boolean isInitialRelease() {
@@ -113,6 +120,7 @@ public abstract class Button<T> {
 
     /**
      * Get the amount of time that the button has been in the pressed state
+     *
      * @return the amount of time that the button has been in the pressed state
      */
     public double getPressedElapseTime() {
@@ -121,6 +129,7 @@ public abstract class Button<T> {
 
     /**
      * Get the amount of time that the button has been in the released state
+     *
      * @return the amount of time that the button has been in the released state
      */
     public double getReleaseElapseTime() {
@@ -129,6 +138,7 @@ public abstract class Button<T> {
 
     /**
      * Get the number of times the button has transitioned from the released to pressed state
+     *
      * @return number of times the button has transitioned from the released to pressed state
      */
     public int getPressedCounts() {
@@ -137,6 +147,7 @@ public abstract class Button<T> {
 
     /**
      * Get the number of times the button has transitioned from the pressed to released state
+     *
      * @return number of times the button has transitioned from the pressed to released state
      */
     public int getReleaseCounts() {
@@ -145,6 +156,7 @@ public abstract class Button<T> {
 
     /**
      * The raw value of the button. Ignores any deadzones
+     *
      * @return The raw value of the button. Ignores any deadzones
      */
     public T getRawValue() {
@@ -153,12 +165,14 @@ public abstract class Button<T> {
 
     /**
      * The value of the button, adjusted from any deadzones
+     *
      * @return The value of the button, adjusted from any deadzones
      */
     public abstract T getValue();
 
     /**
      * Get if the given rawValue is in the pressed state
+     *
      * @param rawValue the button's raw value
      * @return true if rawValue is in the pressed state
      */

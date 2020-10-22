@@ -44,12 +44,12 @@ public class RoverRuckusUtilities {
                                          LinearOpMode opMode,
                                          boolean writeFiles) throws RuntimeException, InterruptedException {
         try {
-                final String configFilename = String.format(JEWEL_CONFIG_FILE_FORMAT, name);
-                final List<Integer> config = FileUtilities.readIntegerConfigFile(configFilename);
-                final Bitmap babyBitmap = BitmapUtilities.getBabyBitmap(bitmap, config);
+            final String configFilename = String.format(JEWEL_CONFIG_FILE_FORMAT, name);
+            final List<Integer> config = FileUtilities.readIntegerConfigFile(configFilename);
+            final Bitmap babyBitmap = BitmapUtilities.getBabyBitmap(bitmap, config);
 
-                if (writeFiles) {
-                    final Bitmap babyBitmapBW = ColorUtilities.blackWhiteColorDecider(babyBitmap, 25, 40, opMode);
+            if (writeFiles) {
+                final Bitmap babyBitmapBW = ColorUtilities.blackWhiteColorDecider(babyBitmap, 25, 40, opMode);
 
                 final String bitmapFilename = String.format(JEWEL_BITMAP_FILE_FORMAT, name);
                 final String hueFilename = String.format(JEWEL_HUE_FILE_FORMAT, name);

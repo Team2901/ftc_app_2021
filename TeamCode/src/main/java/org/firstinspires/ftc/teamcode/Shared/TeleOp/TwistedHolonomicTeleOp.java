@@ -1,24 +1,23 @@
-package org.firstinspires.ftc.teamcode.BaseSampleCode;
+package org.firstinspires.ftc.teamcode.Shared.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.teamcode.Shared.Hardware.TwistedHolonomicHardware;
+
 /**
  * Created by Kearneyg20428 on 2/7/2017.
  */
 @Disabled
-@TeleOp(name="Twisted Holonomic", group="TeleOp")
+@TeleOp(name = "Twisted Holonomic", group = "Shared")
 public class TwistedHolonomicTeleOp extends OpMode {
 
-
-    TwistedHolonomicDrive robot = new TwistedHolonomicDrive();
+    TwistedHolonomicHardware robot = new TwistedHolonomicHardware();
 
     @Override
     public void init() {
-
         robot.init(hardwareMap);
-
     }
 
     @Override
@@ -33,14 +32,10 @@ public class TwistedHolonomicTeleOp extends OpMode {
             robot.rightFrontMotor.setPower(-rightStick);
             robot.rightBackMotor.setPower(-rightStick);
         } else {
-
-
             robot.leftFrontMotor.setPower(xJoystick);
             robot.leftBackMotor.setPower(yJoystick);
             robot.rightFrontMotor.setPower(-yJoystick);
             robot.rightBackMotor.setPower(-xJoystick);
         }
-
-
     }
 }

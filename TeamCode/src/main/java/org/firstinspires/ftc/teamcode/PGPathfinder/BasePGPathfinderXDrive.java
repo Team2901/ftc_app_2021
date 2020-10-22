@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.PGP;
+package org.firstinspires.ftc.teamcode.PGPathfinder;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -9,10 +9,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-public abstract class BaseDominatorTankDrive extends LinearOpMode implements Dominator {
+public abstract class BasePGPathfinderXDrive extends LinearOpMode implements PGPathfinderInterface {
 
-    private DcMotor leftWheel;
-    private DcMotor rightWheel;
+    private DcMotor fl;
+    private DcMotor fr;
+    private DcMotor bl;
+    private DcMotor br;
     private BNO055IMU imu;
 
     private int globalAngle;
@@ -32,44 +34,50 @@ public abstract class BaseDominatorTankDrive extends LinearOpMode implements Dom
             sleep(50);
             idle();
         }
-        leftWheel = hardwareMap.dcMotor.get("leftWheel");
-        rightWheel = hardwareMap.dcMotor.get("rightWheel");
-        rightWheel.setDirection(DcMotor.Direction.REVERSE);
+        fl = hardwareMap.dcMotor.get("fl");
+        fr = hardwareMap.dcMotor.get("fr");
+        bl = hardwareMap.dcMotor.get("bl");
+        br = hardwareMap.dcMotor.get("br");
     }
 
-    @Override
     public void motorReset() {
-        leftWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightWheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rightWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        leftWheel.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        fr.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        bl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-    @Override
     public void powerBusy() {
-        leftWheel.setPower(0.5);
-        rightWheel.setPower(0.5);
-        while ((rightWheel.isBusy() && leftWheel.isBusy())) {
+        fl.setPower(0.5);
+        fr.setPower(0.5);
+        bl.setPower(0.5);
+        br.setPower(0.5);
+        while ((fl.isBusy() && fr.isBusy()) && (bl.isBusy() && br.isBusy())) {
         }
-        leftWheel.setPower(0);
-        rightWheel.setPower(0);
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
     }
 
-    @Override
     public void goForward(int gofront) {
         motorReset();
-        rightWheel.setTargetPosition(gofront);
-        leftWheel.setTargetPosition(gofront);
+        fl.setTargetPosition((int) Math.round(1.2 * gofront));
+        fr.setTargetPosition((int) Math.round(-1.2 * gofront));
+        bl.setTargetPosition((int) Math.round(1.2 * gofront));
+        br.setTargetPosition((int) Math.round(1.2 * gofront));
         powerBusy();
     }
 
-    @Override
     public void resetAngle() {
         lastAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         globalAngle = 0;
     }
 
-    @Override
     public double getAngle() {
         Orientation angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         double deltaAngle = angles.firstAngle - lastAngles.firstAngle;
@@ -82,19 +90,24 @@ public abstract class BaseDominatorTankDrive extends LinearOpMode implements Dom
         return globalAngle;
     }
 
-    @Override
     public void rotate(int degrees) {
-        double leftPower, rightPower;
+        double flp, frp, blp, brp;
         resetAngle();
         if (degrees < 0) {   // turn right.
-            leftPower = 0.5;
-            rightPower = -0.5;
+            flp = 0.5;
+            frp = 0.5;
+            blp = 0.5;
+            brp = 0.5;
         } else if (degrees > 0) {   // turn left.
-            leftPower = -0.5;
-            rightPower = 0.5;
+            flp = -0.5;
+            frp = -0.5;
+            blp = -0.5;
+            brp = -0.5;
         } else return;
-        leftWheel.setPower(leftPower);
-        rightWheel.setPower(rightPower);
+        fl.setPower(flp);
+        fr.setPower(frp);
+        bl.setPower(blp);
+        br.setPower(brp);
         if (degrees < 0) {//right
             while (opModeIsActive() && getAngle() == 0) {
             }
@@ -104,8 +117,10 @@ public abstract class BaseDominatorTankDrive extends LinearOpMode implements Dom
             while (opModeIsActive() && getAngle() < degrees) {
             }
         }
-        rightWheel.setPower(0);
-        leftWheel.setPower(0);
+        fl.setPower(0);
+        fr.setPower(0);
+        bl.setPower(0);
+        br.setPower(0);
         sleep(1000);
         resetAngle();
     }

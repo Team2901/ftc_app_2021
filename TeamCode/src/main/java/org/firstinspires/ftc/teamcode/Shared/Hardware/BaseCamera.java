@@ -11,15 +11,14 @@ import org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities;
 
 public class BaseCamera {
 
-    protected int cameraMonitorViewId;
-    protected int tfodMonitorViewId;
     public VuforiaLocalizer.Parameters parameters;
     public VuforiaLocalizer vuforia;
     public WebcamName webcamName;
     public String errorMessage;
-
     public VuforiaTrackables vuforiaTrackables;
     public TFObjectDetector tfod;
+    protected int cameraMonitorViewId;
+    protected int tfodMonitorViewId;
 
     public String initBackCamera(final HardwareMap hardwareMap) {
         return initBackCamera(hardwareMap, true);
@@ -98,11 +97,11 @@ public class BaseCamera {
 
         if (tfod == null && vuforia != null) {
             TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-            tfodParameters.minResultConfidence = (float)minimumConfidence;
+            tfodParameters.minResultConfidence = (float) minimumConfidence;
             tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
             tfod.loadModelFromAsset(assetName, labels);
-            tfod.setZoom(2.5,1.78);
-            tfod.setClippingMargins(0,200,200,0);
+            tfod.setZoom(2.5, 1.78);
+            tfod.setClippingMargins(0, 200, 200, 0);
         }
 
         return errorMessage;

@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
 
-@TeleOp(name = "ProgrammingUltimateGoalTeleOp")
+@TeleOp(name = "Programming UltimateGoal", group = "21_UltimateGoal")
 public class ProgrammingUltimateGoalTeleOp extends OpMode {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
 

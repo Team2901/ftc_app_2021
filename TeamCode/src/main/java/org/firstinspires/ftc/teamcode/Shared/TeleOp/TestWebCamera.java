@@ -9,7 +9,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities;
 
-@TeleOp(name = "Web Camera Test", group = "TEST")
+@TeleOp(name = "Web Camera Test", group = "Shared Test")
 public class TestWebCamera extends LinearOpMode {
 
     public ElapsedTime timer = new ElapsedTime();
@@ -26,7 +26,7 @@ public class TestWebCamera extends LinearOpMode {
         robot.webCamera.activateTfod();
 
         if (robot.webCamera.hasError()) {
-            telemetry.addData("Failed!",  robot.webCamera.errorMessage);
+            telemetry.addData("Failed!", robot.webCamera.errorMessage);
         } else {
             telemetry.addData("Successful!", "");
         }

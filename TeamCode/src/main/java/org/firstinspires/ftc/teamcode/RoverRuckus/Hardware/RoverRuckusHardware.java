@@ -17,10 +17,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Utility.AngleUtilities;
 
-public class RoverRuckusBotHardware {
+public class RoverRuckusHardware {
 
     public static final double ENCODER_COUNTS_PER_REV = 1120; // For neverRest 40s
-
+    public static final double MARKER_INIT_POSITION = 0;
+    public static final double MARKER_DROP_POSITION = 1;
+    public static final double INCHES_PER_ROTATION = 9.35;
+    public final double markerInitPosition;
+    public final double markerDropPosition;
+    public final double inchesPerRotation;
     public HardwareMap hardwareMap = null;
     public DcMotor left;
     public DcMotor right;
@@ -29,26 +34,17 @@ public class RoverRuckusBotHardware {
     public DcMotor elbow;
     public DcMotor shoulder;
     public CRServo intake;
-
     public WebcamName webcam = null;
     public BNO055IMU imu;
     public IntegratingGyroscope gyroscope;
     public double offset = 0;
     public double tiltOffset = 0;
 
-    public final double markerInitPosition;
-    public final double markerDropPosition;
-    public final double inchesPerRotation;
-
-    public static final double MARKER_INIT_POSITION = 0;
-    public static final double MARKER_DROP_POSITION = 1;
-    public static final double INCHES_PER_ROTATION = 9.35;
-
-    public RoverRuckusBotHardware() {
+    public RoverRuckusHardware() {
         this(MARKER_INIT_POSITION, MARKER_DROP_POSITION, INCHES_PER_ROTATION);
     }
 
-    public RoverRuckusBotHardware(double markerInitPosition, double markerDropPosition, double inchesPerRotation) {
+    public RoverRuckusHardware(double markerInitPosition, double markerDropPosition, double inchesPerRotation) {
         this.markerInitPosition = markerInitPosition;
         this.markerDropPosition = markerDropPosition;
         this.inchesPerRotation = inchesPerRotation;

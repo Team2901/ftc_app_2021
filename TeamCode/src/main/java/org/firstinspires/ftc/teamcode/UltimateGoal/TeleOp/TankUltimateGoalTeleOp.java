@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHard
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.TankUltimateGoalHardware;
 
-@TeleOp(name = "TankUltimateGoalTeleOp")
+@TeleOp(name = "Tank UltimateGoal", group = "21_UltimateGoal")
 public class TankUltimateGoalTeleOp extends OpMode{
     public TankUltimateGoalHardware robot = new TankUltimateGoalHardware();
 

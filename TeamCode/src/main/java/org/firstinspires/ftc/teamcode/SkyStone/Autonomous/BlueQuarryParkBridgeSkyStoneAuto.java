@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import static org.firstinspires.ftc.teamcode.Shared.Hardware.ExemplaryBlinkinLED.LED_BLUE;
 
 @Disabled
-@Autonomous(name = "Blue Quarry SkyStone Park Bridge (19pt)", group = "_BLUE")
-public class BlueQuarrySkyStoneParkBridge extends BaseSkyStoneAuto {
+@Autonomous(name = "SkyStone Blue Quarry Park Bridge (19pt)", group = "2019_SkyStone")
+public class BlueQuarryParkBridgeSkyStoneAuto extends BaseSkyStoneAuto {
 
     @Override
     public void runOpMode() throws InterruptedException {

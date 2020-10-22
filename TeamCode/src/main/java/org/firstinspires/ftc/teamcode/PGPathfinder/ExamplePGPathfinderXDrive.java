@@ -1,14 +1,11 @@
-package org.firstinspires.ftc.teamcode.PGP;
-
+package org.firstinspires.ftc.teamcode.PGPathfinder;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-/**
- * Created with Team 6183's Duckinator 3000
- */
-
-@Autonomous(name = "DominatorTankDrive9000", group = "DuckSquad")
-public class DominatorTankDrive9000 extends BaseDominatorTankDrive {
+@Disabled
+@Autonomous(name = "PGP Example XDrive", group = "PGP")
+public class ExamplePGPathfinderXDrive extends BasePGPathfinderXDrive {
     @Override
     public void runOpMode() throws InterruptedException {
         initRobot();
@@ -23,7 +20,6 @@ public class DominatorTankDrive9000 extends BaseDominatorTankDrive {
             goForward(1988);
             rotate(-89);
             goForward(4203);
-
         }
     }
 }

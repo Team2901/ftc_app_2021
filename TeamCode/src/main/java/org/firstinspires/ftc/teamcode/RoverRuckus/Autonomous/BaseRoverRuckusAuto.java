@@ -13,7 +13,7 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.RoverRuckus.Hardware.RoverRuckusBotHardware;
+import org.firstinspires.ftc.teamcode.RoverRuckus.Hardware.RoverRuckusHardware;
 import org.firstinspires.ftc.teamcode.Utility.AngleUtilities;
 import org.firstinspires.ftc.teamcode.Utility.BitmapUtilities;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
@@ -27,45 +27,28 @@ import static org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities.getWebCame
 @SuppressLint("DefaultLocale")
 public class BaseRoverRuckusAuto extends LinearOpMode {
 
-    public enum StartCorner {
-        RED_CRATER, RED_DEPOT, BLUE_CRATER, BLUE_DEPOT
-    }
-
-    public enum GoldPosition {
-        LEFT, MIDDLE, RIGHT
-    }
-
     public static final GoldPosition DEFAULT_GOLD_POSITION = MIDDLE;
     public static final boolean DEFAULT_IS_DROP_SUPPORTED = true;
     public static final boolean DEFAULT_USE_WEBCAM = true;
     public static final boolean DEFAULT_USE_VUFORIA_NAV = false;
-
     public static final int GO_TO_ANGLE_BUFFER = 9;
     public static final int GO_TO_POSITION_BUFFER = 2;
     public static final int TARGET_LIFT_TICKS = 5000;
     public static final double P_DRIVE_COEFF = 0.05;
-
-    public final RoverRuckusBotHardware robot = new RoverRuckusBotHardware();
-
-    public VuforiaLocalizer vuforia;
-    VuforiaTrackables roverRuckus;
-
-    public boolean writeFiles = false;
-
-    public GoldPosition goldPosition;  // Default goldPosition to use if useWebCam = false
+    public final RoverRuckusHardware robot = new RoverRuckusHardware();
     public final boolean dropSupported;
     public final boolean useWebCam;
     public final boolean useVuforiaNav;
-
-    public double orientation;
-    public double tilt;
-
     public final StartCorner startCorner;
     public final PolarCoord dropPosition;
     public final PolarCoord startPosition;
-
+    public VuforiaLocalizer vuforia;
+    public boolean writeFiles = false;
+    public GoldPosition goldPosition;  // Default goldPosition to use if useWebCam = false
+    public double orientation;
+    public double tilt;
     public String step;
-
+    VuforiaTrackables roverRuckus;
     PolarCoord currentPosition;
 
     public BaseRoverRuckusAuto(StartCorner startCorner,
@@ -255,9 +238,9 @@ public class BaseRoverRuckusAuto extends LinearOpMode {
         int[] rightHueTotal = {0, 0};
 
         try {
-            leftHueTotal = RoverRuckusUtilities.getJewelHueCount(bitmap,"Left",this, writeFiles);
-            middleHueTotal = RoverRuckusUtilities.getJewelHueCount(bitmap,"Middle", this, writeFiles);
-            rightHueTotal = RoverRuckusUtilities.getJewelHueCount(bitmap,"Right",this, writeFiles);
+            leftHueTotal = RoverRuckusUtilities.getJewelHueCount(bitmap, "Left", this, writeFiles);
+            middleHueTotal = RoverRuckusUtilities.getJewelHueCount(bitmap, "Middle", this, writeFiles);
+            rightHueTotal = RoverRuckusUtilities.getJewelHueCount(bitmap, "Right", this, writeFiles);
         } catch (InterruptedException e) {
             telemetry.addData("Error getJewelHueCounts", e);
             telemetry.update();
@@ -711,5 +694,13 @@ public class BaseRoverRuckusAuto extends LinearOpMode {
                         return String.valueOf(goldPosition);
                     }
                 });
+    }
+
+    public enum StartCorner {
+        RED_CRATER, RED_DEPOT, BLUE_CRATER, BLUE_DEPOT
+    }
+
+    public enum GoldPosition {
+        LEFT, MIDDLE, RIGHT
     }
 }

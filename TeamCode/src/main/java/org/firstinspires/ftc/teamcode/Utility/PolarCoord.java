@@ -38,20 +38,6 @@ public class PolarCoord {
         this(x, y, 0, null);
     }
 
-    public PolarCoord withTheta(double theta) {
-        this.theta = theta;
-        return this;
-    }
-
-    @Override
-    public String toString() {
-        if (name != null) {
-            return String.format("%s - x:%.2f y:%.2f Θ: %.2f", name, x, y, theta);
-        } else {
-            return String.format("x:%.2f y:%.2f Θ: %.2f", x, y, theta);
-        }
-    }
-
     public PolarCoord(final OpenGLMatrix location) {
         VectorF translation = location.getTranslation();
         Orientation orientation = Orientation.getOrientation(location,
@@ -69,5 +55,19 @@ public class PolarCoord {
 
     public static double getAngleBetween(PolarCoord startPolarCoord, PolarCoord goalPolarCoord) {
         return AngleUtilities.getNormalizedAngle(Math.atan2(goalPolarCoord.y - startPolarCoord.y, goalPolarCoord.x - startPolarCoord.x) * (180 / Math.PI));
+    }
+
+    public PolarCoord withTheta(double theta) {
+        this.theta = theta;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        if (name != null) {
+            return String.format("%s - x:%.2f y:%.2f Θ: %.2f", name, x, y, theta);
+        } else {
+            return String.format("x:%.2f y:%.2f Θ: %.2f", x, y, theta);
+        }
     }
 }

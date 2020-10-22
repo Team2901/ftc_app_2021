@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.Shared.Hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -11,11 +10,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class FlagBotHardware {
 
+    private final ElapsedTime period = new ElapsedTime();
     public DcMotor leftMotor = null;
     public DcMotor rightMotor = null;
     public DcMotor spinMotor = null;
-
-    private final ElapsedTime period  = new ElapsedTime();
     private HardwareMap hwMap = null;
 
     public void init(HardwareMap ahwMap) {
@@ -41,7 +39,7 @@ public class FlagBotHardware {
 
     public void waitForTick(long periodMs) {
 
-        long  remaining = periodMs - (long)period.milliseconds();
+        long remaining = periodMs - (long) period.milliseconds();
 
         // sleep for the remaining portion of the regular cycle period.
         if (remaining > 0) {

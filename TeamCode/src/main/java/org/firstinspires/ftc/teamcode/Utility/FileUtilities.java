@@ -40,7 +40,7 @@ public class FileUtilities {
         }
     }
 
-    public static void writeConfigFile(String filename, Object value) throws IOException{
+    public static void writeConfigFile(String filename, Object value) throws IOException {
         final File teamDir = new File(Environment.getExternalStorageDirectory(), TEAM_FOLDER_NAME);
         boolean newDir = teamDir.mkdirs();
         final File file = new File(teamDir, filename);
@@ -50,7 +50,7 @@ public class FileUtilities {
         }
     }
 
-    public static int readTeamColor(String filename) throws IOException{
+    public static int readTeamColor(String filename) throws IOException {
         final File teamDir = new File(Environment.getExternalStorageDirectory(), TEAM_FOLDER_NAME);
         boolean newDir = teamDir.mkdirs();
         final File file = new File(teamDir, filename);
@@ -91,6 +91,7 @@ public class FileUtilities {
 
         return config;
     }
+
     public static List<Double> readDoubleConfigFile(String filename) throws IOException {
 
         final List<String> stringConfig = readConfigFile(filename);
@@ -169,7 +170,7 @@ public class FileUtilities {
 
     public static void writeWinnerFile(BaseRoverRuckusAuto.GoldPosition winner,
                                        int[] middleHueTotal,
-                                       int[] rightHueTotal) throws IOException  {
+                                       int[] rightHueTotal) throws IOException {
         writeWinnerFile(WINNER_FILE_NAME_2, winner, middleHueTotal, rightHueTotal);
     }
 
@@ -219,7 +220,7 @@ public class FileUtilities {
     }
 
     public static void writeArmFile(String fileName,
-                                       int shoulderPosition, int elbowPosition) throws IOException {
+                                    int shoulderPosition, int elbowPosition) throws IOException {
         final File teamDir = new File(Environment.getExternalStorageDirectory(), TEAM_FOLDER_NAME);
         boolean newDir = teamDir.mkdirs();
         final File file = new File(teamDir, fileName);

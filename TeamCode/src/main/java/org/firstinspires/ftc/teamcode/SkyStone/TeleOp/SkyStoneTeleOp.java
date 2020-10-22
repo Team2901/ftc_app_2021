@@ -16,22 +16,21 @@ import org.firstinspires.ftc.teamcode.SkyStone.Hardware.CompetitionSkystoneHardw
 
 @Disabled
 @SuppressLint("DefaultLocale")
-@TeleOp(name = "Competition Skystone", group = "BUILDER_SKYSTONE")
-public class BuilderSkystoneTeleOp extends OpMode {
+@TeleOp(name = "SkyStone", group = "2019_SkyStone")
+public class SkyStoneTeleOp extends OpMode {
 
+    public static final int ABSOLUTE_MODE = 0;
+    public static final int RELATIVE_MODE = 1;
+    public static final int OFFSET_MODE = 2;
     public double wheelPowerRatio = .3;
-
     public CompetitionSkystoneHardware robot = new CompetitionSkystoneHardware();
     public ElapsedTime timer = new ElapsedTime();
     public ImprovedGamepad improvedGamepad1;
     public ImprovedGamepad improvedGamepad2;
-    public static final int ABSOLUTE_MODE = 0;
-    public static final int RELATIVE_MODE = 1;
-    public static final int OFFSET_MODE = 2;
     public int mode = RELATIVE_MODE;
+    public String[] driveModeNames = {"ABSOLUTE_MODE", "RELATIVE_MODE", "OFFSET_MODE"};
     Servo servoUnderTest;
     int servoIndex;
-    public String[] driveModeNames = {"ABSOLUTE_MODE", "RELATIVE_MODE", "OFFSET_MODE"};
 
     @Override
     public void init() {
@@ -47,7 +46,7 @@ public class BuilderSkystoneTeleOp extends OpMode {
         improvedGamepad1.update();
         improvedGamepad2.update();
 
-        if(this.improvedGamepad1.dpad_up.isInitialPress() || this.improvedGamepad1.dpad_down.isInitialPress()){
+        if (this.improvedGamepad1.dpad_up.isInitialPress() || this.improvedGamepad1.dpad_down.isInitialPress()) {
 
             // Update the offsets when leaving the mode
             if (mode == OFFSET_MODE) {
@@ -59,7 +58,7 @@ public class BuilderSkystoneTeleOp extends OpMode {
 
             if (this.improvedGamepad1.dpad_up.isInitialPress()) {
                 mode++;
-                if(mode > 2){
+                if (mode > 2) {
                     mode = 0;
                 }
             } else {
@@ -70,20 +69,20 @@ public class BuilderSkystoneTeleOp extends OpMode {
             }
 
             if (mode == OFFSET_MODE) {
-                robot.swerveStraight(0,0);
+                robot.swerveStraight(0, 0);
             }
         }
 
         telemetry.addData("Current Drive Mode", driveModeNames[mode]);
 
         if (mode == ABSOLUTE_MODE || mode == RELATIVE_MODE) {
-            if(this.improvedGamepad1.left_bumper.isInitialPress()) {
+            if (this.improvedGamepad1.left_bumper.isInitialPress()) {
                 wheelPowerRatio -= 0.05;
-            } else if(this.improvedGamepad1.right_bumper.isInitialPress()){
+            } else if (this.improvedGamepad1.right_bumper.isInitialPress()) {
                 wheelPowerRatio += 0.05;
             }
 
-            wheelPowerRatio = Range.clip(wheelPowerRatio, .05 , .5);
+            wheelPowerRatio = Range.clip(wheelPowerRatio, .05, .5);
         }
 
         telemetry.addData("wheelPowerRatio", wheelPowerRatio);
@@ -158,41 +157,41 @@ public class BuilderSkystoneTeleOp extends OpMode {
 
             robot.setWheelMotorPower(0, 0, 0, 0);
 
-            if(this.improvedGamepad1.dpad_right.isInitialPress()){
+            if (this.improvedGamepad1.dpad_right.isInitialPress()) {
                 servoIndex++;
-                if(servoIndex >= robot.swerveWheels.length){
+                if (servoIndex >= robot.swerveWheels.length) {
                     servoIndex = 0;
                 }
-            } else if(this.improvedGamepad1.dpad_left.isInitialPress()) {
+            } else if (this.improvedGamepad1.dpad_left.isInitialPress()) {
                 servoIndex--;
-                if(servoIndex < 0){
+                if (servoIndex < 0) {
                     servoIndex = robot.swerveWheels.length - 1;
                 }
             }
 
             servoUnderTest = robot.swerveWheels[servoIndex].servo;
 
-            if(servoUnderTest != null){
-                if(this.improvedGamepad1.left_bumper.isInitialPress()){
-                    telemetry.addData("PRESSED LEFT BUMPER","");
-                    servoUnderTest.setPosition(servoUnderTest.getPosition()-0.1);
-                } else if(this.improvedGamepad1.right_bumper.isInitialPress()){
-                    telemetry.addData("PRESSED RIGHT BUMPER","");
-                    servoUnderTest.setPosition(servoUnderTest.getPosition()+0.1);
-                } else if(this.improvedGamepad1.left_trigger.isInitialPress()){
-                    telemetry.addData("PRESSED LEFT TRIGGER","");
-                    servoUnderTest.setPosition(servoUnderTest.getPosition()-0.01);
-                } else if(this.improvedGamepad1.right_trigger.isInitialPress()) {
-                    telemetry.addData("PRESSED RIGHT TRIGGER","");
-                    servoUnderTest.setPosition(servoUnderTest.getPosition()+0.01);
+            if (servoUnderTest != null) {
+                if (this.improvedGamepad1.left_bumper.isInitialPress()) {
+                    telemetry.addData("PRESSED LEFT BUMPER", "");
+                    servoUnderTest.setPosition(servoUnderTest.getPosition() - 0.1);
+                } else if (this.improvedGamepad1.right_bumper.isInitialPress()) {
+                    telemetry.addData("PRESSED RIGHT BUMPER", "");
+                    servoUnderTest.setPosition(servoUnderTest.getPosition() + 0.1);
+                } else if (this.improvedGamepad1.left_trigger.isInitialPress()) {
+                    telemetry.addData("PRESSED LEFT TRIGGER", "");
+                    servoUnderTest.setPosition(servoUnderTest.getPosition() - 0.01);
+                } else if (this.improvedGamepad1.right_trigger.isInitialPress()) {
+                    telemetry.addData("PRESSED RIGHT TRIGGER", "");
+                    servoUnderTest.setPosition(servoUnderTest.getPosition() + 0.01);
                 }
 
-                telemetry.addData("Left bumper","-0.1");
-                telemetry.addData("Right bumper","+0.1");
-                telemetry.addData("Left trigger","-0.01");
-                telemetry.addData("Right trigger","+0.01");
+                telemetry.addData("Left bumper", "-0.1");
+                telemetry.addData("Right bumper", "+0.1");
+                telemetry.addData("Left trigger", "-0.01");
+                telemetry.addData("Right trigger", "+0.01");
                 telemetry.addData("Position", servoUnderTest.getPosition());
-                telemetry.addData("Servo name",robot.swerveWheels[servoIndex].name);
+                telemetry.addData("Servo name", robot.swerveWheels[servoIndex].name);
             }
 
             telemetry.addData("D Pad Right/Left", "Increment/decrement servos");
@@ -258,15 +257,15 @@ public class BuilderSkystoneTeleOp extends OpMode {
         telemetry.addData("wrist position", robot.wrist.getPosition());
 
 
-        telemetry.addData("", String.format("FL %f %f",robot.frontLeftSwerveWheel.hardMinWheelPositionRelToZero, robot.frontLeftSwerveWheel.hardMaxWheelPositionRelToZero));
-        telemetry.addData("", String.format("FR %f %f",robot.frontRightSwerveWheel.hardMinWheelPositionRelToZero, robot.frontRightSwerveWheel.hardMaxWheelPositionRelToZero));
-        telemetry.addData("", String.format("BL %f %f",robot.backLeftSwerveWheel.hardMinWheelPositionRelToZero, robot.backLeftSwerveWheel.hardMaxWheelPositionRelToZero));
-        telemetry.addData("", String.format("BR %f %f",robot.backRightSwerveWheel.hardMinWheelPositionRelToZero, robot.backRightSwerveWheel.hardMaxWheelPositionRelToZero));
+        telemetry.addData("", String.format("FL %f %f", robot.frontLeftSwerveWheel.hardMinWheelPositionRelToZero, robot.frontLeftSwerveWheel.hardMaxWheelPositionRelToZero));
+        telemetry.addData("", String.format("FR %f %f", robot.frontRightSwerveWheel.hardMinWheelPositionRelToZero, robot.frontRightSwerveWheel.hardMaxWheelPositionRelToZero));
+        telemetry.addData("", String.format("BL %f %f", robot.backLeftSwerveWheel.hardMinWheelPositionRelToZero, robot.backLeftSwerveWheel.hardMaxWheelPositionRelToZero));
+        telemetry.addData("", String.format("BR %f %f", robot.backRightSwerveWheel.hardMinWheelPositionRelToZero, robot.backRightSwerveWheel.hardMaxWheelPositionRelToZero));
 
-        telemetry.addData("", String.format("FL angle %f %f",robot.frontLeftSwerveWheel.hardMinWheelAngle, robot.frontLeftSwerveWheel.hardMaxWheelAngle));
-        telemetry.addData("", String.format("FR angle %f %f",robot.frontRightSwerveWheel.hardMinWheelAngle, robot.frontRightSwerveWheel.hardMaxWheelAngle));
-        telemetry.addData("", String.format("BL angle %f %f",robot.backLeftSwerveWheel.hardMinWheelAngle, robot.backLeftSwerveWheel.hardMaxWheelAngle));
-        telemetry.addData("", String.format("BR angle %f %f",robot.backRightSwerveWheel.hardMinWheelAngle, robot.backRightSwerveWheel.hardMaxWheelAngle));
+        telemetry.addData("", String.format("FL angle %f %f", robot.frontLeftSwerveWheel.hardMinWheelAngle, robot.frontLeftSwerveWheel.hardMaxWheelAngle));
+        telemetry.addData("", String.format("FR angle %f %f", robot.frontRightSwerveWheel.hardMinWheelAngle, robot.frontRightSwerveWheel.hardMaxWheelAngle));
+        telemetry.addData("", String.format("BL angle %f %f", robot.backLeftSwerveWheel.hardMinWheelAngle, robot.backLeftSwerveWheel.hardMaxWheelAngle));
+        telemetry.addData("", String.format("BR angle %f %f", robot.backRightSwerveWheel.hardMinWheelAngle, robot.backRightSwerveWheel.hardMaxWheelAngle));
 
 
         Velocity velocity = robot.imu.getVelocity();

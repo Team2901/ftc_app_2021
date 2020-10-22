@@ -37,25 +37,20 @@ public class KickOffSampleHardware {
     It divides the ticks per wheel rotation by the wheel circumference.
      */
     public static final double TICKS_PER_INCH = TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE;
-
-    //Define the left and right motors as class variables
-    public DcMotor leftDrive;
-    public DcMotor rightDrive;
-
-    //Define the servo
-    public Servo armServo;
-
-    //Define the imu
-    public BNO055IMU imu;
-
     public static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     public static final String LABEL_FIRST_ELEMENT = "Stone";
     public static final String LABEL_SECOND_ELEMENT = "Skystone";
     public static final String VUFORIA_KEY = " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
-
+    //Define the left and right motors as class variables
+    public DcMotor leftDrive;
+    public DcMotor rightDrive;
+    //Define the servo
+    public Servo armServo;
+    //Define the imu
+    public BNO055IMU imu;
     public TFObjectDetector tfod;
 
-    public void init(HardwareMap hardwareMap){
+    public void init(HardwareMap hardwareMap) {
 
         // Initialize the left and right motors
         leftDrive = hardwareMap.dcMotor.get("left_drive");
@@ -77,11 +72,11 @@ public class KickOffSampleHardware {
         rightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         // Initialize the imu with the parameters above

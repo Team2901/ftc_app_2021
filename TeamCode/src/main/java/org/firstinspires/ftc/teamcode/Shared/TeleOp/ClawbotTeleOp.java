@@ -11,13 +11,12 @@ import org.firstinspires.ftc.teamcode.Shared.Hardware.ClawbotHardware;
  * Created by Kearneyg20428 on 2/7/2017.
  */
 @Disabled
-@TeleOp(name="Clawbot", group="TeleOp")
+@TeleOp(name = "Clawbot", group = "Shared")
 public class ClawbotTeleOp extends OpMode {
 
     final double CLAW_SPEED = 0.05;
-    double clawOffset = 0.0;
-
     final ClawbotHardware robot = new ClawbotHardware();
+    double clawOffset = 0.0;
 
     @Override
     public void init() {

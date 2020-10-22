@@ -1,15 +1,11 @@
-package org.firstinspires.ftc.teamcode.PGP;
-
+package org.firstinspires.ftc.teamcode.PGPathfinder;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-/**
- * Created with Team 6183's Duckinator 3000
- * Future output generated from duckinatorin response to clicking imput
- */
-
-@Autonomous(name = "DominatorMechanum9000", group = "DuckSquad")
-public class DominatorMechanum9000 extends BaseDominatorMechanum {
+@Disabled
+@Autonomous(name = "PGP Example Mechanum", group = "PGP")
+public class ExamplePGPathfinderMechanum extends BasePGPathfinderMechanum {
     @Override
     public void runOpMode() throws InterruptedException {
         initRobot();

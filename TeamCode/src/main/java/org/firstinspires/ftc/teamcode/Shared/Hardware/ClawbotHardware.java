@@ -16,13 +16,11 @@ public class ClawbotHardware {
     public static final double ARM_DOWN_POWER = -0.5;
     public static final double MIN_SAFE_CLAW_OFFSET = 0;
     public static final double MAX_SAFE_CLAW_OFFSET = .4;
-
+    private final ElapsedTime period = new ElapsedTime();
     public DcMotor leftMotor = null;
     public DcMotor rightMotor = null;
     public DcMotor armMotor = null;
     public Servo claw = null;
-
-    private final ElapsedTime period = new ElapsedTime();
     private HardwareMap hwMap = null;
 
     public void init(HardwareMap ahwMap) {

@@ -1,10 +1,11 @@
-package org.firstinspires.ftc.teamcode.PGP;
+package org.firstinspires.ftc.teamcode.PGPathfinder;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-
-@Autonomous (name = "DominatorXDrive9000", group = "DuckSquad")
-public abstract class DominatorXDrive9000 extends BaseDominatorXDrive {
+@Disabled
+@Autonomous(name = "PGP Example TankDrive", group = "PGP")
+public class ExamplePGPathfinderTankDrive extends BasePGPathfinderTankDrive {
     @Override
     public void runOpMode() throws InterruptedException {
         initRobot();

@@ -12,8 +12,8 @@ import org.firstinspires.ftc.teamcode.Shared.Hardware.KickOffSampleHardware;
 import java.util.List;
 
 @Disabled
-@Autonomous(name = "Kick-off Sample Autonomous")
-public class KickOffSampleAutonomous extends LinearOpMode {
+@Autonomous(name = "Kick Off Sample", group = "Shared")
+public class KickOffSampleAuto extends LinearOpMode {
     public KickOffSampleHardware robot = new KickOffSampleHardware();
 
     @Override

@@ -4,15 +4,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 public class VuforiaUtilities {
 
@@ -21,8 +13,8 @@ public class VuforiaUtilities {
 
     // Constants for perimeter targets
     public static final float WALL_IMAGE_Z_OFFSET_INCHES = 6; // Images are 6 inches off the ground
-    public static final float FULL_FIELD_LENGTH_INCHES = (12*12 - 2);  // the FTC field is ~11'10" center-to-center of the glass panels
-    public static final float HALF_FIELD_LENGTH_INCHES = FULL_FIELD_LENGTH_INCHES/2;
+    public static final float FULL_FIELD_LENGTH_INCHES = (12 * 12 - 2);  // the FTC field is ~11'10" center-to-center of the glass panels
+    public static final float HALF_FIELD_LENGTH_INCHES = FULL_FIELD_LENGTH_INCHES / 2;
 
     public static final float WALL_IMAGE_Z_OFFSET_MM = WALL_IMAGE_Z_OFFSET_INCHES * INCHES_TO_MM;
     public static final float FULL_FIELD_LENGTH_MM = FULL_FIELD_LENGTH_INCHES * INCHES_TO_MM;

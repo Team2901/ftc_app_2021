@@ -7,7 +7,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous.BaseUltimateGoalAuto;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
 
-@TeleOp(name = "NikkiTankTeleOp")
+@TeleOp(name = "NikkiTank", group = "21_UltimateGoal")
 public class NikkiTankTeleop extends OpMode {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
     public BaseUltimateGoalAuto auto = new BaseUltimateGoalAuto();

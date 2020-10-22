@@ -17,16 +17,16 @@ with machanum wheels all 4 wheels need to be motorized
     public DcMotor fRight = null;
     public DcMotor bLeft = null;
     public DcMotor bRight = null;
-   // public DcMotor lift = null;
+    // public DcMotor lift = null;
     public DcMotor arm = null;
 
-/*
-    public Servo jewelKnockDevice = null;
-    public Servo bLeftPincer = null;
-    public Servo bRightPincer = null;
-    public Servo tLeftPincer = null;
-    public Servo tRightPincer = null;
-    */
+    /*
+        public Servo jewelKnockDevice = null;
+        public Servo bLeftPincer = null;
+        public Servo bRightPincer = null;
+        public Servo tLeftPincer = null;
+        public Servo tRightPincer = null;
+        */
     public Servo clawServo = null;
 
     HardwareMap hwMap = null;
@@ -39,7 +39,7 @@ with machanum wheels all 4 wheels need to be motorized
         fRight = hwMap.dcMotor.get("fRight");
         bLeft = hwMap.dcMotor.get("bLeft");
         bRight = hwMap.dcMotor.get("bRight");
-      //  lift = hwMap.dcMotor.get("lift");
+        //  lift = hwMap.dcMotor.get("lift");
         arm = hwMap.dcMotor.get("arm");
 
 
@@ -55,7 +55,7 @@ with machanum wheels all 4 wheels need to be motorized
         fRight.setDirection(DcMotorSimple.Direction.FORWARD);
         bLeft.setDirection(DcMotorSimple.Direction.REVERSE);
         bRight.setDirection(DcMotorSimple.Direction.FORWARD);
-       // lift.setDirection(DcMotorSimple.Direction.REVERSE);
+        // lift.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
       /*  bLeftPincer.setDirection(Servo.Direction.FORWARD);

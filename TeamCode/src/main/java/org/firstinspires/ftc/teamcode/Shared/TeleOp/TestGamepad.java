@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 
 @Disabled
-@TeleOp (name = "Gamepad Test", group = "TEST")
+@TeleOp(name = "Gamepad Test", group = "Shared Test")
 public class TestGamepad extends OpMode {
 
     public ElapsedTime timer = new ElapsedTime();

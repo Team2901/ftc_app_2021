@@ -1,6 +1,6 @@
-package org.firstinspires.ftc.teamcode.PGP;
+package org.firstinspires.ftc.teamcode.PGPathfinder;
 
-public interface Dominator {
+public interface PGPathfinderInterface {
 
     void motorReset();
 

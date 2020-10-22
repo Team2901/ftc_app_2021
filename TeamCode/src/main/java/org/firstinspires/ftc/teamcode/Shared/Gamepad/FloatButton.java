@@ -5,9 +5,8 @@ public class FloatButton extends Button<Float> {
 
     private final static float DEFAULT_DEAD_ZONE_VALUE = 0.0f;
     private final static float DEFAULT_RAW_VALUE = 0.0f;
-
-    private boolean invertValue;
     protected float deadZoneValue;
+    private boolean invertValue;
 
     public FloatButton(final String name) {
         this(name, DEFAULT_DEAD_ZONE_VALUE, false);

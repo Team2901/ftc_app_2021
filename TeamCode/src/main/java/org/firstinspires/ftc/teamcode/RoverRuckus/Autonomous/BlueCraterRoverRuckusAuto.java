@@ -3,15 +3,13 @@ package org.firstinspires.ftc.teamcode.RoverRuckus.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 
-import org.firstinspires.ftc.teamcode.RoverRuckus.Autonomous.BaseRoverRuckusAuto;
-
 import static org.firstinspires.ftc.teamcode.RoverRuckus.Autonomous.BaseRoverRuckusAuto.StartCorner.BLUE_CRATER;
 
 @Disabled
-@Autonomous(name = "Crater: Full", group = "RoverRuckus")
-public class RoverRuckusAutonomousBlueCrater extends BaseRoverRuckusAuto {
+@Autonomous(name = "RoverRuckus Blue Crater", group = "2019_RoverRuckus")
+public class BlueCraterRoverRuckusAuto extends BaseRoverRuckusAuto {
 
-    public RoverRuckusAutonomousBlueCrater() {
+    public BlueCraterRoverRuckusAuto() {
         super(BLUE_CRATER);
     }
 
@@ -21,7 +19,7 @@ public class RoverRuckusAutonomousBlueCrater extends BaseRoverRuckusAuto {
 
         runOpModeCraterCorner();
 
-        while(opModeIsActive()) {
+        while (opModeIsActive()) {
             idle();
         }
     }
