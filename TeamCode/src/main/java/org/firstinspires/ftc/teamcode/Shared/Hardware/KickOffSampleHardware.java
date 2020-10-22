@@ -13,6 +13,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
+import org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities;
 
 public class KickOffSampleHardware {
 
@@ -40,7 +41,7 @@ public class KickOffSampleHardware {
     public static final String TFOD_MODEL_ASSET = "Skystone.tflite";
     public static final String LABEL_FIRST_ELEMENT = "Stone";
     public static final String LABEL_SECOND_ELEMENT = "Skystone";
-    public static final String VUFORIA_KEY = " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+    public static final String VUFORIA_KEY = VuforiaUtilities.VUFORIA_KEY;  //" -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
     //Define the left and right motors as class variables
     public DcMotor leftDrive;
     public DcMotor rightDrive;

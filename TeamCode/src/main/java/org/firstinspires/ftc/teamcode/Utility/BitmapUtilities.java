@@ -18,76 +18,6 @@ public class BitmapUtilities {
 
     public static final int PIXEL_FORMAT_RGB565 = 1;
 
-    public static BaseRoverRuckusAuto.GoldPosition findWinnerLocation(int[] leftHueTotal,
-                                                                      int[] middleHueTotal,
-                                                                      int[] rightHueTotal) {
-        BaseRoverRuckusAuto.GoldPosition winner = BaseRoverRuckusAuto.GoldPosition.MIDDLE;
-        int leftColor, middleColor, rightColor;
-        if (leftHueTotal[0]/*yellow counts*/ > leftHueTotal[1]/*white counts*/) {
-            leftColor = Color.YELLOW;
-            winner = BaseRoverRuckusAuto.GoldPosition.LEFT;
-        } else {
-            leftColor = Color.WHITE;
-        }
-
-        if (middleHueTotal[0]/*yellow counts*/ > middleHueTotal[1]/*white counts*/) {
-            middleColor = Color.YELLOW;
-            winner = BaseRoverRuckusAuto.GoldPosition.MIDDLE;
-        } else {
-            middleColor = Color.WHITE;
-        }
-        if (rightHueTotal[0]/*yellow counts*/ > rightHueTotal[1]/*white counts*/) {
-            rightColor = Color.YELLOW;
-            winner = BaseRoverRuckusAuto.GoldPosition.RIGHT;
-        } else {
-            rightColor = Color.WHITE;
-        }
-
-        return winner;
-    }
-
-    public static BaseRoverRuckusAuto.GoldPosition findWinnerLocation(int[] middleHueTotal,
-                                                                      int[] rightHueTotal) {
-        BaseRoverRuckusAuto.GoldPosition winner = BaseRoverRuckusAuto.GoldPosition.LEFT;
-        int middleColor, rightColor;
-
-
-        if (middleHueTotal[0]/*yellow counts*/ > middleHueTotal[1]/*white counts*/) {
-            middleColor = Color.YELLOW;
-            winner = BaseRoverRuckusAuto.GoldPosition.MIDDLE;
-        } else {
-            middleColor = Color.WHITE;
-        }
-        if (rightHueTotal[0]/*yellow counts*/ > rightHueTotal[1]/*white counts*/) {
-            rightColor = Color.YELLOW;
-            winner = BaseRoverRuckusAuto.GoldPosition.RIGHT;
-        } else {
-            rightColor = Color.WHITE;
-        }
-        return winner;
-    }
-
-    public static BaseRoverRuckusAuto.GoldPosition findCorrectGoldLocation(int[] middleHueTotal,
-                                                                           int[] rightHueTotal) {
-        BaseRoverRuckusAuto.GoldPosition winner = BaseRoverRuckusAuto.GoldPosition.LEFT;
-        int middleColor, rightColor;
-
-
-        if (middleHueTotal[0]/*yellow counts*/ > 0) {
-            middleColor = Color.YELLOW;
-            winner = BaseRoverRuckusAuto.GoldPosition.MIDDLE;
-        } else {
-            middleColor = Color.WHITE;
-        }
-        if (rightHueTotal[0]/*yellow counts*/ > 0) {
-            rightColor = Color.YELLOW;
-            winner = BaseRoverRuckusAuto.GoldPosition.RIGHT;
-        } else {
-            rightColor = Color.WHITE;
-        }
-        return winner;
-    }
-
     public static Bitmap getBabyBitmap(Bitmap bitmap, List<Integer> config) {
         return getBabyBitmap(bitmap, config.get(0), config.get(1), config.get(2), config.get(3));
     }
@@ -143,19 +73,6 @@ public class BitmapUtilities {
                 return null;
             }
         }
-        return null;
-    }
-
-    BaseRoverRuckusAuto.GoldPosition findGoldPosition(int leftHueTotal,
-                                                      int middleHueTotal,
-                                                      int rightHueTotal) {
-        //TODO
-        return null;
-    }
-
-    BaseRoverRuckusAuto.GoldPosition findGoldPosition(int middleHueTotal,
-                                                      int rightHueTotal) {
-        //TODO
         return null;
     }
 }

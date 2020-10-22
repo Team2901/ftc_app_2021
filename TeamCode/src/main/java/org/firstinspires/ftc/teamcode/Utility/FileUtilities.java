@@ -21,9 +21,6 @@ import java.util.List;
 public class FileUtilities {
     public final static String PICTURES_FOLDER_NAME = "Team";
     public final static String TEAM_FOLDER_NAME = "Team";
-    public final static String WINNER_FILE_NAME_3 = "writeWinnerFile3Jewels.txt";
-    public final static String WINNER_FILE_NAME_2 = "writeWinnerFile2Jewels.txt";
-    public final static String ARM_POSITION = "armPosition.txt";
 
     public static void writeConfigFile(String filename,
                                        List<? extends Object> config) throws IOException {
@@ -130,72 +127,6 @@ public class FileUtilities {
         return bitmap;
     }
 
-
-    public static void writeWinnerFile(BaseRoverRuckusAuto.GoldPosition winnerLocation,
-                                       int[] leftHueTotal,
-                                       int[] middleHueTotal,
-                                       int[] rightHueTotal) throws IOException {
-
-        writeWinnerFile(WINNER_FILE_NAME_3, winnerLocation, leftHueTotal, middleHueTotal, rightHueTotal);
-    }
-
-    public static void writeWinnerFile(String fileName,
-                                       BaseRoverRuckusAuto.GoldPosition winner,
-                                       int[] leftHueTotal,
-                                       int[] middleHueTotal,
-                                       int[] rightHueTotal) throws IOException {
-        final File teamDir = new File(Environment.getExternalStorageDirectory(), TEAM_FOLDER_NAME);
-        boolean newDir = teamDir.mkdirs();
-        final File file = new File(teamDir, fileName);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write("Left Jewel Yellow count = " + leftHueTotal[0]);
-            writer.newLine();
-            writer.write("Left Jewel White count = " + leftHueTotal[1]);
-            writer.newLine();
-            writer.newLine();
-            writer.write("Middle Jewel Yellow count = " + middleHueTotal[0]);
-            writer.newLine();
-            writer.write("Middle Jewel White count = " + middleHueTotal[1]);
-            writer.newLine();
-            writer.newLine();
-            writer.write("Right Jewel Yellow count = " + rightHueTotal[0]);
-            writer.newLine();
-            writer.write("Right Jewel White count = " + rightHueTotal[1]);
-            writer.newLine();
-            writer.write("winner is " + winner);
-
-        }
-    }
-
-    public static void writeWinnerFile(BaseRoverRuckusAuto.GoldPosition winner,
-                                       int[] middleHueTotal,
-                                       int[] rightHueTotal) throws IOException {
-        writeWinnerFile(WINNER_FILE_NAME_2, winner, middleHueTotal, rightHueTotal);
-    }
-
-    public static void writeWinnerFile(String fileName,
-                                       BaseRoverRuckusAuto.GoldPosition winner,
-                                       int[] middleHueTotal,
-                                       int[] rightHueTotal) throws IOException {
-        final File teamDir = new File(Environment.getExternalStorageDirectory(), TEAM_FOLDER_NAME);
-        boolean newDir = teamDir.mkdirs();
-        final File file = new File(teamDir, fileName);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write("Middle Jewel Yellow count = " + middleHueTotal[0]);
-            writer.newLine();
-            writer.write("Middle Jewel White count = " + middleHueTotal[1]);
-            writer.newLine();
-            writer.newLine();
-            writer.write("Right Jewel Yellow count = " + rightHueTotal[0]);
-            writer.newLine();
-            writer.write("Right Jewel White count = " + rightHueTotal[1]);
-            writer.newLine();
-            writer.write("winner is " + winner);
-        }
-    }
-
     public static void writeHueFile(String filename,
                                     Bitmap bitmap,
                                     LinearOpMode opMode) throws IOException, InterruptedException {
@@ -211,24 +142,6 @@ public class FileUtilities {
                 writer.write(String.valueOf(colorCount));
                 writer.newLine();
             }
-        }
-    }
-
-    public static void writeHueFile(String filename,
-                                    int[] colorCounts) throws IOException {
-        //TODO
-    }
-
-    public static void writeArmFile(String fileName,
-                                    int shoulderPosition, int elbowPosition) throws IOException {
-        final File teamDir = new File(Environment.getExternalStorageDirectory(), TEAM_FOLDER_NAME);
-        boolean newDir = teamDir.mkdirs();
-        final File file = new File(teamDir, fileName);
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-            writer.write("Shoulder Position is " + shoulderPosition);
-            writer.newLine();
-            writer.write("Elbow Position is " + elbowPosition);
         }
     }
 }

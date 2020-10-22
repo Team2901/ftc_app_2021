@@ -1,6 +1,7 @@
-package org.firstinspires.ftc.teamcode.Utility;
+package org.firstinspires.ftc.teamcode.RoverRuckus.Utilities;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -13,7 +14,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.RoverRuckus.Autonomous.BaseRoverRuckusAuto;
+import org.firstinspires.ftc.teamcode.Utility.BitmapUtilities;
+import org.firstinspires.ftc.teamcode.Utility.ColorUtilities;
+import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
@@ -24,6 +32,8 @@ public class RoverRuckusUtilities {
     public static final String JEWEL_BITMAP_FILE_FORMAT = "jewelBitmap%s.png";
     public static final String JEWEL_BITMAP_BW_FILE_FORMAT = "jewelBitmapBW%s.png";
     public static final String JEWEL_HUE_FILE_FORMAT = "jewelHues%s.txt";
+    public final static String TEAM_FOLDER_NAME = "Team";
+    public final static String WINNER_FILE_NAME_3 = "writeWinnerFile3Jewels.txt";
 
     public static final float MM_TO_INCHES = 0.0393701f;
     public static final float INCHES_TO_MM = 25.4f;
@@ -132,5 +142,34 @@ public class RoverRuckusUtilities {
         return OpenGLMatrix.translation(dx, dy, dz).multiplied
                 (Orientation.getRotationMatrix(AxesReference.EXTRINSIC,
                         AxesOrder.XYZ, AngleUnit.DEGREES, ax, ay, az));
+    }
+
+    public static void writeWinnerFile(BaseRoverRuckusAuto.GoldPosition winner,
+                                       int[] leftHueTotal,
+                                       int[] middleHueTotal,
+                                       int[] rightHueTotal) throws IOException {
+
+        final File teamDir = new File(Environment.getExternalStorageDirectory(), TEAM_FOLDER_NAME);
+        boolean newDir = teamDir.mkdirs();
+        final File file = new File(teamDir, WINNER_FILE_NAME_3);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write("Left Jewel Yellow count = " + leftHueTotal[0]);
+            writer.newLine();
+            writer.write("Left Jewel White count = " + leftHueTotal[1]);
+            writer.newLine();
+            writer.newLine();
+            writer.write("Middle Jewel Yellow count = " + middleHueTotal[0]);
+            writer.newLine();
+            writer.write("Middle Jewel White count = " + middleHueTotal[1]);
+            writer.newLine();
+            writer.newLine();
+            writer.write("Right Jewel Yellow count = " + rightHueTotal[0]);
+            writer.newLine();
+            writer.write("Right Jewel White count = " + rightHueTotal[1]);
+            writer.newLine();
+            writer.write("winner is " + winner);
+
+        }
     }
 }

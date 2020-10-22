@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.RoverRuckus.Autonomous;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -18,7 +19,7 @@ import org.firstinspires.ftc.teamcode.Utility.AngleUtilities;
 import org.firstinspires.ftc.teamcode.Utility.BitmapUtilities;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
 import org.firstinspires.ftc.teamcode.Utility.PolarCoord;
-import org.firstinspires.ftc.teamcode.Utility.RoverRuckusUtilities;
+import org.firstinspires.ftc.teamcode.RoverRuckus.Utilities.RoverRuckusUtilities;
 import org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities;
 
 import static org.firstinspires.ftc.teamcode.RoverRuckus.Autonomous.BaseRoverRuckusAuto.GoldPosition.MIDDLE;
@@ -247,19 +248,39 @@ public class BaseRoverRuckusAuto extends LinearOpMode {
             return winner;
         }
 
-        winner = BitmapUtilities.findWinnerLocation(middleHueTotal, rightHueTotal);
+        winner = findWinnerLocation(middleHueTotal, rightHueTotal);
 
         if (writeFiles) {
             try {
                 FileUtilities.writeBitmapFile("jewelBitmap.png", bitmap);
                 FileUtilities.writeHueFile("jewelHuesBig.txt", bitmap, this);
-                FileUtilities.writeWinnerFile(winner, leftHueTotal, middleHueTotal, rightHueTotal);
+                RoverRuckusUtilities.writeWinnerFile(winner, leftHueTotal, middleHueTotal, rightHueTotal);
             } catch (Exception e) {
                 telemetry.addData("Error writing jewel files", e);
                 telemetry.update();
             }
         }
 
+        return winner;
+    }
+
+    public static BaseRoverRuckusAuto.GoldPosition findWinnerLocation(int[] middleHueTotal,
+                                                                      int[] rightHueTotal) {
+        BaseRoverRuckusAuto.GoldPosition winner = BaseRoverRuckusAuto.GoldPosition.LEFT;
+        int middleColor, rightColor;
+
+        if (middleHueTotal[0]/*yellow counts*/ > middleHueTotal[1]/*white counts*/) {
+            middleColor = Color.YELLOW;
+            winner = BaseRoverRuckusAuto.GoldPosition.MIDDLE;
+        } else {
+            middleColor = Color.WHITE;
+        }
+        if (rightHueTotal[0]/*yellow counts*/ > rightHueTotal[1]/*white counts*/) {
+            rightColor = Color.YELLOW;
+            winner = BaseRoverRuckusAuto.GoldPosition.RIGHT;
+        } else {
+            rightColor = Color.WHITE;
+        }
         return winner;
     }
 
