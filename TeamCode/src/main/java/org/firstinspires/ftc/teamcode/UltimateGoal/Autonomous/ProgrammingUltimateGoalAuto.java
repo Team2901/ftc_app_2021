@@ -121,7 +121,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesCenter(12);
 
-        if (starterStackResult == 0){
+        if (starterStackResult == 0) {
             goToA();
         } else if (starterStackResult == 1) {
             goToB();
@@ -130,6 +130,12 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
         } else {
             telemetry.addData("error", "How did this happen");
             telemetry.update();
+        }
+
+        if(starterStackResult == 1) {
+            moveInchesForward(-25);
+        } else if(starterStackResult == 2){
+            moveInchesForward(-50);
         }
 
 

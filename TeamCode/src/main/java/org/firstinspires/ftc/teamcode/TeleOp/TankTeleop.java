@@ -24,7 +24,7 @@ public class TankTeleop extends OpMode {
     @Override
     public void loop() {
 
-        telemetry.addData("Enter Mode", "A for H-Drive and B for Tank Drive");
+        telemetry.addData("Enter Mode", "A for Will's H-Drive, B for Tank Drive, and X for Nikki's H-Drive");
 
         if(gamepad1.a) {
             driveChoice = 1;
