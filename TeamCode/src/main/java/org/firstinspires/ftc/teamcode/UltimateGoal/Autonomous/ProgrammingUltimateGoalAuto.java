@@ -63,18 +63,18 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     public void goToA() {
         moveInchesCenter(12);
-        moveInchesForward(75);
+        moveInchesForward(75, true);
         releaseWobble();
     }
     public void goToB() {
         moveInchesCenter(12);
-        moveInchesForward(99);
+        moveInchesForward(99, true);
         moveInchesCenter(-36);
         releaseWobble();
     }
     public void goToC() {
         moveInchesCenter(12);
-        moveInchesForward(123);
+        moveInchesForward(123, true);
         releaseWobble();
     }
 
@@ -132,10 +132,11 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
             telemetry.update();
         }
 
+        //Parks back at the line
         if(starterStackResult == 1) {
-            moveInchesForward(-25);
+            moveInchesForward(-25, false);
         } else if(starterStackResult == 2){
-            moveInchesForward(-50);
+            moveInchesForward(-50, false);
         }
 
 
