@@ -106,6 +106,15 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             robot.configureWobbleGrabber(false);
         }
 
+        // If dpad up is pressed it will pass true to the configureWobbleElbow method
+        if(gamepad2.dpad_up){
+            robot.configureWobbleElbow(true);
+        }
+        // If dpad down is pressed it will pass false to the configureWobbleElbow method
+        else if(gamepad2.dpad_down){
+            robot.configureWobbleElbow(false);
+        }
+
         /*
         * This code below prints out the robot angle, right stick angle, right motor power, the
         * left motor power, and performs a telemetry update.
