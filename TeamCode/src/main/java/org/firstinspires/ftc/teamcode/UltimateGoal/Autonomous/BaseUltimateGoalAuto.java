@@ -23,8 +23,15 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public static final double FORWARD_TICKS_PER_INCH = FORWARD_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
     public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
 
+    public final TeamColor teamColor;
+
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
     public int starterStackResult = -1;
+
+    public BaseUltimateGoalAuto(TeamColor teamColor) {
+        this.teamColor = teamColor;
+    }
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -115,7 +122,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
 
     public void moveInchesCenter(double inches){
-        int ticks = (int) (inches * CENTER_TICKS_PER_INCH);
+        int direction = (TeamColor.RED_TEAM == this.teamColor) ? 1:-1;
+
+        int ticks = (int) (inches * CENTER_TICKS_PER_INCH * direction);
 
         robot.middleMotor.setTargetPosition(robot.middleMotor.getCurrentPosition() + ticks);
 
@@ -215,5 +224,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             telemetry.addData("Successful!", "");
         }
     }
-
+    public enum TeamColor {
+     RED_TEAM, BLUE_TEAM
+    }
 }

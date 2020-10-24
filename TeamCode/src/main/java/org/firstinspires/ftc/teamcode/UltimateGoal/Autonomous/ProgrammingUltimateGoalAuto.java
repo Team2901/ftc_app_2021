@@ -30,10 +30,9 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous.BaseUltimateGoalAuto;
 
 import static java.lang.System.currentTimeMillis;
 
@@ -51,15 +50,18 @@ import static java.lang.System.currentTimeMillis;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
+@Disabled
 @Autonomous(name = "Programming Ultimate Goal Auto", group = "Linear Opmode")
 public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     // Declare OpMode members.
     private ElapsedTime runtime = new ElapsedTime();
 
-
     public String target = "C";
 
+    public ProgrammingUltimateGoalAuto(TeamColor teamColor) {
+        super(teamColor);
+    }
 
     public void goToA() {
         moveInchesCenter(12);
