@@ -29,6 +29,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public int starterStackResult = -1;
 
     public BaseUltimateGoalAuto(TeamColor teamColor) {
+        super();
         this.teamColor = teamColor;
     }
 
