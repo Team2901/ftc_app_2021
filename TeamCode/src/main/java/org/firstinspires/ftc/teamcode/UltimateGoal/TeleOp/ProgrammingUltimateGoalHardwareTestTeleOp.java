@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.SkyStone.TeleOp;
+package org.firstinspires.ftc.teamcode.UltimateGoal.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
@@ -9,14 +9,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.SkyStone.Hardware.BuilderSkystoneHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
 
 import java.util.ArrayList;
 
-@Disabled
-@TeleOp(name = "SkyStone Hardware Test", group = "2019_SkyStone")
-public class SkystoneHardwareTestTeleOp extends OpMode {
+@TeleOp(name = "Hardware Test UltimateGoal", group = "2021_UltimateGoal")
+public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
 
-    BuilderSkystoneHardware robot = new BuilderSkystoneHardware();
+    ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
     ImprovedGamepad impGamepad;
     ElapsedTime timer = new ElapsedTime();
 
@@ -24,11 +24,10 @@ public class SkystoneHardwareTestTeleOp extends OpMode {
     Servo servoUnderTest;
 
     // List of all of the motor names.
-    String[] motorNames = {"frontLeft", "frontRight", "backLeft", "backRight", "lift"};
+    String[] motorNames = {"left_drive", "right_drive", "middle_drive"};
 
     // List of all of the servo names.
-    String[] servoNames = {"servoFrontLeft", "servoFrontRight", "servoBackLeft", "servoBackRight", "jaw"
-            , "crane", "wrist", "leftGrabber", "rightGrabber"};
+    String[] servoNames = {"grabber"};
 
     int motorIndex;
 
@@ -155,6 +154,5 @@ public class SkystoneHardwareTestTeleOp extends OpMode {
         telemetry.addData("D Pad Right/Left", "Increment/decrement servos");
 
         telemetry.update();
-
     }
 }
