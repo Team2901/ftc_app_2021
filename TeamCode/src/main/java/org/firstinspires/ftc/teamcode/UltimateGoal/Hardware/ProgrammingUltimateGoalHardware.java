@@ -9,13 +9,14 @@ import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHard
 public class ProgrammingUltimateGoalHardware extends BaseUltimateGoalHardware {
     public DcMotor middleMotor = null;
     public Servo wobbleGrabber;
-    public DcMotor wobbleElbow;
+    //public DcMotor wobbleElbow;
 
     @Override
     public void init(HardwareMap hwMap) {
         super.init(hwMap);
         middleMotor = hwMap.dcMotor.get("middle_drive");
         wobbleGrabber = hwMap.servo.get("grabber");
+        //wobbleElbow = hwMap.dcMotor.get("elbow");
     }
 
     /**
@@ -30,28 +31,6 @@ public class ProgrammingUltimateGoalHardware extends BaseUltimateGoalHardware {
         // Otherwise, the wobble grabber will remain open.
         else{
             wobbleGrabber.setPosition(0.75);
-        }
-    }
-
-    /**
-     * This helper method configures the wobble elbow to either keep extending the wobble elbow forward
-     * while we are pressing the dpad up button or keep retracting the wobble elbow while we are
-     * pressing the dpad down button.
-     * @param isForward determines whether the wobble elbow should extend forward or backward.
-     */
-    public void configureWobbleElbow(boolean isForward){
-        // If we are pressing the dpad up button, while we are pressing it, the wobble elbow will
-        // keep extending forward.
-        if(isForward){
-            while(isForward){
-                wobbleElbow.setPower(1);
-            }
-        }
-        // Otherwise, while we are pressing the dpad down button, the wobble elbow will keep retracting.
-        else{
-            while(isForward){
-                wobbleElbow.setPower(-1);
-            }
         }
     }
 }
