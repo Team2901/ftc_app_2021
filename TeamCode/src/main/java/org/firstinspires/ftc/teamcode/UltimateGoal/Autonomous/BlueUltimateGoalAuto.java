@@ -7,4 +7,9 @@ public class BlueUltimateGoalAuto extends ProgrammingUltimateGoalAuto {
     public BlueUltimateGoalAuto(TeamColor teamColor) {
         super(TeamColor.BLUE_TEAM);
     }
+
+    @Override
+    public void runOpMode() {
+        super.runOpMode();
+    }
 }
