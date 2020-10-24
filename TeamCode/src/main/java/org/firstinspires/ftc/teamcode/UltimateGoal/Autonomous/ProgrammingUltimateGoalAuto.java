@@ -64,6 +64,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
     public void goToA() {
         moveInchesCenter(12);
         moveInchesForward(75, true);
+        moveInchesCenter(-12);
         releaseWobble();
     }
     public void goToB() {
@@ -75,6 +76,7 @@ public class ProgrammingUltimateGoalAuto extends BaseUltimateGoalAuto {
     public void goToC() {
         moveInchesCenter(12);
         moveInchesForward(123, true);
+        moveInchesCenter(-12);
         releaseWobble();
     }
 
