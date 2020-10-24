@@ -35,22 +35,20 @@ public class ProgrammingUltimateGoalHardware extends BaseUltimateGoalHardware {
 
     /**
      * This helper method configures the wobble elbow to either keep extending the wobble elbow forward
-     * while we are pressing the dpad up button or keep extending the wobble elbow backward while we
-     * are pressing the dpad down button.
+     * while we are pressing the dpad up button or keep retracting the wobble elbow while we are
+     * pressing the dpad down button.
      * @param isForward determines whether the wobble elbow should extend forward or backward.
      */
     public void configureWobbleElbow(boolean isForward){
         // If we are pressing the dpad up button, while we are pressing it, the wobble elbow will
         // keep extending forward.
-        if(isForward == true){
+        if(isForward){
             while(isForward){
                 wobbleElbow.setPower(1);
             }
         }
-        // Otherwise, while we are pressing the dpad down button, the wobble elbow will keep extending
-        // backward.
+        // Otherwise, while we are pressing the dpad down button, the wobble elbow will keep retracting.
         else{
-            isForward = true;
             while(isForward){
                 wobbleElbow.setPower(-1);
             }

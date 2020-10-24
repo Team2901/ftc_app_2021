@@ -106,11 +106,11 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             robot.configureWobbleGrabber(false);
         }
 
-        // If dpad up is pressed it will pass true to the configureWobbleElbow method
+        // If dpad up is pressed we want the wobble elbow to keep on extending forward.
         if(gamepad2.dpad_up){
             robot.configureWobbleElbow(true);
         }
-        // If dpad down is pressed it will pass false to the configureWobbleElbow method
+        // If dpad down is pressed we want the wobble elbow to keep on retracting.
         else if(gamepad2.dpad_down){
             robot.configureWobbleElbow(false);
         }
