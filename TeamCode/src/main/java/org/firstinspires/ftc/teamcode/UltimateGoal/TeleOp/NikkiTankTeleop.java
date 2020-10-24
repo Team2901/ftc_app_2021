@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateG
 @TeleOp(name = "NikkiTank", group = "2021_UltimateGoal")
 public class NikkiTankTeleop extends OpMode {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
-    //public BaseUltimateGoalAuto auto = new BaseUltimateGoalAuto(teamColor);
+    public BaseUltimateGoalAuto auto = new BaseUltimateGoalAuto(BaseUltimateGoalAuto.TeamColor.RED_TEAM);
     //variables for use in PID loop
     //float angleAfterTurn = robot.getAngle();
     double angleCorrection = 0.0;
