@@ -107,6 +107,21 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         }
 
         /*
+        // If dpad up is pressed we want the wobble elbow to keep on extending forward.
+        if(gamepad2.dpad_up){
+            robot.wobbleElbow.setPower(0.5);
+        }
+        // If dpad down is pressed we want the wobble elbow to keep on retracting.
+        else if(gamepad2.dpad_down){
+            robot.wobbleElbow.setPower(-0.5);
+        }
+        // Otherwise, we want the robot's wobble elbow to stay still.
+        else{
+            robot.wobbleElbow.setPower(0);
+        }
+        */
+
+        /*
         * This code below prints out the robot angle, right stick angle, right motor power, the
         * left motor power, and performs a telemetry update.
          */
