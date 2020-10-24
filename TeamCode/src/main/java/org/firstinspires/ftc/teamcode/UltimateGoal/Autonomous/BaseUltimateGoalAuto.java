@@ -134,7 +134,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
 
 
-    public void moveInchesForward(double inches) {
+    public void moveInchesForward(double inches, boolean correctingRun) {
         int ticks = (int) (inches * FORWARD_TICKS_PER_INCH);
         double startAngle = robot.getAngle();
         double toleranceRange = 10.0;
@@ -150,7 +150,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.rightMotor.setPower(-angleTuning + .75);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
-            angleTuning = pidTune(startAngle, robot.getAngle());
+            if(correctingRun) {
+                angleTuning = pidTune(startAngle, robot.getAngle());
+            }
 
             telemetry.addData("Adjusting:", angleTuning);
             telemetry.addData("stackID", starterStackResult);
