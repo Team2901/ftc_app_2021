@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous.ProgrammingUltimat
 
 @Autonomous(name = "Red Ultimate Goal Auto", group = "Red Team")
 public class RedUltimateGoalAuto extends ProgrammingUltimateGoalAuto {
-    public RedUltimateGoalAuto(TeamColor teamColor) {
+    public RedUltimateGoalAuto() {
         super(TeamColor.RED_TEAM);
     }
 
