@@ -26,6 +26,8 @@ public class VuforiaUltimateGoalTest extends OpMode {
         //This props up the blue tower, it is currently in the middle of the field.
         OpenGLMatrix blueTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
         vuforiaBlueTower.setLocation(blueTowerLocation);
+
+        OpenGLMatrix webcamLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 0,-90,0);
     }
 
     @Override
