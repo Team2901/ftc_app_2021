@@ -7,7 +7,9 @@ import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.TankUltimateGoalHardware;
 
 @TeleOp(name = "Vuforia UltimateGoal Test", group = "2021_UltimateGoal")
@@ -28,6 +30,10 @@ public class VuforiaUltimateGoalTest extends OpMode {
         vuforiaBlueTower.setLocation(blueTowerLocation);
 
         OpenGLMatrix webcamLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 0,-90,0);
+        VuforiaTrackable.Listener webcamListener = vuforiaBlueTower.getListener();
+        VuforiaTrackableDefaultListener webcamDefaultListener = (VuforiaTrackableDefaultListener) webcamListener;
+        webcamDefaultListener.setPhoneInformation(webcamLocation, VuforiaLocalizer.CameraDirection.BACK);
+
     }
 
     @Override
