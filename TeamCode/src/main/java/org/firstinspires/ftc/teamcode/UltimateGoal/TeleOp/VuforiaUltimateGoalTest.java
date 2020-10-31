@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal.TeleOp;
 
+import android.annotation.SuppressLint;
+
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -8,11 +10,13 @@ import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.TankUltimateGoalHardware;
 
+@SuppressLint("DefaultLocale")
 @TeleOp(name = "Vuforia UltimateGoal Test", group = "2021_UltimateGoal")
 public class VuforiaUltimateGoalTest extends OpMode {
     public TankUltimateGoalHardware robot = new TankUltimateGoalHardware();
@@ -69,13 +73,13 @@ public class VuforiaUltimateGoalTest extends OpMode {
             VuforiaTrackable currentTrackable = robot.webCamera.vuforiaTrackables.get(i);
 
             // Gets listener before checking if current tracker is visible.
-            VuforiaTrackableDefaultListener currentTrackableDefaultListener = (VuforiaTrackableDefaultListener) currentTrackable;
+            VuforiaTrackableDefaultListener currentTrackableDefaultListener = (VuforiaTrackableDefaultListener) currentTrackable.getListener();
 
             // Determines whether current trackable is visible.
             boolean isTrackableVisible = currentTrackableDefaultListener.isVisible();
 
             // Prints out whether the current trackable is visible.
-            telemetry.addData(currentTrackable + " is visible", isTrackableVisible);
+            telemetry.addData(currentTrackable.getName() + " is visible", isTrackableVisible);
 
             // Gets the robot's location.
             OpenGLMatrix robotLocation = currentTrackableDefaultListener.getRobotLocation();
@@ -85,7 +89,23 @@ public class VuforiaUltimateGoalTest extends OpMode {
             * if the tracker image is visible, we translate the robot's location.
              */
             if(robotLocation != null){
+                // This gets what this trackable thinks that the robot's position is.
                 VectorF robotLocationTranslation = robotLocation.getTranslation();
+                float x = robotLocationTranslation.get(0);
+                float y = robotLocationTranslation.get(1);
+                float z = robotLocationTranslation.get(2);
+
+                // This gets what this trackable thinks that the robot's orientation is.
+                Orientation orientation = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+                float xAngle = orientation.firstAngle;
+                float yAngle = orientation.secondAngle;
+                float zAngle = orientation.thirdAngle;
+
+                // x, y, z positions (x, y, z)
+                telemetry.addData("x, y, z positions", "(" + x + ", " + y +", " + z + ")");
+
+                // x, y, z rotations (x, y, z)
+                telemetry.addData("x, y, z rotations", String.format("(%f, %f, %f)", xAngle, yAngle, zAngle));
             }
         }
 
