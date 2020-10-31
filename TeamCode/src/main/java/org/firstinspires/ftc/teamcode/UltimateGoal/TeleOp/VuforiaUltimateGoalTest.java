@@ -80,7 +80,10 @@ public class VuforiaUltimateGoalTest extends OpMode {
             // Gets the robot's location.
             OpenGLMatrix robotLocation = currentTrackableDefaultListener.getRobotLocation();
 
-            // If the robot location is not null, we translate the robot's location.
+            /*
+            * If the robot location is not null, we translate the robot's location. In other words,
+            * if the tracker image is visible, we translate the robot's location.
+             */
             if(robotLocation != null){
                 VectorF robotLocationTranslation = robotLocation.getTranslation();
             }
