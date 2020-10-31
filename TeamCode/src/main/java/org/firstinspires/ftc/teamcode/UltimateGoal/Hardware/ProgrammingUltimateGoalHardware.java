@@ -8,6 +8,9 @@ import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHard
 
 public class ProgrammingUltimateGoalHardware extends BaseUltimateGoalHardware {
     public DcMotor middleMotor = null;
+    public DcMotor intakeMotor = null;
+    public DcMotor shooterMotor = null;
+    public Servo ringServo;
     public Servo wobbleGrabber;
     //public DcMotor wobbleElbow;
 
@@ -15,6 +18,9 @@ public class ProgrammingUltimateGoalHardware extends BaseUltimateGoalHardware {
     public void init(HardwareMap hwMap) {
         super.init(hwMap);
         middleMotor = hwMap.dcMotor.get("middle_drive");
+        intakeMotor = hwMap.dcMotor.get("intake_motor");
+        shooterMotor = hwMap.dcMotor.get("shooter_motor");
+        ringServo = hwMap.servo.get("ring_servo");
         wobbleGrabber = hwMap.servo.get("grabber");
         //wobbleElbow = hwMap.dcMotor.get("elbow");
     }
