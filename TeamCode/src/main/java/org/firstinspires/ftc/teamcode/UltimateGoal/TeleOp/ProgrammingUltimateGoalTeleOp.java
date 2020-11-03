@@ -23,6 +23,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         float leftStickX = gamepad1.left_stick_x;
         float leftStickY = -1 * gamepad1.left_stick_y;
         double rightStickAngle = AngleUnit.DEGREES.fromRadians(Math.atan2(rightStickY, rightStickX));
+        double leftStickAngle = AngleUnit.DEGREES.fromRadians(Math.atan2(leftStickY, leftStickX));
         double leftMotorPower = 0;
         double rightMotorPower = 0;
         float robotAngle = robot.getAngle();
@@ -105,6 +106,12 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         else if(gamepad1.dpad_down){
             robot.configureWobbleGrabber(false);
         }
+
+        // Step 1: Calculate angle relative to field to move at (from left joystick)
+        double angleToMoveAt = leftStickAngle;
+        // Step 2: Calculate angle relative to the robot to move at
+        // Step 3: Calculate forwards/sideways components to move at
+        // Step 4: Calculate forwards/sideways powers to move at
 
         /*
         // If dpad up is pressed we want the wobble elbow to keep on extending forward.
