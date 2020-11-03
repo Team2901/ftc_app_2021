@@ -49,7 +49,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
         vuforiaRedTower.setLocation(redTowerLocation);
 
         // Sets up the position of the Vuforia web image and web camera.
-        OpenGLMatrix webcamLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 0,-90,0);
+        OpenGLMatrix webcamLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,-90,0);
 
         // We are telling the blue tower image where the camera is on the robot.
         VuforiaTrackable.Listener webcamListenerBlue = vuforiaBlueTower.getListener();
