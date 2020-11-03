@@ -18,8 +18,12 @@ public class ProgrammingUltimateGoalHardware extends BaseUltimateGoalHardware {
     public void init(HardwareMap hwMap) {
         super.init(hwMap);
         middleMotor = hwMap.dcMotor.get("middle_drive");
-        intakeMotor = hwMap.dcMotor.get("intake_motor");
-        shooterMotor = hwMap.dcMotor.get("shooter_motor");
+        try {
+            intakeMotor = hwMap.dcMotor.get("intake_motor");
+            shooterMotor = hwMap.dcMotor.get("shooter_motor");
+        }
+        catch(Exception e){
+        }
         ringServo = hwMap.servo.get("ring_servo");
         wobbleGrabber = hwMap.servo.get("grabber");
         //wobbleElbow = hwMap.dcMotor.get("elbow");
