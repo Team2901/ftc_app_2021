@@ -26,15 +26,14 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         double leftStickAngle = AngleUnit.DEGREES.fromRadians(Math.atan2(leftStickY, leftStickX));
         double leftMotorPower = 0;
         double rightMotorPower = 0;
+        double middleMotorPower = 0;
         float robotAngle = robot.getAngle();
         double desiredAngle = 0;
         boolean isLetterOnGamepad1Pressed = gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y;
 
-        // Determine radius of right stick through Pythagorean Theorem.
-        double rightStickXSquared = Math.pow(rightStickX,2);
-        double rightStickYSquared = Math.pow(rightStickY,2);
-        double rightStickRadiusSquared = rightStickXSquared + rightStickYSquared;
-        double rightStickRadius = Math.sqrt(rightStickRadiusSquared);
+        // Determine radii of joysticks through Pythagorean Theorem.
+        double rightStickRadius = Math.hypot(rightStickX, rightStickY);
+        double leftStickRadius = Math.hypot(leftStickX, leftStickY);
 
         // When pressing the left bumper, the robot will turn counterclockwise.
         if(gamepad1.left_bumper){
@@ -48,8 +47,21 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         }
         // This sets the motor's power to however far the left joystick is pushed.
         else {
-            leftMotorPower = leftStickY;
-            rightMotorPower = leftStickY;
+            // Step 1: Calculate angle relative to field to move at (from left joystick)
+            double angleToMoveAt = leftStickAngle;
+            // Step 2: Calculate angle relative to the robot to move at
+            double angleToMoveTo = angleToMoveAt - robotAngle;
+            // Step 3: Calculate forwards/sideways components to move at
+            double xToMoveTo = Math.cos(angleToMoveTo);
+            double yToMoveTo = Math.sin(angleToMoveTo);
+            // Step 4: Calculate forwards/sideways powers to move at
+            leftMotorPower = leftStickRadius * xToMoveTo;
+            rightMotorPower = leftStickRadius * xToMoveTo;
+            middleMotorPower = leftStickRadius * yToMoveTo;
+
+            telemetry.addData("x To Move To", xToMoveTo);
+            telemetry.addData("y To Move To", yToMoveTo);
+            telemetry.addData("Angle To Move To", angleToMoveTo);
         }
 
         /*
@@ -96,7 +108,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         // Program sets left, middle, and right motors to their respective powers.
         robot.leftMotor.setPower(leftMotorPower);
         robot.rightMotor.setPower(rightMotorPower);
-        robot.middleMotor.setPower(leftStickX);
+        robot.middleMotor.setPower(middleMotorPower);
 
         // If the up button on the dpad is pressed, then the wobble grabber will close.
         if(gamepad1.dpad_up){
@@ -107,11 +119,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             robot.configureWobbleGrabber(false);
         }
 
-        // Step 1: Calculate angle relative to field to move at (from left joystick)
-        double angleToMoveAt = leftStickAngle;
-        // Step 2: Calculate angle relative to the robot to move at
-        // Step 3: Calculate forwards/sideways components to move at
-        // Step 4: Calculate forwards/sideways powers to move at
+
 
         /*
         // If dpad up is pressed we want the wobble elbow to keep on extending forward.
@@ -134,8 +142,10 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
          */
         telemetry.addData("Robot angle", robotAngle);
         telemetry.addData("Right Stick Angle", rightStickAngle);
+        telemetry.addData("Left Stick Angle", leftStickAngle);
         telemetry.addData("Right Motor Power", rightMotorPower);
         telemetry.addData("Left Motor Power", leftMotorPower);
+        telemetry.addData("Middle Motor Power", middleMotorPower);
         telemetry.update();
     }
 
