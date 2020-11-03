@@ -23,7 +23,15 @@ public class VuforiaUltimateGoalTest extends OpMode {
     @Override
     public void init() {
         robot.init(this.hardwareMap);
-        robot.initWebCamera(this.hardwareMap);
+
+        int cameraRotationX = 0;
+        String errorMessage = robot.initWebCamera(this.hardwareMap);
+
+        if(errorMessage != null) {
+            robot.webCamera.errorMessage = null;
+            cameraRotationX = 90;
+            robot.initPhoneCamera(this.hardwareMap);
+        }
 
         // Loading the Vuforia trackables.
         robot.webCamera.loadVuforiaTrackables("UltimateGoal");
@@ -49,7 +57,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
         vuforiaRedTower.setLocation(redTowerLocation);
 
         // Sets up the position of the Vuforia web image and web camera.
-        OpenGLMatrix webcamLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,-90,0);
+        OpenGLMatrix webcamLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES, -90,cameraRotationX,0);
 
         // We are telling the blue tower image where the camera is on the robot.
         VuforiaTrackable.Listener webcamListenerBlue = vuforiaBlueTower.getListener();

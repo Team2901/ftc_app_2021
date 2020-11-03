@@ -55,6 +55,10 @@ public class BaseUltimateGoalHardware {
     public String initWebCamera(HardwareMap hardwareMap){
         return webCamera.initWebCamera(hardwareMap, WEB_CAM_NAME);
     }
+
+    public String initPhoneCamera(HardwareMap hardwareMap){
+        return webCamera.initBackCamera(hardwareMap);
+    }
     
     public String initTfod(){
         return webCamera.initTfod(.8, TFOD_MODEL_ASSET, ELEMENT_QUAD, ELEMENT_SINGLE);
