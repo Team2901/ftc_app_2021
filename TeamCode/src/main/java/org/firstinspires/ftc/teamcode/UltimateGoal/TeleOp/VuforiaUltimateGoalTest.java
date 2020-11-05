@@ -46,6 +46,9 @@ public class VuforiaUltimateGoalTest extends OpMode {
         OpenGLMatrix blueTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
         vuforiaBlueTower.setLocation(blueTowerLocation);
 
+        OpenGLMatrix blueTowerLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0, -90));
+        vuforiaBlueTower.setLocation(blueTowerLocationTwo);
+
         // Saves red tower trackable.
         VuforiaTrackable vuforiaRedTower = robot.webCamera.vuforiaTrackables.get(1);
 
@@ -56,18 +59,23 @@ public class VuforiaUltimateGoalTest extends OpMode {
         OpenGLMatrix redTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
         vuforiaRedTower.setLocation(redTowerLocation);
 
+        OpenGLMatrix redTowerLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0, -90));
+        vuforiaRedTower.setLocation(redTowerLocationTwo);
+
         // Sets up the position of the Vuforia web image and web camera.
         OpenGLMatrix webcamLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES, -90,cameraRotationX,0);
+
+        OpenGLMatrix webcamLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES, -90,cameraRotationX, 0));
 
         // We are telling the blue tower image where the camera is on the robot.
         VuforiaTrackable.Listener webcamListenerBlue = vuforiaBlueTower.getListener();
         VuforiaTrackableDefaultListener webcamDefaultListenerBlue = (VuforiaTrackableDefaultListener) webcamListenerBlue;
-        webcamDefaultListenerBlue.setPhoneInformation(webcamLocation, VuforiaLocalizer.CameraDirection.BACK);
+        webcamDefaultListenerBlue.setPhoneInformation(webcamLocationTwo, VuforiaLocalizer.CameraDirection.BACK);
 
         // We are telling the red tower image where the camera is on the robot.
         VuforiaTrackable.Listener webcamListenerRed = vuforiaRedTower.getListener();
         VuforiaTrackableDefaultListener webcamDefaultListenerRed = (VuforiaTrackableDefaultListener) webcamListenerRed;
-        webcamDefaultListenerRed.setPhoneInformation(webcamLocation, VuforiaLocalizer.CameraDirection.BACK);
+        webcamDefaultListenerRed.setPhoneInformation(webcamLocationTwo, VuforiaLocalizer.CameraDirection.BACK);
 
         // We are ready to use the trackables and this gives us the opportunity to deactivate them later.
         robot.webCamera.vuforiaTrackables.activate();
