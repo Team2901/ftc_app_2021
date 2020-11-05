@@ -48,12 +48,12 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         // This sets the motor's power to however far the left joystick is pushed.
         else {
             // Step 1: Calculate angle relative to field to move at (from left joystick)
-            double angleToMoveAt = leftStickAngle;
+            double angleToMoveFieldTo = leftStickAngle;
             // Step 2: Calculate angle relative to the robot to move at
-            double angleToMoveTo = angleToMoveAt - robotAngle;
+            double angleToMoveRobotTo = angleToMoveFieldTo - robotAngle;
             // Step 3: Calculate forwards/sideways components to move at
-            double xToMoveTo = Math.cos(angleToMoveTo);
-            double yToMoveTo = Math.sin(angleToMoveTo);
+            double xToMoveTo = Math.cos(angleToMoveRobotTo);
+            double yToMoveTo = Math.sin(angleToMoveRobotTo);
             // Step 4: Calculate forwards/sideways powers to move at
             leftMotorPower = leftStickRadius * xToMoveTo;
             rightMotorPower = leftStickRadius * xToMoveTo;
@@ -61,7 +61,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
 
             telemetry.addData("x To Move To", xToMoveTo);
             telemetry.addData("y To Move To", yToMoveTo);
-            telemetry.addData("Angle To Move To", angleToMoveTo);
+            telemetry.addData("Angle To Move To", angleToMoveRobotTo);
         }
 
         /*
