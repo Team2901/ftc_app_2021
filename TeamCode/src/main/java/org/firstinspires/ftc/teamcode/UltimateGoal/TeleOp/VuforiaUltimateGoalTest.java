@@ -46,7 +46,9 @@ public class VuforiaUltimateGoalTest extends OpMode {
         OpenGLMatrix blueTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
         vuforiaBlueTower.setLocation(blueTowerLocation);
 
-        OpenGLMatrix blueTowerLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0, -90));
+        OpenGLMatrix blueTowerLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied
+                (Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES,
+                        90,0, -90));
         vuforiaBlueTower.setLocation(blueTowerLocationTwo);
 
         // Saves red tower trackable.
@@ -59,13 +61,17 @@ public class VuforiaUltimateGoalTest extends OpMode {
         OpenGLMatrix redTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
         vuforiaRedTower.setLocation(redTowerLocation);
 
-        OpenGLMatrix redTowerLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0, -90));
+        OpenGLMatrix redTowerLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied(
+                Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES,
+                        90,0, -90));
         vuforiaRedTower.setLocation(redTowerLocationTwo);
 
         // Sets up the position of the Vuforia web image and web camera.
         OpenGLMatrix webcamLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES, -90,cameraRotationX,0);
 
-        OpenGLMatrix webcamLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied(Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES, -90,cameraRotationX, 0));
+        OpenGLMatrix webcamLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied(
+                Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.YXZ, AngleUnit.DEGREES,
+                        -90,cameraRotationX, 0));
 
         // We are telling the blue tower image where the camera is on the robot.
         VuforiaTrackable.Listener webcamListenerBlue = vuforiaBlueTower.getListener();
