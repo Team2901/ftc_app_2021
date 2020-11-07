@@ -27,7 +27,7 @@ public class ProgrammingUltimateGoalHardware extends BaseUltimateGoalHardware {
             shooterMotor = hwMap.dcMotor.get("shooter_motor");
             shooterMotor2 = hwMap.dcMotor.get("shooter_motor_2");
             transferMotor = hwMap.dcMotor.get("transfer_motor");
-            wobbleElbow = hwMap.dcMotor.get("elbow");
+            wobbleElbow = hwMap.dcMotor.get("elbow_motor");
 
             intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
