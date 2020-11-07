@@ -14,9 +14,15 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();
+    // Relative to you
+    public static final int ABSOLUTE_MODE = 0;
+    // Relative to front of robot
+    public static final int RELATIVE_MODE = 1;
+    public int currentMode = RELATIVE_MODE;
 
     @Override
     public void init() {
+        // Instantiate gamepads
         impGamepad1 = new ImprovedGamepad(this.gamepad1, this.timer, "GP1");
         impGamepad2 = new ImprovedGamepad(this.gamepad2, this.timer, "GP2");
 
@@ -41,6 +47,18 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         double desiredAngle = 0;
         boolean isLetterOnGamepad1Pressed = gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y;
 
+        // If we press the dpad_left button, then the current mode will be changed to absolute mode.
+        if(gamepad1.dpad_left){
+            currentMode = ABSOLUTE_MODE;
+        }
+        // If we press the dpad_right button, then the current mode will be changed to relative mode.
+        else if(gamepad1.dpad_right){
+            currentMode = RELATIVE_MODE;
+        }
+
+        // Prints out the current mode that we are in.
+        telemetry.addData("Current Mode", currentMode == 1 ? "Relative" : "Absolute");
+
         // Determine radii of joysticks through Pythagorean Theorem.
         double rightStickRadius = Math.hypot(rightStickX, rightStickY);
         double leftStickRadius = Math.hypot(leftStickX, leftStickY);
@@ -57,21 +75,23 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         }
         // This sets the motor's power to however far the left joystick is pushed.
         else {
-            // Step 1: Calculate angle relative to field to move at (from left joystick)
-            double angleToMoveFieldTo = leftStickAngle;
-            // Step 2: Calculate angle relative to the robot to move at
-            double angleToMoveRobotTo = angleToMoveFieldTo - robotAngle;
-            // Step 3: Calculate forwards/sideways components to move at
-            double xToMoveTo = Math.cos(Math.toRadians(angleToMoveRobotTo));
-            double yToMoveTo = Math.sin(Math.toRadians(angleToMoveRobotTo));
-            // Step 4: Calculate forwards/sideways powers to move at
-            leftMotorPower = leftStickRadius * xToMoveTo;
-            rightMotorPower = leftStickRadius * xToMoveTo;
-            middleMotorPower = leftStickRadius * yToMoveTo;
+            if(currentMode == ABSOLUTE_MODE){
+                // Step 1: Calculate angle relative to field to move at (from left joystick)
+                double angleToMoveFieldTo = leftStickAngle;
+                // Step 2: Calculate angle relative to the robot to move at
+                double angleToMoveRobotTo = angleToMoveFieldTo - robotAngle;
+                // Step 3: Calculate forwards/sideways components to move at
+                double xToMoveTo = Math.cos(Math.toRadians(angleToMoveRobotTo));
+                double yToMoveTo = Math.sin(Math.toRadians(angleToMoveRobotTo));
+                // Step 4: Calculate forwards/sideways powers to move at
+                leftMotorPower = leftStickRadius * xToMoveTo;
+                rightMotorPower = leftStickRadius * xToMoveTo;
+                middleMotorPower = leftStickRadius * yToMoveTo;
 
-            telemetry.addData("x To Move To", xToMoveTo);
-            telemetry.addData("y To Move To", yToMoveTo);
-            telemetry.addData("Angle To Move To", angleToMoveRobotTo);
+                telemetry.addData("x To Move To", xToMoveTo);
+                telemetry.addData("y To Move To", yToMoveTo);
+                telemetry.addData("Angle To Move To", angleToMoveRobotTo);
+            }
         }
 
         /*
