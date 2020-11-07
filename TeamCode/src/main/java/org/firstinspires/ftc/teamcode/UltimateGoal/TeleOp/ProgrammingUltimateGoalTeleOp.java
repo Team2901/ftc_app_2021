@@ -2,21 +2,31 @@ package org.firstinspires.ftc.teamcode.UltimateGoal.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
 
 @TeleOp(name = "Programming UltimateGoal", group = "2021_UltimateGoal")
 public class ProgrammingUltimateGoalTeleOp extends OpMode {
     public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    ImprovedGamepad impGamepad1;
+    ImprovedGamepad impGamepad2;
+    ElapsedTime timer = new ElapsedTime();
 
     @Override
     public void init() {
+        impGamepad1 = new ImprovedGamepad(this.gamepad1, this.timer, "GP1");
+        impGamepad2 = new ImprovedGamepad(this.gamepad2, this.timer, "GP2");
+
         robot.init(this.hardwareMap);
     }
 
     @Override
     public void loop() {
+        impGamepad1.update();
+        impGamepad2.update();
         // Declare variables that will be used later in this method.
         float rightStickX = gamepad1.right_stick_x;
         float rightStickY = -1 * gamepad1.right_stick_y;
