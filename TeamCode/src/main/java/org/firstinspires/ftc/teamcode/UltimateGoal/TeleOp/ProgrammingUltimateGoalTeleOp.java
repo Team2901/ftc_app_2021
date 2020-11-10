@@ -158,9 +158,6 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             robot.configureWobbleGrabber(false);
         }
 
-
-
-        /*
         // If dpad up is pressed we want the wobble elbow to keep on extending forward.
         if(gamepad2.dpad_up){
             robot.wobbleElbow.setPower(0.5);
@@ -173,7 +170,22 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         else{
             robot.wobbleElbow.setPower(0);
         }
-        */
+
+        //Intake/Transfer motor: Go forward, then backward, then stop
+        if(gamepad2.y){
+            robot.intakeMotor.setPower(0.5);
+            robot.transferMotor.setPower(0.5);
+        }else if(gamepad2.a){
+            robot.intakeMotor.setPower(-0.5);
+            robot.transferMotor.setPower(-0.5);
+        }else if(gamepad2.b) {
+            robot.intakeMotor.setPower(0);
+            robot.transferMotor.setPower(0);
+        }
+
+        //Comment
+        robot.shooterMotor.setPower(0.5);
+        robot.shooterMotor2.setPower(0.5);
 
         /*
         * This code below prints out the robot angle, right stick angle, right motor power, the
