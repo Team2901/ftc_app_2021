@@ -171,19 +171,26 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             robot.wobbleElbow.setPower(0);
         }
 
-        //Intake/Transfer motor: Go forward, then backward, then stop
-        if(gamepad2.y){
+        // If the y button is pressed, then the intake and transfer motors will turn forward.
+        if(gamepad2.y)
+        {
             robot.intakeMotor.setPower(0.5);
             robot.transferMotor.setPower(0.5);
-        }else if(gamepad2.a){
+        }
+        // Otherwise, if the a button is pressed, then the intake and transfer motors will turn backward.
+        else if(gamepad2.a)
+        {
             robot.intakeMotor.setPower(-0.5);
             robot.transferMotor.setPower(-0.5);
-        }else if(gamepad2.b) {
+        }
+        // Otherwise, if the b button is pressed, then the intake and transfer motors will stop turning.
+        else if(gamepad2.b)
+        {
             robot.intakeMotor.setPower(0);
             robot.transferMotor.setPower(0);
         }
 
-        //Comment
+        // Always have the shooter motors running at 50% speed.
         robot.shooterMotor.setPower(0.5);
         robot.shooterMotor2.setPower(0.5);
 
