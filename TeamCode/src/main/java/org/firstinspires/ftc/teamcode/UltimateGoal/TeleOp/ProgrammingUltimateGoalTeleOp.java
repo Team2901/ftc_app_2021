@@ -85,7 +85,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             else
             {
                 // Step 1: Calculate angle relative to field to move at (from robot)
-                angleToMoveFieldTo = robotAngle + leftStickAngle;
+                angleToMoveFieldTo = (robotAngle + leftStickAngle)-90;
             }
 
             // Step 2: Calculate angle relative to the robot to move at
