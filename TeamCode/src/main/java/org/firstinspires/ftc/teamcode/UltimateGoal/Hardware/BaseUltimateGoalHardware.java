@@ -10,6 +10,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
+import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotor;
 
 public class BaseUltimateGoalHardware {
     public static final String WEB_CAM_NAME = "Webcam 1";
@@ -26,8 +27,8 @@ public class BaseUltimateGoalHardware {
 
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
-        leftMotor = hwMap.dcMotor.get("left_drive");
-        rightMotor = hwMap.dcMotor.get("right_drive");
+        leftMotor = getMotor(hwMap, "left_drive");
+        rightMotor = getMotor(hwMap, "right_drive");
 
         // Setting left motor to reverse, making the robot moveable now.
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -101,5 +102,13 @@ public class BaseUltimateGoalHardware {
 
         // Return the speed that the motor should be turning to.
         return speed;
+    }
+
+    public DcMotor getMotor(HardwareMap hwMap, String name) {
+        try {
+            return hwMap.dcMotor.get(name);
+        } catch (Exception e){
+            return new MockDcMotor();
+        }
     }
 }
