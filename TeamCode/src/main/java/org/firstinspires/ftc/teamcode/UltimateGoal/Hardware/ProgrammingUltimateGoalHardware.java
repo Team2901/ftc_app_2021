@@ -45,7 +45,7 @@ public class ProgrammingUltimateGoalHardware extends BaseUltimateGoalHardware {
         }
         catch(Exception e){
         }
-        wobbleGrabber = hwMap.servo.get("grabber");
+        wobbleGrabber = getServo(hwMap, "grabber");
     }
 
     /**

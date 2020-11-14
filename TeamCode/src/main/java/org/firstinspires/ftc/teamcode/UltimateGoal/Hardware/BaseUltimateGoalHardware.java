@@ -4,6 +4,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotor;
+import org.firstinspires.ftc.teamcode.Shared.Hardware.MockServo;
 
 public class BaseUltimateGoalHardware {
     public static final String WEB_CAM_NAME = "Webcam 1";
@@ -109,6 +111,14 @@ public class BaseUltimateGoalHardware {
             return hwMap.dcMotor.get(name);
         } catch (Exception e){
             return new MockDcMotor();
+        }
+    }
+
+    public Servo getServo(HardwareMap hwMap, String name){
+        try{
+            return hwMap.servo.get(name);
+        } catch(Exception e){
+            return new MockServo();
         }
     }
 }
