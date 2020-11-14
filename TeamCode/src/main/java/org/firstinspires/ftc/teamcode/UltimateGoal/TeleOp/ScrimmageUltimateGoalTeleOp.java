@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
 
 @TeleOp(name = "Scrimmage UltimateGoal", group = "2021_UltimateGoal")
 public class ScrimmageUltimateGoalTeleOp extends OpMode {
-    public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();
@@ -30,6 +30,19 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
         impGamepad2 = new ImprovedGamepad(this.gamepad2, this.timer, "GP2");
 
         robot.init(this.hardwareMap);
+
+        /*
+        Failed Hardware: 2
+        1: shooter_motor
+        2: intake_motor
+
+        Failed Hardware: 0
+         */
+        telemetry.addData("Failed Hardware", robot.failedHardware.size());
+        for(int i = 0; i < robot.failedHardware.size(); i++){
+            telemetry.addData(String.valueOf(i + 1), robot.failedHardware.get(i));
+        }
+        telemetry.update();
     }
 
     @Override

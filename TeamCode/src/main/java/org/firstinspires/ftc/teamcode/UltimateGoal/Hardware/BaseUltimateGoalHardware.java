@@ -14,6 +14,9 @@ import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotor;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockServo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BaseUltimateGoalHardware {
     public static final String WEB_CAM_NAME = "Webcam 1";
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
@@ -26,6 +29,14 @@ public class BaseUltimateGoalHardware {
     public BaseCamera webCamera = new BaseCamera();
     public static double robotTurnRampDownAngle = 45;
     public static double robotTurnStopAngle = 5;
+    public List<String> failedHardware = new ArrayList<>();
+    public DcMotor middleMotor = null;
+    public DcMotor intakeMotor = null;
+    public DcMotor shooterMotor = null;
+    public DcMotor shooterMotor2 = null;
+    public DcMotor transferMotor = null;
+    public Servo wobbleGrabber;
+    public DcMotor wobbleElbow;
 
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
@@ -56,6 +67,30 @@ public class BaseUltimateGoalHardware {
         // and named "imu".
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
+
+        middleMotor = getMotor(hwMap,"middle_drive");
+
+        middleMotor.setDirection(DcMotor.Direction.REVERSE);
+        middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        middleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        intakeMotor = getMotor(hwMap,"intake_motor");
+        shooterMotor = getMotor(hwMap,"shooter_motor");
+        shooterMotor2 = getMotor(hwMap,"shooter_motor_2");
+        transferMotor = getMotor(hwMap, "transfer_motor");
+        wobbleElbow = getMotor(hwMap, "elbow_motor");
+
+        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        shooterMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        transferMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        transferMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wobbleElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wobbleElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wobbleGrabber = getServo(hwMap, "grabber");
     }
 
     public String initWebCamera(HardwareMap hardwareMap){
@@ -110,6 +145,7 @@ public class BaseUltimateGoalHardware {
         try {
             return hwMap.dcMotor.get(name);
         } catch (Exception e){
+            failedHardware.add(name);
             return new MockDcMotor();
         }
     }
@@ -118,7 +154,23 @@ public class BaseUltimateGoalHardware {
         try{
             return hwMap.servo.get(name);
         } catch(Exception e){
+            failedHardware.add(name);
             return new MockServo();
+        }
+    }
+
+    /**
+     * This helper method configures the wobble goal grabber to either be opened or closed.
+     * @param isClosed determines whether we want the wobble grabber to close or open
+     */
+    public void configureWobbleGrabber(boolean isClosed){
+        // If true is passed as the parameter, the wobble grabber will close.
+        if(isClosed){
+            wobbleGrabber.setPosition(0.25);
+        }
+        // Otherwise, the wobble grabber will remain open.
+        else{
+            wobbleGrabber.setPosition(0.75);
         }
     }
 }

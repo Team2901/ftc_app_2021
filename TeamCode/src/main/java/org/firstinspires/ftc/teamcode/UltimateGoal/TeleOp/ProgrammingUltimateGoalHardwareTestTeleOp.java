@@ -9,14 +9,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.SkyStone.Hardware.BuilderSkystoneHardware;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
 
 import java.util.ArrayList;
 
 @TeleOp(name = "Hardware Test UltimateGoal", group = "2021_UltimateGoal")
 public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
 
-    ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
     ImprovedGamepad impGamepad;
     ElapsedTime timer = new ElapsedTime();
 

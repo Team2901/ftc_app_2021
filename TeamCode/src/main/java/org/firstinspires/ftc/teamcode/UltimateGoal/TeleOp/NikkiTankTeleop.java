@@ -5,11 +5,11 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous.BaseUltimateGoalAuto;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
 
 @TeleOp(name = "NikkiTank", group = "2021_UltimateGoal")
 public class NikkiTankTeleop extends OpMode {
-    public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
     public BaseUltimateGoalAuto auto = new BaseUltimateGoalAuto(BaseUltimateGoalAuto.TeamColor.RED_TEAM);
     //variables for use in PID loop
     //float angleAfterTurn = robot.getAngle();

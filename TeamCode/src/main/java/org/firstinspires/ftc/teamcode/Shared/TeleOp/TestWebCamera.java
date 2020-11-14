@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities;
 
 @TeleOp(name = "Web Camera Test", group = "Shared Test")
@@ -14,7 +14,7 @@ public class TestWebCamera extends LinearOpMode {
 
     public ElapsedTime timer = new ElapsedTime();
 
-    public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
 
     @Override
     public void runOpMode() throws InterruptedException {
