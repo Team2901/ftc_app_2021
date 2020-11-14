@@ -6,11 +6,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
 
 @TeleOp(name = "Scrimmage UltimateGoal", group = "2021_UltimateGoal")
 public class ScrimmageUltimateGoalTeleOp extends OpMode {
-    public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();

@@ -5,12 +5,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
 
 import java.util.List;
 
-import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware.ELEMENT_SINGLE;
-import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware.ELEMENT_QUAD;
+import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware.ELEMENT_SINGLE;
+import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware.ELEMENT_QUAD;
 
 
 public class BaseUltimateGoalAuto extends LinearOpMode {
@@ -25,7 +25,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public final TeamColor teamColor;
 
-    public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
     public int starterStackResult = -1;
 
     public BaseUltimateGoalAuto(TeamColor teamColor) {
