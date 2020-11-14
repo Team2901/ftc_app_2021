@@ -14,7 +14,7 @@ public class MtoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
 
     public DcMotor intakeMotor = null;
 
-    List<String> missingHardwareNames = new ArrayList<>();
+    public List<String> missingHardwareNames = new ArrayList<>();
 
     @Override
     public void init(HardwareMap hwMap) {

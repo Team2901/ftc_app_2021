@@ -38,6 +38,15 @@ public class MtoebesUltimateGoalTeleOp extends OpMode {
         impGamepad2 = new ImprovedGamepad(this.gamepad2, this.timer, "GP2");
 
         robot.init(this.hardwareMap);
+
+        if (robot.missingHardwareNames.size() > 0) {
+            telemetry.addData("WARNING THERE DEVICES MISSING FROM THE CONFIG", robot.missingHardwareNames.size());
+            for (String deviceName : robot.missingHardwareNames) {
+                telemetry.addData("MISSING", deviceName);
+            }
+        }
+
+        telemetry.update();
     }
 
     @Override
