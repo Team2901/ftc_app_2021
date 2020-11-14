@@ -48,7 +48,7 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
         double middleMotorPower = 0;
         float robotAngle = robot.getAngle();
         double desiredAngle = 0;
-        boolean isLetterOnGamepad1Pressed = gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y;
+        boolean isLetterOnGamepad1Pressed = gamepad1.b || gamepad1.x;
 
         // If we press the dpad_left button, then the current mode will be changed to absolute mode.
         if(gamepad1.dpad_left){
@@ -123,19 +123,11 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
         * angle that we want it to be turned to.
          */
         if(rightStickRadius > 0.8 || isLetterOnGamepad1Pressed) {
-            // If y is pressed, the robot will turn by 90 degrees.
-            if(gamepad1.y){
-                desiredAngle = angleToTurnTo(1);
-            }
-            // If x is pressed, the robot will turn by 180 degrees.
-            else if(gamepad1.x){
+            // If x is pressed, the robot will turn to 180 degrees.
+            if(gamepad1.x) {
                 desiredAngle = angleToTurnTo(2);
             }
-            // If a is pressed, the robot will turn by 270 degrees.
-            else if(gamepad1.a){
-                desiredAngle = angleToTurnTo(3);
-            }
-            // If b is pressed, the robot will turn by 360 degrees.
+            // If b is pressed, the robot will turn to 0 degrees.
             else if(gamepad1.b){
                 desiredAngle = angleToTurnTo(4);
             }
@@ -164,20 +156,20 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
         robot.middleMotor.setPower(middleMotorPower);
 
         // If the up button on the dpad is pressed, then the wobble grabber will close.
-        if(gamepad1.dpad_up){
+        if(gamepad1.y){
             robot.configureWobbleGrabber(true);
         }
         // Otherwise, if the down button on the dpad is pressed, then the wobble grabber will open.
-        else if(gamepad1.dpad_down){
+        else if(gamepad1.a){
             robot.configureWobbleGrabber(false);
         }
 
         // If dpad up is pressed we want the wobble elbow to keep on extending forward.
-        if(gamepad2.dpad_up){
+        if(gamepad1.dpad_up){
             robot.wobbleElbow.setPower(0.5);
         }
         // If dpad down is pressed we want the wobble elbow to keep on retracting.
-        else if(gamepad2.dpad_down){
+        else if(gamepad1.dpad_down){
             robot.wobbleElbow.setPower(-0.5);
         }
         // Otherwise, we want the robot's wobble elbow to stay still.
@@ -185,20 +177,20 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
             robot.wobbleElbow.setPower(0);
         }
 
-        // If the y button is pressed, then the intake and transfer motors will turn forward.
-        if(gamepad2.y)
-        {
-            robot.intakeMotor.setPower(0.5);
-            robot.transferMotor.setPower(0.5);
-        }
-        // Otherwise, if the a button is pressed, then the intake and transfer motors will turn backward.
-        else if(gamepad2.a)
+        // If the left trigger is pressed, then the intake and transfer motors will turn forward.
+        if(gamepad1.left_trigger > 0)
         {
             robot.intakeMotor.setPower(-0.5);
             robot.transferMotor.setPower(-0.5);
         }
-        // Otherwise, if the b button is pressed, then the intake and transfer motors will stop turning.
-        else if(gamepad2.b)
+        // Otherwise, if the right trigger is pressed, then the intake and transfer motors will turn backward.
+        else if(gamepad1.right_trigger > 0)
+        {
+            robot.intakeMotor.setPower(0.5);
+            robot.transferMotor.setPower(0.5);
+        }
+        // Otherwise, the intake and transfer motors will stop turning.
+        else
         {
             robot.intakeMotor.setPower(0);
             robot.transferMotor.setPower(0);
