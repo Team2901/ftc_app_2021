@@ -62,9 +62,13 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
         // Prints out the current mode that we are in.
         telemetry.addData("Current Mode", currentMode == 1 ? "Relative" : "Absolute");
 
+        // If the dpad up button is pressed, the shooter power ratio will increase by 0.1, assuming
+        // that the shooterPowerRatio is less than 1.
         if(impGamepad2.dpad_up.isInitialPress() && shooterPowerRatio < 1){
             shooterPowerRatio += 0.1;
         }
+        // If the dpad down button is pressed, the shooter power ratio will decrease by 0.1, assuming
+        // that the shooterPowerRatio is greater than 0.
         else if(impGamepad2.dpad_down.isInitialPress() && shooterPowerRatio > 0){
             shooterPowerRatio -= 0.1;
         }
