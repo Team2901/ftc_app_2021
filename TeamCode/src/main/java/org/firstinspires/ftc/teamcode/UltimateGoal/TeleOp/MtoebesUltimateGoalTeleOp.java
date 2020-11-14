@@ -79,15 +79,15 @@ public class MtoebesUltimateGoalTeleOp extends OpMode {
         }
 
         if (gamepad1.start) {
-            if (impGamepad1.left_trigger.isInitialPress()) {
+            if (impGamepad1.right_trigger.isInitialPress()) {
                 turnPowerRatio = Math.min(turnPowerRatio + TURN_POWER_INC, 1);
-            } else if (impGamepad1.left_bumper.isInitialPress()) {
+            } else if (impGamepad1.left_trigger.isInitialPress()) {
                 turnPowerRatio = Math.max(turnPowerRatio - TURN_POWER_INC, 0);
             }
         } else if (gamepad1.back) {
             if (impGamepad1.right_trigger.isInitialPress()) {
                 movePowerRatio = Math.min(movePowerRatio + MOVE_POWER_INC, 1);
-            } else if (impGamepad1.right_bumper.isInitialPress()) {
+            } else if (impGamepad1.left_trigger.isInitialPress()) {
                 movePowerRatio = Math.max(movePowerRatio - MOVE_POWER_INC, 0);
             }
         }
