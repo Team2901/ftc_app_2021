@@ -2,10 +2,10 @@ package org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 
-@Autonomous(name = "Scrimmage Park", group = "Blue Team")
-public class BlueParking extends BaseUltimateGoalAuto {
-    public BlueParking() {
-        super(TeamColor.BLUE_TEAM);
+@Autonomous(name = "Scrimmage Red Park", group = "Red Team")
+public class ScrimmageRedParking extends BaseUltimateGoalAuto {
+    public ScrimmageRedParking() {
+        super(TeamColor.RED_TEAM);
     }
 
     @Override
