@@ -40,9 +40,10 @@ public class MtoebesUltimateGoalTeleOp extends OpMode {
         robot.init(this.hardwareMap);
 
         if (robot.missingHardwareNames.size() > 0) {
-            telemetry.addData("WARNING THERE DEVICES MISSING FROM THE CONFIG", robot.missingHardwareNames.size());
-            for (String deviceName : robot.missingHardwareNames) {
-                telemetry.addData("MISSING", deviceName);
+            telemetry.addData("WARNING MISSING DEVICES", robot.missingHardwareNames.size());
+
+            for (int i = 0; i < robot.missingHardwareNames.size(); i++) {
+                telemetry.addData(String.valueOf(i), robot.missingHardwareNames.get(i));
             }
         }
 
