@@ -190,13 +190,13 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
         robot.rightMotor.setPower(rightMotorPower);
         robot.middleMotor.setPower(middleMotorPower);
 
-        // If the up button on the dpad is pressed, then the wobble grabber will close.
+        // If the y button is pressed, then the wobble grabber will open.
         if(gamepad1.y){
-            robot.configureWobbleGrabber(true);
-        }
-        // Otherwise, if the down button on the dpad is pressed, then the wobble grabber will open.
-        else if(gamepad1.a){
             robot.configureWobbleGrabber(false);
+        }
+        // Otherwise, if the a button is pressed, then the wobble grabber will open.
+        else if(gamepad1.a){
+            robot.configureWobbleGrabber(true);
         }
 
         // If dpad up is pressed we want the wobble elbow to keep on extending forward.
