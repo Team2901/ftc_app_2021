@@ -14,6 +14,9 @@ import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotor;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockServo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BaseUltimateGoalHardware {
     public static final String WEB_CAM_NAME = "Webcam 1";
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
@@ -26,6 +29,7 @@ public class BaseUltimateGoalHardware {
     public BaseCamera webCamera = new BaseCamera();
     public static double robotTurnRampDownAngle = 45;
     public static double robotTurnStopAngle = 5;
+    public List<String> failedHardware = new ArrayList<>();
 
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
@@ -110,6 +114,7 @@ public class BaseUltimateGoalHardware {
         try {
             return hwMap.dcMotor.get(name);
         } catch (Exception e){
+            failedHardware.add(name);
             return new MockDcMotor();
         }
     }
@@ -118,6 +123,7 @@ public class BaseUltimateGoalHardware {
         try{
             return hwMap.servo.get(name);
         } catch(Exception e){
+            failedHardware.add(name);
             return new MockServo();
         }
     }
