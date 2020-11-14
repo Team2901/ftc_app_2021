@@ -108,12 +108,12 @@ public class MtoebesUltimateGoalTeleOp extends OpMode {
             }
 
             if (absTurnAngle != null) {
-                relTurnAngle = absTurnAngle != null ? AngleUnit.normalizeDegrees(absTurnAngle - robotAngle) : null;
+                relTurnAngle = AngleUnit.normalizeDegrees(absTurnAngle - robotAngle);
                 turnPower = turnPowerRatio * robot.getMotorTurnSpeed(absTurnAngle, robotAngle);
             }
         }
 
-        if (rightStickRadius > 0.25) {
+        if (leftStickRadius > 0.25) {
             if (currentMode == ABSOLUTE_MODE) {
                 absMoveAngle = leftStickAngle;
             } else {
@@ -155,14 +155,14 @@ public class MtoebesUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Robot angle", "%.0f", robotAngle);
 
         telemetry.addData("~~~ TURNING ~~~", "");
-        telemetry.addData("Abs turn angle  ", absMoveAngle != null ? String.format("%.0f", absTurnAngle) : null);
-        telemetry.addData("Rel turn angle  ", absMoveAngle != null ? String.format("%.0f", relTurnAngle) : null);
+        telemetry.addData("Abs turn angle  ", absTurnAngle != null ? String.format("%.0f", absTurnAngle) : null);
+        telemetry.addData("Rel turn angle  ", relTurnAngle != null ? String.format("%.0f", relTurnAngle) : null);
         telemetry.addData("Turn power ratio", "%.2f", turnPowerRatio);
         telemetry.addData("Turn power      ", "%.2f", turnPower);
 
         telemetry.addData("~~~ MOVING ~~~", "");
         telemetry.addData("Abs move angle  ", absMoveAngle != null ? String.format("%.0f", absMoveAngle) : null);
-        telemetry.addData("Rel move angle  ", absMoveAngle != null ? String.format("%.0f", relMoveAngle) : null);
+        telemetry.addData("Rel move angle  ", relMoveAngle != null ? String.format("%.0f", relMoveAngle) : null);
         telemetry.addData("Move power ratio", "%.2f", movePowerRatio);
         telemetry.addData("X move power    ", "%.2f", xMovePower);
         telemetry.addData("Y move power    ", "%.2f", yMovePower);
