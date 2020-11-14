@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.Utility.MissingDcMotor;
+import org.firstinspires.ftc.teamcode.Utility.MissingServo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +40,8 @@ public class MtoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
 
             if (classOrInterface == DcMotor.class) {
                 return classOrInterface.cast(new MissingDcMotor());
+            } if (classOrInterface == Servo.class) {
+                return classOrInterface.cast(new MissingServo());
             } else {
                 return null;
             }

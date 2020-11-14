@@ -50,9 +50,6 @@ public class MtoebesUltimateGoalTeleOp extends OpMode {
         boolean intakeIsNull = robot.intakeMotor == null;
         boolean grabberIsNull = robot.wobbleGrabber == null;
 
-        telemetry.addData("intakeIsNull", intakeIsNull);
-        telemetry.addData("grabberIsNull", grabberIsNull);
-
         telemetry.update();
     }
 
