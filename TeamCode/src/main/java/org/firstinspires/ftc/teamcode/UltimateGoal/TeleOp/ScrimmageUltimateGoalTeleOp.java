@@ -63,34 +63,34 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Current Mode", currentMode == 1 ? "Relative" : "Absolute");
 
         // If the dpad up button is pressed, the shooter power ratio will increase by 0.1, assuming
-        // that the shooterPowerRatio is less than 1.
+        // that shooterPowerRatio is less than 1.
         if(impGamepad2.dpad_up.isInitialPress() && shooterPowerRatio < 1){
             shooterPowerRatio += 0.1;
         }
         // If the dpad down button is pressed, the shooter power ratio will decrease by 0.1, assuming
-        // that the shooterPowerRatio is greater than 0.
+        // that shooterPowerRatio is greater than 0.
         else if(impGamepad2.dpad_down.isInitialPress() && shooterPowerRatio > 0){
             shooterPowerRatio -= 0.1;
         }
 
-        // If the dpad up button is pressed, the shooter power ratio will increase by 0.1, assuming
-        // that the shooterPowerRatio is less than 1.
+        // If the x button is pressed, the turn power ratio will increase by 0.1, assuming
+        // that turnPowerRatio is less than 1.
         if(impGamepad2.x.isInitialPress() && turnPowerRatio < 1){
             turnPowerRatio += 0.1;
         }
-        // If the dpad down button is pressed, the shooter power ratio will decrease by 0.1, assuming
-        // that the shooterPowerRatio is greater than 0.
+        // If the b button is pressed, the turn power ratio will decrease by 0.1, assuming
+        // that turnPowerRatio is greater than 0.
         else if(impGamepad2.b.isInitialPress() && turnPowerRatio > 0){
             turnPowerRatio -= 0.1;
         }
 
-        // If the dpad up button is pressed, the shooter power ratio will increase by 0.1, assuming
-        // that the shooterPowerRatio is less than 1.
+        // If the y button is pressed, the move power ratio will increase by 0.1, assuming
+        // that the movePowerRatio is less than 1.
         if(impGamepad2.y.isInitialPress() && movePowerRatio < 1){
             movePowerRatio += 0.1;
         }
-        // If the dpad down button is pressed, the shooter power ratio will decrease by 0.1, assuming
-        // that the shooterPowerRatio is greater than 0.
+        // If the a button is pressed, the move power ratio will decrease by 0.1, assuming
+        // that the movePowerRatio is greater than 0.
         else if(impGamepad2.a.isInitialPress() && movePowerRatio > 0){
             movePowerRatio -= 0.1;
         }
