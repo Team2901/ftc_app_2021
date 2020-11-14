@@ -19,6 +19,9 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
     // Relative to front of robot
     public static final int RELATIVE_MODE = 1;
     public int currentMode = RELATIVE_MODE;
+    double turnPowerRatio = 1;
+    double movePowerRatio = 1;
+    double shooterPowerRatio = 1;
 
     @Override
     public void init() {
@@ -65,13 +68,13 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
 
         // When pressing the left bumper, the robot will turn counterclockwise.
         if(gamepad1.left_bumper){
-            leftMotorPower = -1;
-            rightMotorPower = 1;
+            leftMotorPower = -turnPowerRatio;
+            rightMotorPower = turnPowerRatio;
         }
         // When pressing the right bumper, the robot will turn clockwise.
         else if(gamepad1.right_bumper){
-            leftMotorPower = 1;
-            rightMotorPower = -1;
+            leftMotorPower = turnPowerRatio;
+            rightMotorPower = -turnPowerRatio;
         }
         // This sets the motor's power to however far the left joystick is pushed.
         else {
@@ -94,9 +97,9 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             double xToMoveTo = Math.cos(Math.toRadians(angleToMoveRobotTo));
             double yToMoveTo = Math.sin(Math.toRadians(angleToMoveRobotTo));
             // Step 4: Calculate forwards/sideways powers to move at
-            leftMotorPower = leftStickRadius * xToMoveTo;
-            rightMotorPower = leftStickRadius * xToMoveTo;
-            middleMotorPower = leftStickRadius * yToMoveTo;
+            leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
+            rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
+            middleMotorPower = leftStickRadius * yToMoveTo * movePowerRatio;
 
             telemetry.addData("x To Move To", xToMoveTo);
             telemetry.addData("y To Move To", yToMoveTo);
@@ -137,8 +140,8 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle);
 
             // Set the motors to their appropriate powers.
-            leftMotorPower = -speed;
-            rightMotorPower = speed;
+            leftMotorPower = -speed * turnPowerRatio;
+            rightMotorPower = speed * turnPowerRatio;
 
             // Print out what the speed is.
             telemetry.addData("Speed",speed);
@@ -191,8 +194,8 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         }
 
         // Always have the shooter motors running at 50% speed.
-        robot.shooterMotor.setPower(0.5);
-        robot.shooterMotor2.setPower(0.5);
+        robot.shooterMotor.setPower(shooterPowerRatio);
+        robot.shooterMotor2.setPower(shooterPowerRatio);
 
         /*
         * This code below prints out the robot angle, right stick angle, right motor power, the
@@ -204,6 +207,9 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Right Motor Power", rightMotorPower);
         telemetry.addData("Left Motor Power", leftMotorPower);
         telemetry.addData("Middle Motor Power", middleMotorPower);
+        telemetry.addData("Turn Power Ratio", turnPowerRatio);
+        telemetry.addData("Move Power Ratio", movePowerRatio);
+        telemetry.addData("Shooter Power Ratio", shooterPowerRatio);
         telemetry.update();
     }
 
