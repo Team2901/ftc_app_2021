@@ -47,7 +47,7 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
         // Adding all of the motor names to the motorArrayList.
         for (int i = 0; i < motorNames.length; i++) {
             String motorName = motorNames[i];
-            DcMotor motor = hardwareMap.dcMotor.get(motorName);
+            DcMotor motor = robot.getMotor(hardwareMap, motorName);
             motorArrayList.add(motor);
             telemetry.addData("Motor" + i, motorName, motor);
 
@@ -56,12 +56,16 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
         // Adding all of the servo names to the servoArrayList.
         for (int i = 0; i < servoNames.length; i++) {
             String servoName = servoNames[i];
-            Servo servo = hardwareMap.servo.get(servoName);
+            Servo servo = robot.getServo(hardwareMap, servoName);
             servoArrayList.add(servo);
             telemetry.addData("Servo" + i, servoArrayList.get(i));
 
         }
 
+        telemetry.addData("Failed Hardware", robot.failedHardware.size());
+        for(int i = 0; i < robot.failedHardware.size(); i++){
+            telemetry.addData(String.valueOf(i + 1), robot.failedHardware.get(i));
+        }
         telemetry.update();
     }
 
