@@ -28,7 +28,7 @@ public class MtoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
         intakeMotor = getDevice(hwMap, DcMotor.class, "intake_motor");
         intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        wobbleGrabber = hwMap.servo.get("grabber");
+        wobbleGrabber = getDevice(hwMap, Servo.class, "grabber");
     }
 
     public <T> T getDevice(HardwareMap hwMap, Class<? extends T> classOrInterface, String motorName) {
