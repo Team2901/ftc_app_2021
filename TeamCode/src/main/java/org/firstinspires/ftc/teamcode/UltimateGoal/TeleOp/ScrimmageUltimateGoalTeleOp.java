@@ -73,6 +73,28 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
             shooterPowerRatio -= 0.1;
         }
 
+        // If the dpad up button is pressed, the shooter power ratio will increase by 0.1, assuming
+        // that the shooterPowerRatio is less than 1.
+        if(impGamepad2.x.isInitialPress() && turnPowerRatio < 1){
+            turnPowerRatio += 0.1;
+        }
+        // If the dpad down button is pressed, the shooter power ratio will decrease by 0.1, assuming
+        // that the shooterPowerRatio is greater than 0.
+        else if(impGamepad2.b.isInitialPress() && turnPowerRatio > 0){
+            turnPowerRatio -= 0.1;
+        }
+
+        // If the dpad up button is pressed, the shooter power ratio will increase by 0.1, assuming
+        // that the shooterPowerRatio is less than 1.
+        if(impGamepad2.y.isInitialPress() && movePowerRatio < 1){
+            movePowerRatio += 0.1;
+        }
+        // If the dpad down button is pressed, the shooter power ratio will decrease by 0.1, assuming
+        // that the shooterPowerRatio is greater than 0.
+        else if(impGamepad2.a.isInitialPress() && movePowerRatio > 0){
+            movePowerRatio -= 0.1;
+        }
+
         // Determine radii of joysticks through Pythagorean Theorem.
         double rightStickRadius = Math.hypot(rightStickX, rightStickY);
         double leftStickRadius = Math.hypot(leftStickX, leftStickY);
