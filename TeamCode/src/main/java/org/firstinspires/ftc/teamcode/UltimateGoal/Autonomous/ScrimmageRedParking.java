@@ -10,8 +10,9 @@ public class ScrimmageRedParking extends BaseUltimateGoalAuto {
 
     @Override
     public void runOpMode(){
+        init(false);
         waitForStart();
-        moveInchesCenter(12);
+        //moveInchesCenter(12);
         moveInchesForward(72, false);
     }
 }
