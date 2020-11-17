@@ -231,7 +231,7 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
             robot.transferMotor.setPower(0);
         }
 
-        // Always have the shooter motors running at 50% speed.
+        // Always have the shooter motors running at 100% speed.
         robot.shooterMotor.setPower(shooterPowerRatio);
         robot.shooterMotor2.setPower(shooterPowerRatio);
 
