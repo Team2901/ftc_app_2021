@@ -188,7 +188,7 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
         // Program sets left, middle, and right motors to their respective powers.
         robot.leftMotor.setPower(leftMotorPower);
         robot.rightMotor.setPower(rightMotorPower);
-        robot.middleMotor.setPower(-middleMotorPower);
+        robot.middleMotor.setPower(middleMotorPower);
 
         // If the y button is pressed, then the wobble grabber will open.
         if(gamepad1.y){
@@ -231,8 +231,8 @@ public class ScrimmageUltimateGoalTeleOp extends OpMode {
             robot.transferMotor.setPower(0);
         }
 
-        // Always have the shooter motors running at full speed.
-        robot.shooterMotor.setPower(-shooterPowerRatio);
+        // Always have the shooter motors running at 50% speed.
+        robot.shooterMotor.setPower(shooterPowerRatio);
         robot.shooterMotor2.setPower(shooterPowerRatio);
 
         /*
