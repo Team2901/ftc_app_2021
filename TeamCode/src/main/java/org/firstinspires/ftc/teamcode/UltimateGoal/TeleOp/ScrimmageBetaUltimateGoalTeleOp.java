@@ -223,19 +223,19 @@ public class ScrimmageBetaUltimateGoalTeleOp extends OpMode {
         // If the left trigger is pressed, then the intake and transfer motors will turn forward.
         if(gamepad1.left_trigger > 0)
         {
-            robot.intakeMotor.setPower(-0.5);
+            robot.intakeMotor.setPower(0.5);
             robot.transferMotor.setPower(-0.5);
         }
         // Otherwise, if the right trigger is pressed, then the intake and transfer motors will turn backward.
         else if(gamepad1.right_trigger > 0)
         {
-            robot.intakeMotor.setPower(0.5);
+            robot.intakeMotor.setPower(-0.5);
             robot.transferMotor.setPower(0.5);
         }
         // Otherwise, the intake and transfer motors will stop turning.
         else {
             if (isIntakeOn) {
-                robot.intakeMotor.setPower(-0.5);
+                robot.intakeMotor.setPower(0.5);
             } else {
                 robot.intakeMotor.setPower(0);
             }
