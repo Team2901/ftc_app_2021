@@ -8,8 +8,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
 
-@TeleOp(name = "Programming UltimateGoal", group = "2021_UltimateGoal")
-public class ProgrammingUltimateGoalTeleOp extends OpMode {
+@TeleOp(name = "Scrimmage UltimateGoal", group = "2021_UltimateGoal")
+public class ScrimmageUltimateGoalTeleOp extends OpMode {
     public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
@@ -30,6 +30,19 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         impGamepad2 = new ImprovedGamepad(this.gamepad2, this.timer, "GP2");
 
         robot.init(this.hardwareMap);
+
+        /*
+        Failed Hardware: 2
+        1: shooter_motor
+        2: intake_motor
+
+        Failed Hardware: 0
+         */
+        telemetry.addData("Failed Hardware", robot.failedHardware.size());
+        for(int i = 0; i < robot.failedHardware.size(); i++){
+            telemetry.addData(String.valueOf(i + 1), robot.failedHardware.get(i));
+        }
+        telemetry.update();
     }
 
     @Override
@@ -48,7 +61,7 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         double middleMotorPower = 0;
         float robotAngle = robot.getAngle();
         double desiredAngle = 0;
-        boolean isLetterOnGamepad1Pressed = gamepad1.a || gamepad1.b || gamepad1.x || gamepad1.y;
+        boolean isLetterOnGamepad1Pressed = gamepad1.b || gamepad1.x;
 
         // If we press the dpad_left button, then the current mode will be changed to absolute mode.
         if(gamepad1.dpad_left){
@@ -61,6 +74,39 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
 
         // Prints out the current mode that we are in.
         telemetry.addData("Current Mode", currentMode == 1 ? "Relative" : "Absolute");
+
+        // If the dpad up button is pressed, the shooter power ratio will increase by 0.1, assuming
+        // that shooterPowerRatio is less than 1.
+        if(impGamepad2.dpad_up.isInitialPress() && shooterPowerRatio < 1){
+            shooterPowerRatio += 0.1;
+        }
+        // If the dpad down button is pressed, the shooter power ratio will decrease by 0.1, assuming
+        // that shooterPowerRatio is greater than 0.
+        else if(impGamepad2.dpad_down.isInitialPress() && shooterPowerRatio > 0){
+            shooterPowerRatio -= 0.1;
+        }
+
+        // If the x button is pressed, the turn power ratio will increase by 0.1, assuming
+        // that turnPowerRatio is less than 1.
+        if(impGamepad2.x.isInitialPress() && turnPowerRatio < 1){
+            turnPowerRatio += 0.1;
+        }
+        // If the b button is pressed, the turn power ratio will decrease by 0.1, assuming
+        // that turnPowerRatio is greater than 0.
+        else if(impGamepad2.b.isInitialPress() && turnPowerRatio > 0){
+            turnPowerRatio -= 0.1;
+        }
+
+        // If the y button is pressed, the move power ratio will increase by 0.1, assuming
+        // that the movePowerRatio is less than 1.
+        if(impGamepad2.y.isInitialPress() && movePowerRatio < 1){
+            movePowerRatio += 0.1;
+        }
+        // If the a button is pressed, the move power ratio will decrease by 0.1, assuming
+        // that the movePowerRatio is greater than 0.
+        else if(impGamepad2.a.isInitialPress() && movePowerRatio > 0){
+            movePowerRatio -= 0.1;
+        }
 
         // Determine radii of joysticks through Pythagorean Theorem.
         double rightStickRadius = Math.hypot(rightStickX, rightStickY);
@@ -112,19 +158,11 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         * angle that we want it to be turned to.
          */
         if(rightStickRadius > 0.8 || isLetterOnGamepad1Pressed) {
-            // If y is pressed, the robot will turn by 90 degrees.
-            if(gamepad1.y){
-                desiredAngle = angleToTurnTo(1);
-            }
-            // If x is pressed, the robot will turn by 180 degrees.
-            else if(gamepad1.x){
+            // If x is pressed, the robot will turn to 180 degrees.
+            if(gamepad1.x) {
                 desiredAngle = angleToTurnTo(2);
             }
-            // If a is pressed, the robot will turn by 270 degrees.
-            else if(gamepad1.a){
-                desiredAngle = angleToTurnTo(3);
-            }
-            // If b is pressed, the robot will turn by 360 degrees.
+            // If b is pressed, the robot will turn to 0 degrees.
             else if(gamepad1.b){
                 desiredAngle = angleToTurnTo(4);
             }
@@ -152,21 +190,21 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
         robot.rightMotor.setPower(rightMotorPower);
         robot.middleMotor.setPower(middleMotorPower);
 
-        // If the up button on the dpad is pressed, then the wobble grabber will close.
-        if(gamepad1.dpad_up){
-            robot.configureWobbleGrabber(true);
-        }
-        // Otherwise, if the down button on the dpad is pressed, then the wobble grabber will open.
-        else if(gamepad1.dpad_down){
+        // If the y button is pressed, then the wobble grabber will open.
+        if(gamepad1.y){
             robot.configureWobbleGrabber(false);
+        }
+        // Otherwise, if the a button is pressed, then the wobble grabber will open.
+        else if(gamepad1.a){
+            robot.configureWobbleGrabber(true);
         }
 
         // If dpad up is pressed we want the wobble elbow to keep on extending forward.
-        if(gamepad2.dpad_up){
+        if(gamepad1.dpad_up){
             robot.wobbleElbow.setPower(0.5);
         }
         // If dpad down is pressed we want the wobble elbow to keep on retracting.
-        else if(gamepad2.dpad_down){
+        else if(gamepad1.dpad_down){
             robot.wobbleElbow.setPower(-0.5);
         }
         // Otherwise, we want the robot's wobble elbow to stay still.
@@ -174,26 +212,26 @@ public class ProgrammingUltimateGoalTeleOp extends OpMode {
             robot.wobbleElbow.setPower(0);
         }
 
-        // If the y button is pressed, then the intake and transfer motors will turn forward.
-        if(gamepad2.y)
-        {
-            robot.intakeMotor.setPower(0.5);
-            robot.transferMotor.setPower(0.5);
-        }
-        // Otherwise, if the a button is pressed, then the intake and transfer motors will turn backward.
-        else if(gamepad2.a)
+        // If the left trigger is pressed, then the intake and transfer motors will turn forward.
+        if(gamepad1.left_trigger > 0)
         {
             robot.intakeMotor.setPower(-0.5);
             robot.transferMotor.setPower(-0.5);
         }
-        // Otherwise, if the b button is pressed, then the intake and transfer motors will stop turning.
-        else if(gamepad2.b)
+        // Otherwise, if the right trigger is pressed, then the intake and transfer motors will turn backward.
+        else if(gamepad1.right_trigger > 0)
+        {
+            robot.intakeMotor.setPower(0.5);
+            robot.transferMotor.setPower(0.5);
+        }
+        // Otherwise, the intake and transfer motors will stop turning.
+        else
         {
             robot.intakeMotor.setPower(0);
             robot.transferMotor.setPower(0);
         }
 
-        // Always have the shooter motors running at 50% speed.
+        // Always have the shooter motors running at 100% speed.
         robot.shooterMotor.setPower(shooterPowerRatio);
         robot.shooterMotor2.setPower(shooterPowerRatio);
 

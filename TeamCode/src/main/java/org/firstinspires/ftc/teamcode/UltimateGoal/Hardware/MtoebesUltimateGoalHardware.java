@@ -4,44 +4,26 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.Utility.MissingDcMotor;
-import org.firstinspires.ftc.teamcode.Utility.MissingServo;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotor;
+import org.firstinspires.ftc.teamcode.Shared.Hardware.MockServo;
 
 public class MtoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
-    public DcMotor middleMotor = null;
-
-    public DcMotor intakeMotor = null;
-
-    public Servo wobbleGrabber;
-
-    public List<String> missingHardwareNames = new ArrayList<>();
 
     @Override
     public void init(HardwareMap hwMap) {
         super.init(hwMap);
-        middleMotor = hwMap.dcMotor.get("middle_drive");
-        middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        middleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        intakeMotor = getDevice(hwMap, DcMotor.class, "intake_motor");
-        intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
-        wobbleGrabber = getDevice(hwMap, Servo.class, "grabber");
     }
 
     public <T> T getDevice(HardwareMap hwMap, Class<? extends T> classOrInterface, String motorName) {
         try {
             return hwMap.get(classOrInterface, motorName);
         } catch (Exception e) {
-            missingHardwareNames.add(motorName);
+            failedHardware.add(motorName);
 
             if (classOrInterface == DcMotor.class) {
-                return classOrInterface.cast(new MissingDcMotor());
+                return classOrInterface.cast(new MockDcMotor());
             } if (classOrInterface == Servo.class) {
-                return classOrInterface.cast(new MissingServo());
+                return classOrInterface.cast(new MockServo());
             } else {
                 return null;
             }

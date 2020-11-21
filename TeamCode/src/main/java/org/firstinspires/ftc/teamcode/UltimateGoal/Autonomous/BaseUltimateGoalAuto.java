@@ -5,18 +5,18 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
 
 import java.util.List;
 
-import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware.ELEMENT_SINGLE;
-import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ProgrammingUltimateGoalHardware.ELEMENT_QUAD;
+import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware.ELEMENT_SINGLE;
+import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware.ELEMENT_QUAD;
 
 
 public class BaseUltimateGoalAuto extends LinearOpMode {
-    public static final double TICKS_PER_MOTOR_REV = 1140;
-    public static final double FORWARD_DRIVE_GEAR_RATIO = 2;
-    public static final double CENTER_DRIVE_GEAR_RATIO = 3;
+    public static final double TICKS_PER_MOTOR_REV = 1120;
+    public static final double FORWARD_DRIVE_GEAR_RATIO = 3.0/2.0;
+    public static final double CENTER_DRIVE_GEAR_RATIO = 1;
     public static final double FORWARD_TICKS_PER_DRIVE_REV = TICKS_PER_MOTOR_REV * FORWARD_DRIVE_GEAR_RATIO;
     public static final double CENTER_TICKS_PER_DRIVE_REV = TICKS_PER_MOTOR_REV * CENTER_DRIVE_GEAR_RATIO;
     public static final double WHEEL_CIRCUMFERENCE_INCHES = 4 * Math.PI;
@@ -25,7 +25,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public final TeamColor teamColor;
 
-    public ProgrammingUltimateGoalHardware robot = new ProgrammingUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
     public int starterStackResult = -1;
 
     public BaseUltimateGoalAuto(TeamColor teamColor) {

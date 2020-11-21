@@ -39,17 +39,10 @@ public class MtoebesUltimateGoalTeleOp extends OpMode {
 
         robot.init(this.hardwareMap);
 
-        if (robot.missingHardwareNames.size() > 0) {
-            telemetry.addData("WARNING MISSING DEVICES", robot.missingHardwareNames.size());
-
-            for (int i = 0; i < robot.missingHardwareNames.size(); i++) {
-                telemetry.addData(String.valueOf(i), robot.missingHardwareNames.get(i));
-            }
+        telemetry.addData("Failed Hardware", robot.failedHardware.size());
+        for(int i = 0; i < robot.failedHardware.size(); i++){
+            telemetry.addData(String.valueOf(i + 1), robot.failedHardware.get(i));
         }
-
-        boolean intakeIsNull = robot.intakeMotor == null;
-        boolean grabberIsNull = robot.wobbleGrabber == null;
-
         telemetry.update();
     }
 

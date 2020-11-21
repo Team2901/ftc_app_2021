@@ -1,9 +1,9 @@
-package org.firstinspires.ftc.teamcode.Utility;
+package org.firstinspires.ftc.teamcode.Shared.Hardware;
 
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.ServoController;
 
-public class MissingServo implements Servo {
+public class MockServo implements Servo {
     @Override
     public ServoController getController() {
         return null;
