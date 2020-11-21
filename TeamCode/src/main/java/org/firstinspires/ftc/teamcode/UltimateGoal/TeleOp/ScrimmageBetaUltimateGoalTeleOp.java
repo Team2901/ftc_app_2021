@@ -73,9 +73,11 @@ public class ScrimmageBetaUltimateGoalTeleOp extends OpMode {
             currentMode = RELATIVE_MODE;
         }
 
+        // If we press the left bumper, we turn the intake mechanism off.
         if(gamepad2.left_bumper){
             isIntakeOn = false;
         }
+        // If we press the left bumper, we turn the intake mechanism on.
         else if(gamepad2.right_bumper){
             isIntakeOn = true;
         }
