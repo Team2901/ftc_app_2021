@@ -115,6 +115,10 @@ public class VuforiaUltimateGoalTest extends OpMode {
                 float x = robotLocationTranslation.get(0);
                 float y = robotLocationTranslation.get(1);
                 float z = robotLocationTranslation.get(2);
+                double h = Math.hypot(x, y);
+                double sin = Math.toDegrees(Math.asin(y/h));
+                double cos = Math.toDegrees(Math.acos(x/h));
+                double tan = Math.toDegrees(Math.atan(y/x));
 
                 // This gets what this trackable thinks that the robot's orientation is.
                 Orientation orientation = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
@@ -127,6 +131,11 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
                 // x, y, z rotations (x, y, z)
                 telemetry.addData("x, y, z rotations", String.format("(%f, %f, %f)", xAngle, yAngle, zAngle));
+
+                // Prints sin, cos, and tan of robot's angle to the trackable.
+                telemetry.addData("sin angle", sin);
+                telemetry.addData("cos angle", cos);
+                telemetry.addData("tan angle", tan);
             }
         }
 
