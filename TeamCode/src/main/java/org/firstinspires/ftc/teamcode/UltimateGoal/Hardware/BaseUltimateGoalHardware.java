@@ -94,10 +94,12 @@ public class BaseUltimateGoalHardware {
     }
 
     public String initWebCamera(HardwareMap hardwareMap){
+        webCamera.errorMessage = null;
         return webCamera.initWebCamera(hardwareMap, WEB_CAM_NAME);
     }
 
     public String initPhoneCamera(HardwareMap hardwareMap){
+        webCamera.errorMessage = null;
         return webCamera.initBackCamera(hardwareMap);
     }
     
@@ -105,11 +107,12 @@ public class BaseUltimateGoalHardware {
         return webCamera.initTfod(.8, TFOD_MODEL_ASSET, ELEMENT_QUAD, ELEMENT_SINGLE);
     }
 
+    public float offset = 0;
     public float getAngle() {
         // Gets orientation of robot.
         Orientation angularOrientation = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
         // Returns the angle of the robot.
-        return angularOrientation.firstAngle;
+        return AngleUnit.normalizeDegrees(angularOrientation.firstAngle + offset);
     }
 
     /**
