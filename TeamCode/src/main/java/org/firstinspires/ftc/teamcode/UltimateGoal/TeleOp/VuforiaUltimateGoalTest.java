@@ -88,8 +88,10 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
     @Override
     public void loop() {
+        OpenGLMatrix robotLocation = null;
+
         // Check if trackers are visible.
-        for(int i = 0; i < robot.webCamera.vuforiaTrackables.size(); i++){
+        for(int i = 0; i < robot.webCamera.vuforiaTrackables.size(); i++) {
             // Store current element in variable.
             VuforiaTrackable currentTrackable = robot.webCamera.vuforiaTrackables.get(i);
 
@@ -102,8 +104,11 @@ public class VuforiaUltimateGoalTest extends OpMode {
             // Prints out whether the current trackable is visible.
             telemetry.addData(currentTrackable.getName() + " is visible", isTrackableVisible);
 
-            // Gets the robot's location.
-            OpenGLMatrix robotLocation = currentTrackableDefaultListener.getRobotLocation();
+            if(isTrackableVisible){
+                // Gets the robot's location.
+                robotLocation = currentTrackableDefaultListener.getRobotLocation();
+            }
+        }
 
             double relativeFieldAngle;
 
@@ -145,6 +150,8 @@ public class VuforiaUltimateGoalTest extends OpMode {
                 // We want to face the tower goal, so set the angle to 0.
                 relativeFieldAngle = 0;
             }
+        if(gamepad1.a){
+
         }
 
         // Find where the trackers are.
