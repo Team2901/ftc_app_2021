@@ -110,46 +110,46 @@ public class VuforiaUltimateGoalTest extends OpMode {
             }
         }
 
-            double relativeFieldAngle;
+        double relativeFieldAngle;
 
-            /*
-            * If the robot location is not null, we translate the robot's location. In other words,
-            * if the tracker image is visible, we translate the robot's location.
-             */
-            if(robotLocation != null){
-                // This gets what this trackable thinks that the robot's position is.
-                VectorF robotLocationTranslation = robotLocation.getTranslation();
-                float x = robotLocationTranslation.get(0);
-                float y = robotLocationTranslation.get(1);
-                float z = robotLocationTranslation.get(2);
+        /*
+        * If the robot location is not null, we translate the robot's location. In other words,
+        * if the tracker image is visible, we translate the robot's location.
+         */
+        if(robotLocation != null){
+            // This gets what this trackable thinks that the robot's position is.
+            VectorF robotLocationTranslation = robotLocation.getTranslation();
+            float x = robotLocationTranslation.get(0);
+            float y = robotLocationTranslation.get(1);
+            float z = robotLocationTranslation.get(2);
 
-                // Calculate the angle relative to the robot.
-                double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
+            // Calculate the angle relative to the robot.
+            double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
 
-                // Calculate angle relative to the field.
-                relativeFieldAngle = relativeRobotAngle + robot.getAngle();
+            // Calculate angle relative to the field.
+            relativeFieldAngle = relativeRobotAngle + robot.getAngle();
 
-                // Print angle relative to the robot and the angle relative to the field.
-                telemetry.addData("Angle relative to the robot", relativeRobotAngle);
-                telemetry.addData("Angle relative to the field", relativeFieldAngle);
+            // Print angle relative to the robot and the angle relative to the field.
+            telemetry.addData("Angle relative to the robot", relativeRobotAngle);
+            telemetry.addData("Angle relative to the field", relativeFieldAngle);
 
-                // This gets what this trackable thinks that the robot's orientation is.
-                Orientation orientation = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-                float xAngle = orientation.firstAngle;
-                float yAngle = orientation.secondAngle;
-                float zAngle = orientation.thirdAngle;
+            // This gets what this trackable thinks that the robot's orientation is.
+            Orientation orientation = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+            float xAngle = orientation.firstAngle;
+            float yAngle = orientation.secondAngle;
+            float zAngle = orientation.thirdAngle;
 
-                // x, y, z positions (x, y, z)
-                telemetry.addData("x, y, z positions", "(" + x + ", " + y +", " + z + ")");
+            // x, y, z positions (x, y, z)
+            telemetry.addData("x, y, z positions", "(" + x + ", " + y +", " + z + ")");
 
-                // x, y, z rotations (x, y, z)
-                telemetry.addData("x, y, z rotations", String.format("(%f, %f, %f)", xAngle, yAngle, zAngle));
-            }
-            else
-            {
-                // We want to face the tower goal, so set the angle to 0.
-                relativeFieldAngle = 0;
-            }
+            // x, y, z rotations (x, y, z)
+            telemetry.addData("x, y, z rotations", String.format("(%f, %f, %f)", xAngle, yAngle, zAngle));
+        }
+        else
+        {
+            // We want to face the tower goal, so set the angle to 0.
+            relativeFieldAngle = 0;
+        }
         if(gamepad1.a){
 
         }
