@@ -123,15 +123,31 @@ public class VuforiaUltimateGoalTest extends OpMode {
             float y = robotLocationTranslation.get(1);
             float z = robotLocationTranslation.get(2);
 
-            // Calculate the angle relative to the robot.
-            double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
+            // Only make the robot turn relative to the field if a on the first gamepad is pressed.
+            if(gamepad1.a){
+                // Calculate the angle relative to the robot.
+                double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
 
-            // Calculate angle relative to the field.
-            relativeFieldAngle = relativeRobotAngle + robot.getAngle();
+                // Calculate angle relative to the field.
+                relativeFieldAngle = relativeRobotAngle + robot.getAngle();
 
-            // Print angle relative to the robot and the angle relative to the field.
-            telemetry.addData("Angle relative to the robot", relativeRobotAngle);
-            telemetry.addData("Angle relative to the field", relativeFieldAngle);
+                // Print angle relative to the robot and the angle relative to the field.
+                telemetry.addData("Angle relative to the robot", relativeRobotAngle);
+                telemetry.addData("Angle relative to the field", relativeFieldAngle);
+
+                // Make the robot turn clockwise if the angle relative to the field is negative.
+                if(relativeFieldAngle < -0.1)
+                {
+                    robot.leftMotor.setPower(1);
+                    robot.rightMotor.setPower(-1);
+                }
+                // Make the robot turn counterclockwise if the angle relative to the field is positive.
+                else if(relativeFieldAngle > 0.1)
+                {
+                    robot.leftMotor.setPower(-1);
+                    robot.rightMotor.setPower(1);
+                }
+            }
 
             // This gets what this trackable thinks that the robot's orientation is.
             Orientation orientation = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
@@ -149,9 +165,6 @@ public class VuforiaUltimateGoalTest extends OpMode {
         {
             // We want to face the tower goal, so set the angle to 0.
             relativeFieldAngle = 0;
-        }
-        if(gamepad1.a){
-
         }
 
         // Find where the trackers are.
