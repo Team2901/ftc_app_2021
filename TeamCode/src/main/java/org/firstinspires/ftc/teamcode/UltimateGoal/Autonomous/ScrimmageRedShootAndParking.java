@@ -18,7 +18,7 @@ public class ScrimmageRedShootAndParking extends BaseUltimateGoalAuto {
         robot.shooterMotor.setPower(1);
         robot.shooterMotor2.setPower(1);
         //Move to shooting location
-        moveInchesForward(66, false);
+        moveInchesForward(60, false);
         //Feeding rings to shooter
         //robot.intakeMotor.setPower(0.5);
         robot.transferMotor.setPower(-0.5);
@@ -33,6 +33,6 @@ public class ScrimmageRedShootAndParking extends BaseUltimateGoalAuto {
         robot.shooterMotor2.setPower(0);
         robot.transferMotor.setPower(0);
         //Reach parking line
-        moveInchesForward(6, false);
+        moveInchesForward(12, false);
     }
 }
