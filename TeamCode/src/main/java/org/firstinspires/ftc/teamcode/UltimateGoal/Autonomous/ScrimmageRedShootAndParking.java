@@ -8,12 +8,13 @@ public class ScrimmageRedShootAndParking extends BaseUltimateGoalAuto {
     public ScrimmageRedShootAndParking() {
         super(TeamColor.RED_TEAM);
     }
-    ElapsedTime timer = new ElapsedTime();
+
 
     @Override
     public void runOpMode(){
         init(false);
         waitForStart();
+        ElapsedTime timer = new ElapsedTime();
         //moveInchesCenter(12);
         //Robots preparing to shoot rings
         robot.shooterMotor.setPower(1);
