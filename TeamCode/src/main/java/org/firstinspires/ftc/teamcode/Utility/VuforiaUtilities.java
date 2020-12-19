@@ -63,6 +63,8 @@ public class VuforiaUtilities {
         }
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        // Prevents memory of previously seen images.
+        parameters.useExtendedTracking = false;
         return parameters;
     }
 
