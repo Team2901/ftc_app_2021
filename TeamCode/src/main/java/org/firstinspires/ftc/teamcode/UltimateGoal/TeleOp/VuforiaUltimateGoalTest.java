@@ -123,32 +123,6 @@ public class VuforiaUltimateGoalTest extends OpMode {
             float y = robotLocationTranslation.get(1);
             float z = robotLocationTranslation.get(2);
 
-            // Only make the robot turn relative to the field if a on the first gamepad is pressed.
-            if(gamepad1.a){
-                // Calculate the angle relative to the robot.
-                double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
-
-                // Calculate angle relative to the field.
-                relativeFieldAngle = relativeRobotAngle + robot.getAngle();
-
-                // Print angle relative to the robot and the angle relative to the field.
-                telemetry.addData("Angle relative to the robot", relativeRobotAngle);
-                telemetry.addData("Angle relative to the field", relativeFieldAngle);
-
-                // Make the robot turn clockwise if the angle relative to the field is negative.
-                if(relativeFieldAngle < -0.1)
-                {
-                    robot.leftMotor.setPower(1);
-                    robot.rightMotor.setPower(-1);
-                }
-                // Make the robot turn counterclockwise if the angle relative to the field is positive.
-                else if(relativeFieldAngle > 0.1)
-                {
-                    robot.leftMotor.setPower(-1);
-                    robot.rightMotor.setPower(1);
-                }
-            }
-
             // This gets what this trackable thinks that the robot's orientation is.
             Orientation orientation = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             float xAngle = orientation.firstAngle;
@@ -160,6 +134,13 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
             // x, y, z rotations (x, y, z)
             telemetry.addData("x, y, z rotations", String.format("(%f, %f, %f)", xAngle, yAngle, zAngle));
+
+            // Calculate the angle relative to the robot and print it out.
+            double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
+            telemetry.addData("Angle relative to the robot", relativeRobotAngle);
+
+            // Calculate angle relative to the field.
+            relativeFieldAngle = relativeRobotAngle + robot.getAngle();
         }
         else
         {
@@ -167,8 +148,20 @@ public class VuforiaUltimateGoalTest extends OpMode {
             relativeFieldAngle = 0;
         }
 
-        // Find where the trackers are.
+        // Only make the robot turn relative to the field if a on the first gamepad is pressed.
+        if(gamepad1.a){
+            // Print angle relative to the robot and the angle relative to the field.
+            telemetry.addData("Angle relative to the field", relativeFieldAngle);
 
+            // Determine the speed that the motors should be set to.
+            double velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
+
+            // Make the robot turn counterclockwise.
+            robot.leftMotor.setPower(-velocity);
+            robot.rightMotor.setPower(velocity);
+        }
+
+        // Find where the trackers are.
         telemetry.update();
     }
 }
