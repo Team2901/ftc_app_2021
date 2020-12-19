@@ -14,12 +14,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.GrantHardware;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.TankUltimateGoalHardware;
 
 @SuppressLint("DefaultLocale")
 @TeleOp(name = "Vuforia UltimateGoal Test", group = "2021_UltimateGoal")
 public class VuforiaUltimateGoalTest extends OpMode {
-    public TankUltimateGoalHardware robot = new TankUltimateGoalHardware();
+    public GrantHardware robot = new GrantHardware();
     @Override
     public void init() {
         robot.init(this.hardwareMap);
