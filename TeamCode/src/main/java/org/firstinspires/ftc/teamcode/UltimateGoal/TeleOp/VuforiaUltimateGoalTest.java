@@ -156,6 +156,9 @@ public class VuforiaUltimateGoalTest extends OpMode {
             // Determine the speed that the motors should be set to.
             double velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
 
+            // Make the robot only turn at 50% speed.
+            velocity *= 0.5;
+
             // Make the robot turn counterclockwise.
             robot.leftMotor.setPower(-velocity);
             robot.rightMotor.setPower(velocity);
