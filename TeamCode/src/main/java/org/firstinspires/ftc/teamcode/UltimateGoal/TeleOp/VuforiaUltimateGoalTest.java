@@ -160,6 +160,12 @@ public class VuforiaUltimateGoalTest extends OpMode {
             robot.leftMotor.setPower(-velocity);
             robot.rightMotor.setPower(velocity);
         }
+        else
+        {
+            // Make the robot stop.
+            robot.leftMotor.setPower(0);
+            robot.rightMotor.setPower(0);
+        }
 
         // Find where the trackers are.
         telemetry.update();
