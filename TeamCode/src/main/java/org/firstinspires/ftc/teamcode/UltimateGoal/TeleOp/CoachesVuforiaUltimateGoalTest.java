@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.UltimateGoal.TeleOp;
 
 import android.annotation.SuppressLint;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -15,7 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.TankUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -25,12 +24,17 @@ import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.
 @SuppressLint("DefaultLocale")
 @TeleOp(name = "Coaches Vuforia UltimateGoal Test", group = "2021_UltimateGoal")
 public class CoachesVuforiaUltimateGoalTest extends OpMode {
-    public TankUltimateGoalHardware robot = new TankUltimateGoalHardware();
     private static final float mmPerInch = 25.4f;
+    private static final double RATIO_INC = .1;
+
+    public final BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
 
     VuforiaTrackables targetsUltimateGoal;
 
     VuforiaTrackable vuforiaTrackable;
+
+    double movePowerRatio = .3;
+    double turnPowerRatio = .3;
 
     @Override
     public void init() {
@@ -39,8 +43,9 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
         String errorMessage = robot.initWebCamera(this.hardwareMap);
 
         if(errorMessage != null) {
-            robot.webCamera.errorMessage = null;
-            robot.initPhoneCamera(this.hardwareMap);
+            telemetry.addData("init error", errorMessage);
+            //robot.webCamera.errorMessage = null;
+            //robot.initPhoneCamera(this.hardwareMap);
         }
 
         targetsUltimateGoal = loadAndPlaceTrackables();
@@ -58,22 +63,8 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
 
         vuforiaTrackable = getVisibleTrackable();
 
-        if (vuforiaTrackable != null) {
-            VuforiaTrackableDefaultListener listener = ((VuforiaTrackableDefaultListener) vuforiaTrackable.getListener());
-            OpenGLMatrix robotLocation = listener.getRobotLocation();
-            VectorF robotTranslation = robotLocation.getTranslation();
-            Orientation rot = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-
-            float robotAngle = robot.getAngle();
-
-            float bearing = rot.thirdAngle;
-
-            robot.offset = (bearing - robotAngle);
-
-            telemetry.addData("robotAngle", robotAngle);
-            telemetry.addData("bearing", bearing);
-            telemetry.addData("offset", robot.offset);
-        }
+        matrixTelemetry(vuforiaTrackable);
+        extraTelemetery(vuforiaTrackable);
 
         telemetry.update();
     }
@@ -97,91 +88,73 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
     @Override
     public void loop() {
 
-        if (vuforiaTrackable != null) {
-            telemetry.addData("Visible Target", vuforiaTrackable.getName());
-            VuforiaTrackableDefaultListener listener = ((VuforiaTrackableDefaultListener) vuforiaTrackable.getListener());
-            OpenGLMatrix robotLocation = listener.getRobotLocation();
-            matrixTelemetry("Visible Target", robotLocation);
-        } else {
-            telemetry.addData("Visible Target", "NONE");
+        double robotAngle = robot.getAngle();
+
+        vuforiaTrackable = getVisibleTrackable();
+        matrixTelemetry(vuforiaTrackable);
+
+        if (gamepad1.b) {
+            extraTelemetery(vuforiaTrackable);
         }
 
-        if (gamepad1.a) {
-            vuforiaTrackable = getVisibleTrackable();
+        float rightStickX = gamepad1.right_stick_x;
+        float rightStickY = -1 * gamepad1.right_stick_y;
+        float leftStickX = gamepad1.left_stick_x;
+        float leftStickY = -1 * gamepad1.left_stick_y;
+        double rightStickAngle = AngleUnit.DEGREES.fromRadians(Math.atan2(rightStickY, rightStickX));
+        double leftStickAngle = AngleUnit.DEGREES.fromRadians(Math.atan2(leftStickY, leftStickX));
+        double rightStickRadius = Math.hypot(rightStickX, rightStickY);
+        double leftStickRadius = Math.hypot(leftStickX, leftStickY);
 
-            if (vuforiaTrackable != null) {
-                VuforiaTrackableDefaultListener listener = ((VuforiaTrackableDefaultListener) vuforiaTrackable.getListener());
-                OpenGLMatrix robotLocation = listener.getRobotLocation();
-                VectorF robotTranslation = robotLocation.getTranslation();
-                Orientation rot = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+        double leftMotorPower = 0;
+        double rightMotorPower = 0;
+        double middleMotorPower = 0;
 
-                float robotAngle = robot.getAngle();
-
-                float bearing = rot.thirdAngle;
-
-                robot.offset = (bearing - robotAngle);
-
-                telemetry.addData("robotAngle", robotAngle);
-                telemetry.addData("bearing", bearing);
-                telemetry.addData("offset", robot.offset);
-            }
+        if (gamepad1.left_bumper) {
+            turnPowerRatio = Math.max(0, turnPowerRatio - RATIO_INC);
+        } else if (gamepad1.right_bumper) {
+            turnPowerRatio = Math.min(1, turnPowerRatio + RATIO_INC);
         }
 
-      // else if (gamepad1.b) {
-            if (vuforiaTrackable != null) {
+        if (gamepad1.left_trigger > .1) {
+            movePowerRatio = Math.max(0, movePowerRatio - RATIO_INC);
+        } else if (gamepad1.right_trigger > .1) {
+            movePowerRatio = Math.min(1, movePowerRatio + RATIO_INC);
+        }
 
-                VuforiaTrackableDefaultListener listener = ((VuforiaTrackableDefaultListener) vuforiaTrackable.getListener());
+        if (leftStickRadius > .1) {
 
-                OpenGLMatrix robotLocation = listener.getRobotLocation();
-                OpenGLMatrix imageLocation = vuforiaTrackable.getLocation();
+            double xToMoveTo = Math.cos(Math.toRadians(leftStickAngle));
+            double yToMoveTo = Math.sin(Math.toRadians(leftStickAngle));
+            // Step 4: Calculate forwards/sideways powers to move at
+            leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
+            rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
+            middleMotorPower = leftStickRadius * yToMoveTo * movePowerRatio;
 
-                VectorF robotTranslation = robotLocation.getTranslation();
+            telemetry.addData("x To Move To", xToMoveTo);
+            telemetry.addData("y To Move To", yToMoveTo);
+            telemetry.addData("Angle To Move To", leftStickAngle);
+        }
 
-                float robotX = robotTranslation.get(0);
-                float robotY = robotTranslation.get(1);
-
-
-                VectorF imageTranslation = imageLocation.getTranslation();
-
-                float imageX = imageTranslation.get(0);
-                float imageY = imageTranslation.get(1);
-
-                float dX = robotX - imageX;
-                float dY = robotY - imageY;
-
-                Orientation rot = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-
-                double robotAngle = robot.getAngle();
-
-                double targetRange = Math.hypot(dX, dY);
-
-                // target bearing is based on angle formed between the X axis to the target range line
-                double targetBearing = Math.toDegrees(-Math.asin(dY / targetRange));
-                float bearing = rot.thirdAngle;
-
-                // Target relative bearing is the target Heading relative to the direction the robot is pointing.
-
-                double angle = Math.toDegrees(Math.atan2(dY, dX));
-
-                telemetry.addData("robotAngle", robotAngle);
-                telemetry.addData("bearing", bearing);
-                telemetry.addData("offset", robot.offset);
-                telemetry.addData("targetRange", targetRange);
-                telemetry.addData("targetBearing", targetBearing);
-
-                telemetry.addData("robotX", robotX);
-                telemetry.addData("robotY", robotY);
-                telemetry.addData("imageX", imageX);
-                telemetry.addData("imageY", imageY);
-
-                telemetry.addData("dX", dX);
-                telemetry.addData("dY", dY);
-                telemetry.addData("angle", angle);
-            }
-      //  }
-
+        if (rightStickRadius > .1) {
+            leftMotorPower = turnPowerRatio;
+            rightMotorPower = -turnPowerRatio;
+        }
 
         // Find where the trackers are.
+
+        robot.leftMotor.setPower(leftMotorPower);
+        robot.rightMotor.setPower(rightMotorPower);
+        robot.middleMotor.setPower(middleMotorPower);
+
+        telemetry.addData("Robot angle", robotAngle);
+        telemetry.addData("Right Stick Angle", rightStickAngle);
+        telemetry.addData("Left Stick Angle", leftStickAngle);
+        telemetry.addData("Right Motor Power", rightMotorPower);
+        telemetry.addData("Left Motor Power", leftMotorPower);
+        telemetry.addData("Middle Motor Power", middleMotorPower);
+        telemetry.addData("Turn Power Ratio", turnPowerRatio);
+        telemetry.addData("Move Power Ratio", movePowerRatio);
 
         telemetry.update();
     }
@@ -229,12 +202,69 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
         return targetsUltimateGoal;
     }
 
-    void matrixTelemetry(String name, OpenGLMatrix matrix) {
-        VectorF translation = matrix.getTranslation();
-        telemetry.addData("Name", name);
-        telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f", translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
-        Orientation rotation = Orientation.getOrientation(matrix, EXTRINSIC, XYZ, DEGREES);
-        telemetry.addData("Rot (deg)", "{X, Y, Z} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+    void matrixTelemetry(VuforiaTrackable vuforiaTrackable) {
+
+        telemetry.addData("Visible", vuforiaTrackable != null);
+
+        if (vuforiaTrackable != null) {
+
+            VuforiaTrackableDefaultListener listener = ((VuforiaTrackableDefaultListener) vuforiaTrackable.getListener());
+            OpenGLMatrix robotLocation = listener.getRobotLocation();
+
+            VectorF translation = robotLocation.getTranslation();
+
+            telemetry.addData("Pos (in)", "{X, Y, Z} = %.1f, %.1f, %.1f", translation.get(0) / mmPerInch, translation.get(1) / mmPerInch, translation.get(2) / mmPerInch);
+            Orientation rotation = Orientation.getOrientation(robotLocation, EXTRINSIC, XYZ, DEGREES);
+            telemetry.addData("Rot (deg)", "{X, Y, Z} = %.0f, %.0f, %.0f", rotation.firstAngle, rotation.secondAngle, rotation.thirdAngle);
+
+        } else {
+
+            telemetry.addData("Pos (in)", "N/A");
+            telemetry.addData("Rot (deg)", "N/A");
+        }
     }
+
+    void extraTelemetery(VuforiaTrackable vuforiaTrackable) {
+
+        if (vuforiaTrackable != null) {
+
+            VuforiaTrackableDefaultListener listener = ((VuforiaTrackableDefaultListener) vuforiaTrackable.getListener());
+
+            OpenGLMatrix robotLocation = listener.getRobotLocation();
+            OpenGLMatrix imageLocation = vuforiaTrackable.getLocation();
+
+            VectorF robotTranslation = robotLocation.getTranslation();
+
+            float robotX = robotTranslation.get(0);
+            float robotY = robotTranslation.get(1);
+
+            VectorF imageTranslation = imageLocation.getTranslation();
+
+            float imageX = imageTranslation.get(0);
+            float imageY = imageTranslation.get(1);
+
+            float dX = robotX - imageX;
+            float dY = robotY - imageY;
+
+            Orientation rot = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+
+            double targetRange = Math.hypot(dX, dY);
+
+            // target bearing is based on angle formed between the X axis to the target range line
+            double targetBearing = Math.toDegrees(Math.atan(dY/dX));
+            float bearing = rot.thirdAngle;
+
+            // Target relative bearing is the target Heading relative to the direction the robot is pointing.
+
+            telemetry.addData("robotBearing", bearing);
+            telemetry.addData("targetBearing", targetBearing);
+            //telemetry.addData("targetRange", targetRange);
+
+            telemetry.addData("robot {X, Y}", "%.0f, %.0f", robotX, robotY);
+            telemetry.addData("image {X, Y}", "%.0f, %.0f", imageX, imageY);
+            telemetry.addData("delta {X, Y}", "%.0f, %.0f", dX, dY);
+        }
+    }
+
 
 }
