@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal.Hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
@@ -12,21 +13,11 @@ public class MtoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
     @Override
     public void init(HardwareMap hwMap) {
         super.init(hwMap);
+
+        leftMotor.setDirection(DcMotor.Direction.FORWARD);
+        rightMotor.setDirection(DcMotor.Direction.REVERSE);
+
     }
 
-    public <T> T getDevice(HardwareMap hwMap, Class<? extends T> classOrInterface, String motorName) {
-        try {
-            return hwMap.get(classOrInterface, motorName);
-        } catch (Exception e) {
-            failedHardware.add(motorName);
 
-            if (classOrInterface == DcMotor.class) {
-                return classOrInterface.cast(new MockDcMotor());
-            } if (classOrInterface == Servo.class) {
-                return classOrInterface.cast(new MockServo());
-            } else {
-                return null;
-            }
-        }
-    }
 }

@@ -15,12 +15,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.TankUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.RobotFactory;
 
 @SuppressLint("DefaultLocale")
 @TeleOp(name = "Vuforia UltimateGoal Test", group = "2021_UltimateGoal")
 public class VuforiaUltimateGoalTest extends OpMode {
-    public BaseUltimateGoalHardware robot = (BaseUltimateGoalHardware) RobotFactory.create();
+    public BaseUltimateGoalHardware robot = (BaseUltimateGoalHardware) RobotFactory.create(this.telemetry);
     @Override
     public void init() {
         robot.init(this.hardwareMap);
@@ -134,7 +135,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
             telemetry.addData("x, y, z positions", "(" + x + ", " + y +", " + z + ")");
 
             // x, y, z rotations (x, y, z)
-            telemetry.addData("x, y, z rotations", String.format("(%f, %f, %f)", xAngle, yAngle, zAngle));
+            telemetry.addData("z rotations", "%.0f", zAngle);
 
             // Calculate the angle relative to the robot and print it out.
             double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
@@ -157,9 +158,19 @@ public class VuforiaUltimateGoalTest extends OpMode {
             // Determine the speed that the motors should be set to.
             double velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
 
+            // Make the robot only turn at 50% speed.
+            velocity *= 0.5;
+            telemetry.addData("velocity", velocity);
+
             // Make the robot turn counterclockwise.
             robot.leftMotor.setPower(-velocity);
             robot.rightMotor.setPower(velocity);
+        }
+        else
+        {
+            // Make the robot stop.
+            robot.leftMotor.setPower(0);
+            robot.rightMotor.setPower(0);
         }
 
         // Find where the trackers are.

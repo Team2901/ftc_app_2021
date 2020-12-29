@@ -28,7 +28,7 @@ public class BaseUltimateGoalHardware {
     BNO055IMU imu;
     public BaseCamera webCamera = new BaseCamera();
     public static double robotTurnRampDownAngle = 45;
-    public static double robotTurnStopAngle = 5;
+    public static double robotTurnStopAngle = 0.5;
     public List<String> failedHardware = new ArrayList<>();
     public DcMotor middleMotor = null;
     public DcMotor intakeMotor = null;
@@ -38,6 +38,9 @@ public class BaseUltimateGoalHardware {
     public Servo wobbleGrabber;
     public DcMotor wobbleElbow;
 
+    public BaseUltimateGoalHardware() {
+        super();
+    }
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
         leftMotor = getMotor(hwMap, "left_drive");

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,21 +44,24 @@ public class RobotFactory {
         }
         return configName;
     }
-    private static Object _createRobotInstance() throws Exception {
+    private static Object _createRobotInstance(Telemetry telemetry) throws Exception {
         Object robot = null;
         String packageName = "org.firstinspires.ftc.teamcode.UltimateGoal.Hardware";
-        String className = packageName + "." + RobotFactory.getRobotConfigurationName();
+        String hardwareClassName = RobotFactory.getRobotConfigurationName();
+        String className = packageName + "." + hardwareClassName;
         try {
             robot = Class.forName(className).getConstructor().newInstance();
         } catch (Exception e) {
-            e.printStackTrace();
+            robot = Class.forName("org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware").getConstructor().newInstance();
+            telemetry.addData("Unable to create hardware class: ", hardwareClassName );
+            telemetry.update();
         }
         return robot;
     }
-    public static Object create() {
+    public static Object create(Telemetry telemetry) {
         Object robot = null;
         try {
-            robot = _createRobotInstance();
+            robot = _createRobotInstance(telemetry);
         } catch (Exception e) {
             e.printStackTrace();
         }

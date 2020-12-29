@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.Utility.RobotFactory;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
@@ -27,11 +28,9 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
     private static final float mmPerInch = 25.4f;
     private static final double RATIO_INC = .1;
 
-    public final BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
+    public final BaseUltimateGoalHardware robot = (BaseUltimateGoalHardware) RobotFactory.create(this.telemetry);
 
     VuforiaTrackables targetsUltimateGoal;
-
-    VuforiaTrackable vuforiaTrackable;
 
     double movePowerRatio = .3;
     double turnPowerRatio = .3;
@@ -61,11 +60,6 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
 
         targetsUltimateGoal.activate();
 
-        vuforiaTrackable = getVisibleTrackable();
-
-        matrixTelemetry(vuforiaTrackable);
-        extraTelemetery(vuforiaTrackable);
-
         telemetry.update();
     }
 
@@ -90,11 +84,22 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
 
         double robotAngle = robot.getAngle();
 
-        vuforiaTrackable = getVisibleTrackable();
-        matrixTelemetry(vuforiaTrackable);
+        VuforiaTrackable vuforiaTrackable = getVisibleTrackable();
+        VuforiaTrackableDefaultListener listener = vuforiaTrackable != null ? ((VuforiaTrackableDefaultListener) vuforiaTrackable.getListener()) : null;
+        OpenGLMatrix robotLocation = listener != null ? listener.getRobotLocation() : null;
+        OpenGLMatrix imageLocation = vuforiaTrackable != null ? vuforiaTrackable.getLocation() : null;
+
+        matrixTelemetry(robotLocation, imageLocation);
+
 
         if (gamepad1.b) {
-            extraTelemetery(vuforiaTrackable);
+            extraTelemetery(robotLocation, imageLocation);
+        }
+        if (gamepad1.a) {
+            targetsUltimateGoal.deactivate();
+        }
+        if (gamepad1.y) {
+            targetsUltimateGoal.activate();
         }
 
         float rightStickX = gamepad1.right_stick_x;
@@ -124,8 +129,8 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
 
         if (leftStickRadius > .1) {
 
-            double xToMoveTo = Math.cos(Math.toRadians(leftStickAngle));
-            double yToMoveTo = Math.sin(Math.toRadians(leftStickAngle));
+            double xToMoveTo = Math.cos(Math.toRadians(leftStickAngle-90));
+            double yToMoveTo = Math.sin(Math.toRadians(leftStickAngle-90));
             // Step 4: Calculate forwards/sideways powers to move at
             leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
             rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
@@ -137,8 +142,8 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
         }
 
         if (rightStickRadius > .1) {
-            leftMotorPower = turnPowerRatio;
-            rightMotorPower = -turnPowerRatio;
+            leftMotorPower = -turnPowerRatio * rightStickX;
+            rightMotorPower = turnPowerRatio * rightStickX;
         }
 
         // Find where the trackers are.
@@ -202,14 +207,11 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
         return targetsUltimateGoal;
     }
 
-    void matrixTelemetry(VuforiaTrackable vuforiaTrackable) {
+    void matrixTelemetry(OpenGLMatrix robotLocation, OpenGLMatrix imageLocation) {
 
-        telemetry.addData("Visible", vuforiaTrackable != null);
+        telemetry.addData("Visible", robotLocation != null);
 
-        if (vuforiaTrackable != null) {
-
-            VuforiaTrackableDefaultListener listener = ((VuforiaTrackableDefaultListener) vuforiaTrackable.getListener());
-            OpenGLMatrix robotLocation = listener.getRobotLocation();
+        if (robotLocation != null) {
 
             VectorF translation = robotLocation.getTranslation();
 
@@ -224,14 +226,9 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
         }
     }
 
-    void extraTelemetery(VuforiaTrackable vuforiaTrackable) {
+    void extraTelemetery(OpenGLMatrix robotLocation, OpenGLMatrix imageLocation) {
 
-        if (vuforiaTrackable != null) {
-
-            VuforiaTrackableDefaultListener listener = ((VuforiaTrackableDefaultListener) vuforiaTrackable.getListener());
-
-            OpenGLMatrix robotLocation = listener.getRobotLocation();
-            OpenGLMatrix imageLocation = vuforiaTrackable.getLocation();
+        if (robotLocation != null && imageLocation != null) {
 
             VectorF robotTranslation = robotLocation.getTranslation();
 
