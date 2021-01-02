@@ -113,6 +113,19 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
         double relativeFieldAngle;
 
+        // When pressing the left bumper, the robot will turn counterclockwise.
+        if(gamepad1.left_bumper)
+        {
+            robot.leftMotor.setPower(-0.5);
+            robot.rightMotor.setPower(0.5);
+        }
+        // When pressing the right bumper, the robot will turn clockwise.
+        else if(gamepad1.right_bumper)
+        {
+            robot.leftMotor.setPower(0.5);
+            robot.rightMotor.setPower(-0.5);
+        }
+
         /*
         * If the robot location is not null, we translate the robot's location. In other words,
         * if the tracker image is visible, we translate the robot's location.
@@ -165,18 +178,6 @@ public class VuforiaUltimateGoalTest extends OpMode {
                 robot.rightMotor.setPower(0);
             }
 
-        }
-        // When pressing the left bumper, the robot will turn counterclockwise.
-        else if(gamepad1.left_bumper)
-        {
-            robot.leftMotor.setPower(-0.5);
-            robot.rightMotor.setPower(0.5);
-        }
-        // When pressing the right bumper, the robot will turn clockwise.
-        else if(gamepad1.right_bumper)
-        {
-            robot.leftMotor.setPower(0.5);
-            robot.rightMotor.setPower(-0.5);
         }
         else
         {
