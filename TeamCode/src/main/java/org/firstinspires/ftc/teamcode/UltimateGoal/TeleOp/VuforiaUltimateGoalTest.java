@@ -142,27 +142,29 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
             // Calculate angle relative to the field.
             relativeFieldAngle = relativeRobotAngle + robot.getAngle();
-        }
-        else
-        {
-            // We want to face the tower goal, so set the angle to 0.
-            relativeFieldAngle = 0;
-        }
 
-        // Only make the robot turn relative to the field if a on the first gamepad is pressed.
-        if(gamepad1.a){
-            // Print angle relative to the robot and the angle relative to the field.
-            telemetry.addData("Angle relative to the field", relativeFieldAngle);
+            // Only make the robot turn relative to the field if a on the first gamepad is pressed.
+            if(gamepad1.a){
+                // Print angle relative to the robot and the angle relative to the field.
+                telemetry.addData("Angle relative to the field", relativeFieldAngle);
 
-            // Determine the speed that the motors should be set to.
-            double velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
+                // Determine the speed that the motors should be set to.
+                double velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
 
-            // Make the robot only turn at 50% speed.
-            velocity *= 0.5;
+                // Make the robot only turn at 50% speed.
+                velocity *= 0.5;
 
-            // Make the robot turn counterclockwise.
-            robot.leftMotor.setPower(-velocity);
-            robot.rightMotor.setPower(velocity);
+                // Make the robot turn counterclockwise.
+                robot.leftMotor.setPower(-velocity);
+                robot.rightMotor.setPower(velocity);
+            }
+            else
+            {
+                // Make the robot stop.
+                robot.leftMotor.setPower(0);
+                robot.rightMotor.setPower(0);
+            }
+
         }
         // When pressing the left bumper, the robot will turn counterclockwise.
         else if(gamepad1.left_bumper)
@@ -178,11 +180,13 @@ public class VuforiaUltimateGoalTest extends OpMode {
         }
         else
         {
-            // Make the robot stop.
+            // We want to face the tower goal, so set the angle to 0.
+            relativeFieldAngle = 0;
+
+            // Sets right and left motor powers to zero.
             robot.leftMotor.setPower(0);
             robot.rightMotor.setPower(0);
         }
-
         // Find where the trackers are.
         telemetry.update();
     }

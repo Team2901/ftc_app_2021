@@ -26,7 +26,9 @@ public class ScrimmageRedShootAndParking extends BaseUltimateGoalAuto {
         while(timer.seconds()<= 6 && opModeIsActive()){}
         robot.transferMotor.setPower(-0.5);
         //Waiting while robot is still feeding rings to shooter
-        while(timer.seconds()<= 7 && opModeIsActive()) {
+        while(
+                timer.seconds()<= 7 && opModeIsActive()
+        ) {
 
         }
         robot.shooterMotor.setPower(0);
