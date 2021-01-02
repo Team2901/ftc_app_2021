@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
@@ -14,16 +15,31 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.GrantHardware;
 import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.TankUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressLint("DefaultLocale")
 @TeleOp(name = "Vuforia UltimateGoal Test", group = "2021_UltimateGoal")
 public class VuforiaUltimateGoalTest extends OpMode {
     public GrantHardware robot = new GrantHardware();
+
+    List<String> logMessages = new ArrayList<>();
+    ElapsedTime timer = new ElapsedTime();
+    ElapsedTime timestampTimer = new ElapsedTime();
+
+    ImprovedGamepad improvedGamepad;
+
     @Override
     public void init() {
         robot.init(this.hardwareMap);
+
+        improvedGamepad = new ImprovedGamepad(gamepad1, timestampTimer, "g1");
 
         int cameraRotationX = 0;
         String errorMessage = robot.initWebCamera(this.hardwareMap);
@@ -89,6 +105,9 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
     @Override
     public void loop() {
+
+        improvedGamepad.update();
+
         OpenGLMatrix robotLocation = null;
 
         // Check if trackers are visible.
@@ -126,15 +145,22 @@ public class VuforiaUltimateGoalTest extends OpMode {
             robot.rightMotor.setPower(-0.5);
         }
 
+        boolean isVisible = robotLocation != null;
+
+        float x = 0;
+        float y = 0;
+        double angleDifference = 0;
+        double velocity = 0;
+
         /*
-        * If the robot location is not null, we translate the robot's location. In other words,
-        * if the tracker image is visible, we translate the robot's location.
+         * If the robot location is not null, we translate the robot's location. In other words,
+         * if the tracker image is visible, we translate the robot's location.
          */
-        if(robotLocation != null){
+        if(isVisible){
             // This gets what this trackable thinks that the robot's position is.
             VectorF robotLocationTranslation = robotLocation.getTranslation();
-            float x = robotLocationTranslation.get(0);
-            float y = robotLocationTranslation.get(1);
+            x = robotLocationTranslation.get(0);
+            y = robotLocationTranslation.get(1);
             float z = robotLocationTranslation.get(2);
 
             // This gets what this trackable thinks that the robot's orientation is.
@@ -160,11 +186,11 @@ public class VuforiaUltimateGoalTest extends OpMode {
             telemetry.addData("Angle relative to the field", relativeFieldAngle);
 
             // Determine the angle difference between relativeFieldAngle and the robot's angle.
-            double angleDifference = AngleUnit.normalizeDegrees(relativeFieldAngle - robot.getAngle());
+            angleDifference = AngleUnit.normalizeDegrees(relativeFieldAngle - robot.getAngle());
             telemetry.addData("Angle difference", angleDifference);
 
             // Determine the speed that the motors should be set to.
-            double velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
+            velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
             telemetry.addData("Velocity", velocity);
 
 
@@ -195,6 +221,35 @@ public class VuforiaUltimateGoalTest extends OpMode {
             robot.rightMotor.setPower(0);
         }
         // Find where the trackers are.
+
+        if (timer.seconds() >= 1) {
+             /*
+             Log information every second
+             1) timestamp
+             2) robot angle
+             3) visible?
+             4) angleDiff
+             5) velocity
+             6) x diff
+             7) y diff
+             */
+            String msg = String.format("%f, %f, %b, %f, %f, %f, %f", timestampTimer.seconds(), robot.getAngle(), isVisible, angleDifference, velocity, x,  y);
+
+            logMessages.add(msg);
+
+            timer.reset();
+        }
+
+        if (improvedGamepad.x.isInitialPress()) {
+
+            try {
+                FileUtilities.writeConfigFile("vuforiaLogFile.csv", logMessages);
+            } catch (IOException e) {
+                telemetry.addData("Error writing to file", e.getMessage());
+            }
+        }
+
         telemetry.update();
+
     }
 }
