@@ -228,4 +228,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public enum TeamColor {
      RED_TEAM, BLUE_TEAM
     }
+
+    public void ringShot(int num){
+        telemetry.addData("Shooting Rings: ", num);
+        //TODO Figure out how transfer/shooting works and implement code
+    }
 }

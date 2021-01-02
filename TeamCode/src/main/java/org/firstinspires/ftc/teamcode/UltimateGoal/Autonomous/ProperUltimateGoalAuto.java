@@ -5,30 +5,33 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static java.lang.System.currentTimeMillis;
 
-public class DecScrimUltimateAuto extends BaseUltimateGoalAuto {
+public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    public DecScrimUltimateAuto() {
+    public ProperUltimateGoalAuto() {
         super(TeamColor.BLUE_TEAM);
     }
 
     public void goToA() {
         moveInchesCenter(24);
         moveInchesForward(9, true);
-        //TODO add 90 degree turn
+        turnToDesiredAngle(180);
         releaseWobble();
     }
     public void goToB() {
         moveInchesCenter(24);
         moveInchesForward(99, true);
         releaseWobble();
+        moveInchesForward(90, false);
+        turnToDesiredAngle(180);
     }
     public void goToC() {
         moveInchesCenter(24);
         moveInchesForward(123, true);
-        //TODO add 90 degree turn
+        turnToDesiredAngle(180);
         releaseWobble();
+        moveInchesForward(115, true);
     }
 
     @Override
@@ -47,36 +50,43 @@ public class DecScrimUltimateAuto extends BaseUltimateGoalAuto {
         waitForStart();
         runtime.reset();
 
-        //grabWobble();
-
-        /*
-        if(target == "A") {
-            goToA();
-        } else if (target == "B") {
-            goToB();
-        } else if (target == "C") {
-            goToC();
-        } else {
-            telemetry.addData("error", "Invalid Target");
-            telemetry.update();
-        }
-         */
-
         moveInchesCenter(-12);
 
-        long targetTime = currentTimeMillis() + 1000;
-
-        while (currentTimeMillis() < targetTime && opModeIsActive()){
-
-        }
+        ElapsedTime timer = new ElapsedTime();
+        while(timer.seconds() < 1){}
 
         starterStackResult = starterStackSensor();
 
         moveInchesCenter(12);
 
+        moveInchesForward(60, true);
+
+        ringShot(3);
+
         if (starterStackResult == 0) {
             goToA();
+            moveInchesForward(48, true);
+            turnToDesiredAngle(-90);
+            grabWobble();
+            turnToDesiredAngle(0);
+            moveInchesForward(40, true);
+            moveInchesCenter(-30);
+            goToA();
         } else if (starterStackResult == 1) {
+            goToB();
+            moveInchesCenter(12);
+            turnToDesiredAngle(0);
+            robot.intakeMotor.setPower(0.5);
+            moveInchesForward(-36, false);
+            robot.intakeMotor.setPower(0);
+            moveInchesCenter(12);
+            moveInchesForward(-12, false);
+            turnToDesiredAngle(-90);
+            grabWobble();
+            turnToDesiredAngle(0);
+            moveInchesForward(40, true);
+            moveInchesCenter(-30);
+            ringShot(1);
             goToB();
         } else if (starterStackResult == 2) {
             goToC();
@@ -85,12 +95,6 @@ public class DecScrimUltimateAuto extends BaseUltimateGoalAuto {
             telemetry.update();
         }
 
-        //Parks back at the line
-        if(starterStackResult == 1) {
-            moveInchesForward(-25, false);
-        } else if(starterStackResult == 2){
-            moveInchesForward(-50, false);
-        }
 
 
         // run until the end of the match (driver presses STOP)

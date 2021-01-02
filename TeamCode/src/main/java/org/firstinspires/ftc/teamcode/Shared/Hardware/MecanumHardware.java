@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
  * Created by piscullin18641 on 1/30/2018.
  */
 
-public class MechanumHardware {
+public class MecanumHardware {
 
     public DcMotor fLeft = null;
     public DcMotor fRight = null;

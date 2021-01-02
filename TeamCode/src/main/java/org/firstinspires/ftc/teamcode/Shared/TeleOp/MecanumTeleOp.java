@@ -4,13 +4,13 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.teamcode.Shared.Hardware.MechanumHardware;
+import org.firstinspires.ftc.teamcode.Shared.Hardware.MecanumHardware;
 
 @Disabled
 @TeleOp(name = "Mechanum", group = "Shared")
-public class MechanumTeleOp extends OpMode {
+public class MecanumTeleOp extends OpMode {
 
-    MechanumHardware robot = new MechanumHardware();
+    MecanumHardware robot = new MecanumHardware();
 
     public void init() {
         robot.init(hardwareMap);
@@ -53,6 +53,27 @@ public class MechanumTeleOp extends OpMode {
         double pFR = (speed * (Math.cos((angle) + ((Math.PI) / 4)))) - r;
         double pBL = (speed * (Math.cos((angle) + ((Math.PI) / 4)))) + r;
         double pBR = (speed * (Math.sin((angle) + ((Math.PI) / 4)))) - r;
+
+        if(pFL > 1){
+            pFL = 1;
+        } else if(pFL < -1){
+            pFL = -1;
+        }
+        if(pFR > 1){
+            pFR = 1;
+        }else if(pFR < -1){
+            pFR = -1;
+        }
+        if(pBL > 1){
+            pBL = 1;
+        }else if(pBL < -1){
+            pBL = -1;
+        }
+        if(pBR > 1){
+            pBR = 1;
+        }else if(pBR < -1){
+            pBR = -1;
+        }
 
         return new double[]{pFL, pFR, pBL, pBR};
     }
