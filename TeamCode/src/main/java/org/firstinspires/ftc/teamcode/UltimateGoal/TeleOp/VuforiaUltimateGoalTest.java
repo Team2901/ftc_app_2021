@@ -159,6 +159,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
             // Print angle relative to the robot and the angle relative to the field.
             telemetry.addData("Angle relative to the field", relativeFieldAngle);
 
+            // Determine the angle difference between relativeFieldAngle and the robot's angle.
             double angleDifference = AngleUnit.normalizeDegrees(relativeFieldAngle - robot.getAngle());
             telemetry.addData("Angle difference", angleDifference);
 
