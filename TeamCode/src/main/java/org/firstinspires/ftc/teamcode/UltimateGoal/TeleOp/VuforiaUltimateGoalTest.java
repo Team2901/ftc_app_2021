@@ -164,6 +164,18 @@ public class VuforiaUltimateGoalTest extends OpMode {
             robot.leftMotor.setPower(-velocity);
             robot.rightMotor.setPower(velocity);
         }
+        // When pressing the left bumper, the robot will turn counterclockwise.
+        else if(gamepad1.left_bumper)
+        {
+            robot.leftMotor.setPower(-0.5);
+            robot.rightMotor.setPower(0.5);
+        }
+        // When pressing the right bumper, the robot will turn clockwise.
+        else if(gamepad1.right_bumper)
+        {
+            robot.leftMotor.setPower(0.5);
+            robot.rightMotor.setPower(-0.5);
+        }
         else
         {
             // Make the robot stop.
