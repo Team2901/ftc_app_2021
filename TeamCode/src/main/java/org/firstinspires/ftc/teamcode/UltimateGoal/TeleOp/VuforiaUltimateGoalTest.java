@@ -159,11 +159,16 @@ public class VuforiaUltimateGoalTest extends OpMode {
             // Print angle relative to the robot and the angle relative to the field.
             telemetry.addData("Angle relative to the field", relativeFieldAngle);
 
+            double angleDifference = AngleUnit.normalizeDegrees(relativeFieldAngle - robot.getAngle());
+            telemetry.addData("Angle difference", angleDifference);
+
+            // Determine the speed that the motors should be set to.
+            double velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
+            telemetry.addData("Velocity", velocity);
+
+
             // Only make the robot turn relative to the field if a on the first gamepad is pressed.
             if(gamepad1.a){
-                // Determine the speed that the motors should be set to.
-                double velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
-
                 // Make the robot only turn at 50% speed.
                 velocity *= 0.5;
 
