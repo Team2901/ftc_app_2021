@@ -28,8 +28,13 @@ public class GrabAndShootTester extends BaseUltimateGoalAuto {
         robot.transferMotor.setPower(-0.5);
         while(timer.seconds()<= 2 && opModeIsActive()) {
         }
+        robot.transferMotor.setPower(0);
         moveInchesForward(-12, false);
         moveInchesForward(11, false);
+
+        timer = new ElapsedTime();
+        while(timer.seconds()<= 2 && opModeIsActive()) {
+        }
 
         timer = new ElapsedTime();
         robot.transferMotor.setPower(-0.5);

@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal.Autonomous;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static java.lang.System.currentTimeMillis;
 
+@Autonomous(name = "Proper Autonomous")
 public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     private ElapsedTime runtime = new ElapsedTime();
