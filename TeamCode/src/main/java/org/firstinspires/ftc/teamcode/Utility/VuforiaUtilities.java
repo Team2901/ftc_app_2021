@@ -61,15 +61,15 @@ public class VuforiaUtilities {
         } else {
             parameters = new VuforiaLocalizer.Parameters();
         }
-
+        parameters.useExtendedTracking = false;
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
         return parameters;
     }
 
     public static VuforiaLocalizer getVuforia(final VuforiaLocalizer.Parameters parameters) {
         VuforiaLocalizer vuforia = ClassFactory.getInstance().createVuforia(parameters);
-        vuforia.setFrameQueueCapacity(1);
-        vuforia.enableConvertFrameToBitmap();
+        //vuforia.setFrameQueueCapacity(1);
+        //vuforia.enableConvertFrameToBitmap();
         return vuforia;
     }
 
