@@ -27,7 +27,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         moveInchesForward(12, true);
         moveInchesCenter(-12);
         turnToDesiredAngle(0);
-        moveInchesForward(48, false);
+        moveInchesForward(24, false);
     }
     public void goToC() {
         moveInchesForward(69, true);
