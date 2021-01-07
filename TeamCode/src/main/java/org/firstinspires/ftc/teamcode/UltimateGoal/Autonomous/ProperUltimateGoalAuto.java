@@ -16,24 +16,24 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
     }
 
     public void goToA() {
-        moveInchesCenter(24);
         moveInchesForward(9, true);
-        turnToDesiredAngle(180);
         releaseWobble();
+        moveInchesCenter(12);
     }
     public void goToB() {
-        moveInchesCenter(24);
-        moveInchesForward(99, true);
-        releaseWobble();
-        moveInchesForward(90, false);
+        moveInchesForward(45, true);
         turnToDesiredAngle(180);
+        releaseWobble();
+        moveInchesForward(12, true);
+        moveInchesCenter(-12);
+        turnToDesiredAngle(0);
+        moveInchesForward(48, false);
     }
     public void goToC() {
-        moveInchesCenter(24);
-        moveInchesForward(123, true);
-        turnToDesiredAngle(180);
+        moveInchesForward(69, true);
         releaseWobble();
-        moveInchesForward(115, true);
+        moveInchesCenter(12);
+        moveInchesForward(-60, false);
     }
 
     @Override
@@ -65,30 +65,26 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         ringShot(3);
 
+        moveInchesCenter(-24);
+
         if (starterStackResult == 0) {
+            while(!gamepad1.a && opModeIsActive()){}
             goToA();
-            moveInchesForward(48, true);
-            turnToDesiredAngle(-90);
+            while(!gamepad1.a && opModeIsActive()){}
+            moveInchesForward(-12, false);
+            moveInchesCenter(12);
+            while(!gamepad1.a && opModeIsActive()){}
+            moveInchesForward(-42, false);
+            turnToDesiredAngle(90);
+            while(!gamepad1.a && opModeIsActive()){}
+            moveInchesCenter(-6);
             grabWobble();
             turnToDesiredAngle(0);
-            moveInchesForward(40, true);
-            moveInchesCenter(-30);
+            while(!gamepad1.a && opModeIsActive()){}
+            moveInchesForward(48, true);
+            while(!gamepad1.a && opModeIsActive()){}
             goToA();
         } else if (starterStackResult == 1) {
-            goToB();
-            moveInchesCenter(12);
-            turnToDesiredAngle(0);
-            robot.intakeMotor.setPower(0.5);
-            moveInchesForward(-36, false);
-            robot.intakeMotor.setPower(0);
-            moveInchesCenter(12);
-            moveInchesForward(-12, false);
-            turnToDesiredAngle(-90);
-            grabWobble();
-            turnToDesiredAngle(0);
-            moveInchesForward(40, true);
-            moveInchesCenter(-30);
-            ringShot(1);
             goToB();
         } else if (starterStackResult == 2) {
             goToC();
