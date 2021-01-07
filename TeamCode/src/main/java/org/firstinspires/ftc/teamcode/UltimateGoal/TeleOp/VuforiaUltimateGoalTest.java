@@ -29,6 +29,8 @@ import java.util.List;
 public class VuforiaUltimateGoalTest extends OpMode {
     public GrantHardware robot = new GrantHardware();
 
+    public static final float MM_TO_INCHES = 0.0393701f;
+
     List<String> logMessages = new ArrayList<>();
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -157,6 +159,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
          * if the tracker image is visible, we translate the robot's location.
          */
         if(isVisible){
+
             // This gets what this trackable thinks that the robot's position is.
             VectorF robotLocationTranslation = robotLocation.getTranslation();
             x = robotLocationTranslation.get(0);
@@ -170,7 +173,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
             float zAngle = orientation.thirdAngle;
 
             // x, y, z positions (x, y, z)
-            telemetry.addData("x, y, z positions", "(" + x + ", " + y +", " + z + ")");
+            telemetry.addData("x, y, z positions", String.format("(%f, %f, %f)", x * MM_TO_INCHES, y * MM_TO_INCHES, z * MM_TO_INCHES));
 
             // x, y, z rotations (x, y, z)
             telemetry.addData("x, y, z rotations", String.format("(%f, %f, %f)", xAngle, yAngle, zAngle));
