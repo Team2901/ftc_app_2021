@@ -15,6 +15,19 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         super(TeamColor.BLUE_TEAM);
     }
 
+    public void extendWobbleArm(boolean extending) {
+        if(extending && opModeIsActive()) {
+            robot.wobbleElbow.setTargetPosition(15000);
+            robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.wobbleElbow.setPower(1);
+        }
+        if(!extending && opModeIsActive()){
+            robot.wobbleElbow.setTargetPosition(0);
+            robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.wobbleElbow.setPower(-1);
+        }
+    }
+
     public void goToA() {
         moveInchesForward(9, true);
         releaseWobble();
@@ -61,6 +74,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesCenter(12);
 
+        extendWobbleArm(true);
+
         moveInchesForward(60, true);
 
         ringShot(3);
@@ -69,9 +84,6 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         if (starterStackResult == 0) {
             while(!gamepad1.a && opModeIsActive()){}
-            robot.wobbleElbow.setTargetPosition(15000);
-            robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            robot.wobbleElbow.setPower(1);
             goToA();
             while(!gamepad1.a && opModeIsActive()){}
             moveInchesForward(-42, false);
