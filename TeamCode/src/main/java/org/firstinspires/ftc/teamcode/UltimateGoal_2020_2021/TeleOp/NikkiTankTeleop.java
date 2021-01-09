@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.TeleOp;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -7,6 +8,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Autonomous.BaseUltimateGoalAuto;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 
+@Disabled
 @TeleOp(name = "NikkiTank", group = "2021_UltimateGoal")
 public class NikkiTankTeleop extends OpMode {
     public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();

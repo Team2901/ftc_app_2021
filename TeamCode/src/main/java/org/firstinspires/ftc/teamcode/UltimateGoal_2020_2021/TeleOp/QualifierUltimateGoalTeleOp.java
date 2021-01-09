@@ -7,10 +7,11 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierUltimateGoalHardware;
 
-@TeleOp(name = "Beta Scrimmage UltimateGoal", group = "2021_UltimateGoal")
-public class ScrimmageBetaUltimateGoalTeleOp extends OpMode {
-    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
+@TeleOp(name = "Qualifier UltimateGoal", group = "2021_UltimateGoal")
+public class QualifierUltimateGoalTeleOp extends OpMode {
+    public QualifierUltimateGoalHardware robot = new QualifierUltimateGoalHardware();
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();
@@ -139,7 +140,7 @@ public class ScrimmageBetaUltimateGoalTeleOp extends OpMode {
 
             if(currentMode == ABSOLUTE_MODE){
                 // Step 1: Calculate angle relative to field to move at (from left joystick)
-                angleToMoveFieldTo = leftStickAngle;
+                angleToMoveFieldTo = leftStickAngle + 180;
             }
             else
             {
@@ -178,7 +179,7 @@ public class ScrimmageBetaUltimateGoalTeleOp extends OpMode {
             }
             // Otherwise, the robot will turn to the angle that we point the right stick down in.
             else{
-                desiredAngle = rightStickAngle;
+                desiredAngle = rightStickAngle + 180;
             }
 
             // This prints out what the angle difference is.
@@ -291,6 +292,6 @@ public class ScrimmageBetaUltimateGoalTeleOp extends OpMode {
         }
 
         // Return angle variable.
-        return angle;
+        return angle + 180;
     }
 }
