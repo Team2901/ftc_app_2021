@@ -5,27 +5,19 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ScrimmageUltimateGoalHardware;
 
 import java.util.List;
 
-import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware.ELEMENT_SINGLE;
-import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware.ELEMENT_QUAD;
+import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ScrimmageUltimateGoalHardware.ELEMENT_SINGLE;
+import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ScrimmageUltimateGoalHardware.ELEMENT_QUAD;
 
 
 public class BaseUltimateGoalAuto extends LinearOpMode {
-    public static final double TICKS_PER_MOTOR_REV = 1120;
-    public static final double FORWARD_DRIVE_GEAR_RATIO = 3.0/2.0;
-    public static final double CENTER_DRIVE_GEAR_RATIO = 1;
-    public static final double FORWARD_TICKS_PER_DRIVE_REV = TICKS_PER_MOTOR_REV * FORWARD_DRIVE_GEAR_RATIO;
-    public static final double CENTER_TICKS_PER_DRIVE_REV = TICKS_PER_MOTOR_REV * CENTER_DRIVE_GEAR_RATIO;
-    public static final double WHEEL_CIRCUMFERENCE_INCHES = 4 * Math.PI;
-    public static final double FORWARD_TICKS_PER_INCH = FORWARD_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
-    public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
 
     public final TeamColor teamColor;
 
-    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
+    public ScrimmageUltimateGoalHardware robot = new ScrimmageUltimateGoalHardware();
     public int starterStackResult = -1;
 
     public BaseUltimateGoalAuto(TeamColor teamColor) {
@@ -125,7 +117,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public void moveInchesCenter(double inches){
         int direction = (TeamColor.RED_TEAM == this.teamColor) ? 1:-1;
 
-        int ticks = (int) (inches * CENTER_TICKS_PER_INCH * direction);
+        int ticks = (int) (inches * robot.centerTicksPerInch * direction);
 
         robot.middleMotor.setTargetPosition(robot.middleMotor.getCurrentPosition() + ticks);
 
@@ -145,7 +137,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
 
     public void moveInchesForward(double inches, boolean correctingRun) {
-        int ticks = (int) (inches * FORWARD_TICKS_PER_INCH);
+        int ticks = (int) (inches * robot.forwardTicksPerInch);
         double startAngle = robot.getAngle();
         double toleranceRange = 10.0;
         double angleTuning = 0;
