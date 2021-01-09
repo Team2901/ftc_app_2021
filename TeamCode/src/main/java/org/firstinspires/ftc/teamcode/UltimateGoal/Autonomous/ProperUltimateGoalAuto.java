@@ -72,7 +72,6 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             goToA();
             while(!gamepad1.a && opModeIsActive()){}
             moveInchesForward(-12, false);
-            moveInchesCenter(12);
             while(!gamepad1.a && opModeIsActive()){}
             moveInchesForward(-42, false);
             turnToDesiredAngle(90);
