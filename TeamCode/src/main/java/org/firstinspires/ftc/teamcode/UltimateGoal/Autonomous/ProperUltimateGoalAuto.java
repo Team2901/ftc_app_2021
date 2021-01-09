@@ -54,8 +54,11 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesCenter(-12);
 
-        ElapsedTime timer = new ElapsedTime();
-        while(timer.seconds() < 1){}
+        robot.middleMotor.setTargetPosition(15000);
+
+        robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.middleMotor.setPower(1);
 
         starterStackResult = starterStackSensor();
 
@@ -66,12 +69,6 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         ringShot(3);
 
         moveInchesCenter(-24);
-
-        robot.middleMotor.setTargetPosition(15000);
-
-        robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-        robot.middleMotor.setPower(1);
 
         if (starterStackResult == 0) {
             while(!gamepad1.a && opModeIsActive()){}
