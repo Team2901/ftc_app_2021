@@ -67,6 +67,12 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesCenter(-24);
 
+        robot.middleMotor.setTargetPosition(15000);
+
+        robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        robot.middleMotor.setPower(1);
+
         if (starterStackResult == 0) {
             while(!gamepad1.a && opModeIsActive()){}
             goToA();
