@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MecanumHardware;
 
-@Disabled
-@TeleOp(name = "Mechanum", group = "Shared")
+
+@TeleOp(name = "Mecanum", group = "Shared")
 public class MecanumTeleOp extends OpMode {
 
     MecanumHardware robot = new MecanumHardware();
@@ -19,11 +19,11 @@ public class MecanumTeleOp extends OpMode {
     @Override
     public void loop() {
 
-        double leftY = Math.abs(gamepad1.left_stick_y) > 0.3 ? -gamepad1.left_stick_y : 0;
+        double leftY = Math.abs(gamepad1.left_stick_y) > 0.1 ? -gamepad1.left_stick_y : 0;
 
-        double leftX = Math.abs(gamepad1.left_stick_x) > 0.3 ? gamepad1.left_stick_x : 0;
+        double leftX = Math.abs(gamepad1.left_stick_x) > 0.1 ? gamepad1.left_stick_x : 0;
 
-        double rightX = Math.abs(gamepad1.right_stick_x) > 0.3 ? gamepad1.right_stick_x : 0;
+        double rightX = Math.abs(gamepad1.right_stick_x) > 0.1 ? gamepad1.right_stick_x : 0;
 
         double[] wheelPower = wheelPower(leftX, leftY, rightX);
 
@@ -49,10 +49,10 @@ public class MecanumTeleOp extends OpMode {
         double speed = speed(x, y);
         double angle = angle(x, y);
 
-        double pFL = (speed * (Math.sin((angle) + ((Math.PI) / 4)))) + r;
-        double pFR = (speed * (Math.cos((angle) + ((Math.PI) / 4)))) - r;
-        double pBL = (speed * (Math.cos((angle) + ((Math.PI) / 4)))) + r;
-        double pBR = (speed * (Math.sin((angle) + ((Math.PI) / 4)))) - r;
+        double pFL = (speed * (Math.sin((angle) + ((Math.PI) / 4)))) + .75*r;
+        double pFR = (speed * (Math.cos((angle) + ((Math.PI) / 4)))) - .75*r;
+        double pBL = (speed * (Math.cos((angle) + ((Math.PI) / 4)))) + .75*r;
+        double pBR = (speed * (Math.sin((angle) + ((Math.PI) / 4)))) - .75*r;
 
         if(pFL > 1){
             pFL = 1;

@@ -37,6 +37,15 @@ public class BaseUltimateGoalHardware {
     public DcMotor transferMotor = null;
     public Servo wobbleGrabber;
     public DcMotor wobbleElbow;
+    public double forwardTicksPerInch;
+    public double centerTicksPerInch;
+
+    public BaseUltimateGoalHardware() {}
+
+    public BaseUltimateGoalHardware(double forwardTicksPerInch, double centerTicksPerInch) {
+        this.forwardTicksPerInch = forwardTicksPerInch;
+        this.centerTicksPerInch = centerTicksPerInch;
+    }
 
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors

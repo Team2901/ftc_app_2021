@@ -13,6 +13,19 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         super(TeamColor.BLUE_TEAM);
     }
 
+    public void extendWobbleArm(boolean extending) {
+        if(extending && opModeIsActive()) {
+            robot.wobbleElbow.setTargetPosition(15000);
+            robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.wobbleElbow.setPower(1);
+        }
+        if(!extending && opModeIsActive()){
+            robot.wobbleElbow.setTargetPosition(0);
+            robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.wobbleElbow.setPower(-1);
+        }
+    }
+
     public void goToA() {
         moveInchesForward(9, true);
         releaseWobble();
@@ -59,6 +72,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesCenter(12);
 
+        extendWobbleArm(true);
+
         moveInchesForward(60, true);
 
         ringShot(3);
@@ -68,9 +83,6 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         if (starterStackResult == 0) {
             while(!gamepad1.a && opModeIsActive()){}
             goToA();
-            while(!gamepad1.a && opModeIsActive()){}
-            moveInchesForward(-12, false);
-            moveInchesCenter(12);
             while(!gamepad1.a && opModeIsActive()){}
             moveInchesForward(-42, false);
             turnToDesiredAngle(90);
@@ -83,6 +95,31 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             while(!gamepad1.a && opModeIsActive()){}
             goToA();
         } else if (starterStackResult == 1) {
+            while(!gamepad1.a && opModeIsActive()){}
+            goToB();
+            moveInchesForward(-24, false);
+            while(!gamepad1.a && opModeIsActive()){}
+            robot.intakeMotor.setPower(.5);
+            robot.intakeMotor.setPower(-.5);
+            moveInchesForward(-15, false);
+            moveInchesForward(3, false);
+            robot.intakeMotor.setPower(0);
+            robot.intakeMotor.setPower(0);
+            while(!gamepad1.a && opModeIsActive()){}
+            moveInchesCenter(22);
+            moveInchesForward(24, true);
+            while(!gamepad1.a && opModeIsActive()){}
+            ringShot(1);
+            moveInchesCenter(-34);
+            while(!gamepad1.a && opModeIsActive()){}
+            moveInchesForward(-42, false);
+            turnToDesiredAngle(90);
+            moveInchesCenter(-6);
+            grabWobble();
+            while(!gamepad1.a && opModeIsActive()){}
+            turnToDesiredAngle(0);
+            moveInchesForward(48, true);
+            while(!gamepad1.a && opModeIsActive()){}
             goToB();
         } else if (starterStackResult == 2) {
             goToC();

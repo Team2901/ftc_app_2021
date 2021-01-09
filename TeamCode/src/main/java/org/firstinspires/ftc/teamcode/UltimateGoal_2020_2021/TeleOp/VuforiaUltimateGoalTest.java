@@ -27,6 +27,8 @@ import java.util.List;
 public class VuforiaUltimateGoalTest extends OpMode {
     public GrantHardware robot = new GrantHardware();
 
+    public static final float MM_TO_INCHES = 0.0393701f;
+
     List<String> logMessages = new ArrayList<>();
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -155,6 +157,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
          * if the tracker image is visible, we translate the robot's location.
          */
         if(isVisible){
+
             // This gets what this trackable thinks that the robot's position is.
             VectorF robotLocationTranslation = robotLocation.getTranslation();
             x = robotLocationTranslation.get(0);
@@ -167,8 +170,8 @@ public class VuforiaUltimateGoalTest extends OpMode {
             float yAngle = orientation.secondAngle;
             float zAngle = orientation.thirdAngle;
 
-            // x, y, z positions (x, y, z)
-            telemetry.addData("x, y, z positions", "(" + x + ", " + y +", " + z + ")");
+            // x, y, z positions (x, y, z) (in inches)
+            telemetry.addData("x, y, z positions", String.format("(%f, %f, %f)", x * MM_TO_INCHES, y * MM_TO_INCHES, z * MM_TO_INCHES));
 
             // x, y, z rotations (x, y, z)
             telemetry.addData("x, y, z rotations", String.format("(%f, %f, %f)", xAngle, yAngle, zAngle));
@@ -220,9 +223,9 @@ public class VuforiaUltimateGoalTest extends OpMode {
         }
         // Find where the trackers are.
 
-        if (timer.seconds() >= 1) {
+        if (timer.milliseconds() >= 1) {
              /*
-             Log information every second
+             Log information every millisecond
              1) timestamp
              2) robot angle
              3) visible?
@@ -231,7 +234,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
              6) x diff
              7) y diff
              */
-            String msg = String.format("%f, %f, %b, %f, %f, %f, %f", timestampTimer.seconds(), robot.getAngle(), isVisible, angleDifference, velocity, x,  y);
+            String msg = String.format("%f, %f, %b, %f, %f, %f, %f", timestampTimer.milliseconds(), robot.getAngle(), isVisible, angleDifference, velocity, x,  y);
 
             logMessages.add(msg);
 
