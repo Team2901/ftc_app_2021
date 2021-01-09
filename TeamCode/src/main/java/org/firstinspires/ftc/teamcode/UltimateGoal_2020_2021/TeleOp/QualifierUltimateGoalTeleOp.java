@@ -212,11 +212,19 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
 
         // If dpad up is pressed we want the wobble elbow to keep on extending forward.
         if(gamepad1.dpad_up){
-            robot.wobbleElbow.setPower(0.5);
+            if(robot.wobbleElbow.getCurrentPosition() >= 500) {
+                robot.wobbleElbow.setPower(0.5);
+            } else {
+                robot.wobbleElbow.setPower(0);
+            }
         }
         // If dpad down is pressed we want the wobble elbow to keep on retracting.
         else if(gamepad1.dpad_down){
-            robot.wobbleElbow.setPower(-0.5);
+            if(robot.wobbleElbow.getCurrentPosition() <= -15000) {
+                robot.wobbleElbow.setPower(-0.5);
+            } else {
+                robot.wobbleElbow.setPower(0);
+            }
         }
         // Otherwise, we want the robot's wobble elbow to stay still.
         else{
