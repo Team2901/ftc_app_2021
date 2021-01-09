@@ -2,14 +2,12 @@ package org.firstinspires.ftc.teamcode.Utility;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 
 import com.vuforia.Image;
 
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.teamcode.RoverRuckus.Autonomous.BaseRoverRuckusAuto;
 
 import java.io.IOException;
 import java.util.List;
