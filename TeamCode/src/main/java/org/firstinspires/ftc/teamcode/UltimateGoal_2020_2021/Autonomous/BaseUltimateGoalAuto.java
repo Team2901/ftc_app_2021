@@ -5,12 +5,12 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ScrimmageUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.ScrimmageUltimateGoalHardware;
 
 import java.util.List;
 
-import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ScrimmageUltimateGoalHardware.ELEMENT_SINGLE;
-import static org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.ScrimmageUltimateGoalHardware.ELEMENT_QUAD;
+import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.ScrimmageUltimateGoalHardware.ELEMENT_SINGLE;
+import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.ScrimmageUltimateGoalHardware.ELEMENT_QUAD;
 
 
 public class BaseUltimateGoalAuto extends LinearOpMode {
