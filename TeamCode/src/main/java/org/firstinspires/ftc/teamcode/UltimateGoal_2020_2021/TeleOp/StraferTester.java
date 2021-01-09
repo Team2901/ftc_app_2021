@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.UltimateGoal.TeleOp;
+package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
-import org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 
 @TeleOp(name = "Strafer Tester")
 public class StraferTester extends OpMode {
