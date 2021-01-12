@@ -37,8 +37,9 @@ public class StraferTester extends OpMode {
         if(pause == 1){
             robot.middleMotor.setPower(middleMotorPower);
         }
-        else
+        else {
             robot.middleMotor.setPower(0);
+        }
 
         if(impGamepad.dpad_up.isInitialPress() && middleMotorPower < 1){
             middleMotorPower += 0.1;
