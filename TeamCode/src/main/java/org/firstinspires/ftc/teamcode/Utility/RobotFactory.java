@@ -46,13 +46,13 @@ public class RobotFactory {
     }
     private static Object _createRobotInstance(Telemetry telemetry) throws Exception {
         Object robot = null;
-        String packageName = "org.firstinspires.ftc.teamcode.UltimateGoal.Hardware";
+        String packageName = "org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware";
         String hardwareClassName = RobotFactory.getRobotConfigurationName();
         String className = packageName + "." + hardwareClassName;
         try {
             robot = Class.forName(className).getConstructor().newInstance();
         } catch (Exception e) {
-            robot = Class.forName("org.firstinspires.ftc.teamcode.UltimateGoal.Hardware.BaseUltimateGoalHardware").getConstructor().newInstance();
+            robot = Class.forName("org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware").getConstructor().newInstance();
             telemetry.addData("Unable to create hardware class: ", hardwareClassName );
             telemetry.update();
         }
