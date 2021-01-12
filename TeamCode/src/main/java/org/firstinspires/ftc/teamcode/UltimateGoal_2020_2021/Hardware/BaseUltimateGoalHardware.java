@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.configuration.ConfigurationUtility;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotor;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockServo;
+import org.firstinspires.ftc.teamcode.Utility.ConfigUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -181,5 +183,12 @@ public class BaseUltimateGoalHardware {
         else{
             wobbleGrabber.setPosition(0.75);
         }
+    }
+
+    public static BaseUltimateGoalHardware create() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+        BaseUltimateGoalHardware baseUltimateGoalHardware;
+        String hardwareName = ConfigUtilities.getRobotConfigurationName();
+        baseUltimateGoalHardware = (BaseUltimateGoalHardware) Class.forName(hardwareName).newInstance();
+        return baseUltimateGoalHardware;
     }
 }
