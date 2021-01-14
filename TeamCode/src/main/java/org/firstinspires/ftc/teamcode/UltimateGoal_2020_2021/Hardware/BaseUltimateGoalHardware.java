@@ -185,10 +185,15 @@ public class BaseUltimateGoalHardware {
         }
     }
 
-    public static BaseUltimateGoalHardware create() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+    public static BaseUltimateGoalHardware create() {
         BaseUltimateGoalHardware baseUltimateGoalHardware;
-        String hardwareName = ConfigUtilities.getRobotConfigurationName();
-        baseUltimateGoalHardware = (BaseUltimateGoalHardware) Class.forName(hardwareName).newInstance();
-        return baseUltimateGoalHardware;
+        try{
+            String hardwareName = ConfigUtilities.getRobotConfigurationName();
+            baseUltimateGoalHardware = (BaseUltimateGoalHardware) Class.forName(hardwareName).newInstance();
+            return baseUltimateGoalHardware;
+        } catch (Exception ClassNotFoundException){
+            return new BaseUltimateGoalHardware();
+        }
+
     }
 }

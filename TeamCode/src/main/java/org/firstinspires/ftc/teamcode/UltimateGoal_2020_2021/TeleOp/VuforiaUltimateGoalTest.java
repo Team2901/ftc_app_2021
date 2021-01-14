@@ -15,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
+import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.GrantHardware;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
 
@@ -25,7 +26,7 @@ import java.util.List;
 @SuppressLint("DefaultLocale")
 @TeleOp(name = "Vuforia UltimateGoal Test", group = "2021_UltimateGoal")
 public class VuforiaUltimateGoalTest extends OpMode {
-    public GrantHardware robot = new GrantHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
 
     public static final float MM_TO_INCHES = 0.0393701f;
 

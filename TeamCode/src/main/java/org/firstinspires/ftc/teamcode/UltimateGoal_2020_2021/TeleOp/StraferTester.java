@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltima
 
 @TeleOp(name = "Strafer Tester")
 public class StraferTester extends OpMode {
-    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
 
     ImprovedGamepad impGamepad;
     ElapsedTime timer = new ElapsedTime();

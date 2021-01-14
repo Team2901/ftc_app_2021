@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierU
 
 @TeleOp(name = "Qualifier UltimateGoal", group = "2021_UltimateGoal")
 public class QualifierUltimateGoalTeleOp extends OpMode {
-    public QualifierUltimateGoalHardware robot = new QualifierUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();
