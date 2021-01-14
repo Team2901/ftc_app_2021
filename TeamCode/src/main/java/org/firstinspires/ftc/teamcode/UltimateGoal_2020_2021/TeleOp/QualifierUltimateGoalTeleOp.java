@@ -272,8 +272,8 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
              /*
              Log information every millisecond
              1) timestamp
-             2) robot angle
-             3) encoder counts
+             2) encoder counts for shooter
+             3) encoder counts for shooter 2
              */
 
             String msg = String.format("%f, %f, %f", timestampTimer.milliseconds(), (float) robot.shooterMotor.getCurrentPosition(), (float) robot.shooterMotor2.getCurrentPosition());
@@ -283,10 +283,13 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
             timer.reset();
         }
 
-        if (improvedGamepad.x.isInitialPress()) {
+        if(improvedGamepad.x.isInitialPress()) {
+
+            int time = (int)(System.currentTimeMillis());
 
             try {
-                FileUtilities.writeConfigFile("vuforiaLogFile.csv", logMessages);
+                FileUtilities.writeConfigFile("shooterLogFile_" + time + "_.csv", logMessages);
+                logMessages.clear();
             } catch (IOException e) {
                 telemetry.addData("Error writing to file", e.getMessage());
             }
