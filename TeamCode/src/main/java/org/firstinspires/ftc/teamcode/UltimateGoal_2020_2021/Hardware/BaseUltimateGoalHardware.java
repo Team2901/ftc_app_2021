@@ -43,7 +43,9 @@ public class BaseUltimateGoalHardware {
     public double centerTicksPerInch;
     public String hardwareClassName;
 
-    public BaseUltimateGoalHardware() {}
+    public BaseUltimateGoalHardware() {
+
+    }
 
     public BaseUltimateGoalHardware(double forwardTicksPerInch, double centerTicksPerInch) {
         this.forwardTicksPerInch = forwardTicksPerInch;
