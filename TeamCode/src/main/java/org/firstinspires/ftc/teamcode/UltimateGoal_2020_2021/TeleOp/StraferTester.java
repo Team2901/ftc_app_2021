@@ -20,6 +20,7 @@ public class StraferTester extends OpMode {
     @Override
     public void init() {
         impGamepad = new ImprovedGamepad(this.gamepad1, this.timer, "GP1");
+        robot.init(this.hardwareMap);
     }
 
     @Override
@@ -49,6 +50,15 @@ public class StraferTester extends OpMode {
         else if(impGamepad.dpad_down.isInitialPress() && middleMotorPower > 0){
             middleMotorPower -= 0.1;
         }
+
+        if(pause == 1){
+            robot.middleMotor.setPower(middleMotorPower);
+        }
+        else
+            robot.middleMotor.setPower(0);
+
+        telemetry.addData("Current Motor Speed", middleMotorPower);
+        telemetry.update();
 
         }
     }
