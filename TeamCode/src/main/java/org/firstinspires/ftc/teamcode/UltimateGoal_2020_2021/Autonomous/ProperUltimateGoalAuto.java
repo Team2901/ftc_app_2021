@@ -63,6 +63,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         waitForStart();
         runtime.reset();
 
+        grabWobble();
+
         moveInchesCenter(-12);
 
         ElapsedTime timer = new ElapsedTime();

@@ -71,8 +71,6 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
 
     public void grabWobble() {
-        robot.configureWobbleGrabber(false);
-        sleep(3000);
         robot.configureWobbleGrabber(true);
     }
 
