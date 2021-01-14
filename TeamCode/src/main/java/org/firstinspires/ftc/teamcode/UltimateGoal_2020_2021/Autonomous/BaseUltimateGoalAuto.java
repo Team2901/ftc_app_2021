@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.ScrimmageUltimateGoalHardware;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public final TeamColor teamColor;
 
-    public ScrimmageUltimateGoalHardware robot = new ScrimmageUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     public int starterStackResult = -1;
 
     public BaseUltimateGoalAuto(TeamColor teamColor) {

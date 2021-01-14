@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @TeleOp(name = "Hardware Test UltimateGoal", group = "2021_UltimateGoal")
 public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
 
-    BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
+    BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     ImprovedGamepad impGamepad;
     ElapsedTime timer = new ElapsedTime();
 

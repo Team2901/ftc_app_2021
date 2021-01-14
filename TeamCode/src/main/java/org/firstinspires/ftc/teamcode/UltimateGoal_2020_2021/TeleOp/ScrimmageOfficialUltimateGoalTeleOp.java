@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltima
 
 @TeleOp(name = "Official Scrimmage UltimateGoal Red Field", group = "2021_UltimateGoal")
 public class ScrimmageOfficialUltimateGoalTeleOp extends OpMode {
-    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();

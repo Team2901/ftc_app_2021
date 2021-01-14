@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltima
 @Disabled
 @TeleOp(name = "Ben UltimateGoal", group = "2021_UltimateGoal")
 public class BenUltimateGoalTeleOp extends OpMode {
-    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
 
     @Override
     public void init() {
