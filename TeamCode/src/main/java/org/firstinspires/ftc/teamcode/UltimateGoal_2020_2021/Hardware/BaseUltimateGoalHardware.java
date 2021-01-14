@@ -41,6 +41,7 @@ public class BaseUltimateGoalHardware {
     public DcMotor wobbleElbow;
     public double forwardTicksPerInch;
     public double centerTicksPerInch;
+    public String hardwareClassName;
 
     public BaseUltimateGoalHardware() {}
 
@@ -190,9 +191,13 @@ public class BaseUltimateGoalHardware {
         try{
             String hardwareName = ConfigUtilities.getRobotConfigurationName();
             baseUltimateGoalHardware = (BaseUltimateGoalHardware) Class.forName(hardwareName).newInstance();
+            baseUltimateGoalHardware.hardwareClassName = hardwareName;
             return baseUltimateGoalHardware;
         } catch (Exception ClassNotFoundException){
-            return new BaseUltimateGoalHardware();
+            baseUltimateGoalHardware =  new BaseUltimateGoalHardware();
+            baseUltimateGoalHardware.hardwareClassName = "BaseUltimateGoalHardware";
+            return baseUltimateGoalHardware;
+
         }
 
     }

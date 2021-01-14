@@ -43,6 +43,7 @@ public class ScrimmageOfficialUltimateGoalTeleOp extends OpMode {
         for(int i = 0; i < robot.failedHardware.size(); i++){
             telemetry.addData(String.valueOf(i + 1), robot.failedHardware.get(i));
         }
+
         telemetry.update();
     }
 
