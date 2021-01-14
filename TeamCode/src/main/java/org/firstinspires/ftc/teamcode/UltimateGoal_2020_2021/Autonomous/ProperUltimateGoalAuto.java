@@ -127,6 +127,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             extendWobbleArm(true);
             while(robot.wobbleElbow.getCurrentPosition() < 14500){}
             releaseWobble();
+            extendWobbleArm(false);
         } else {
             telemetry.addData("error", "How did this happen");
             telemetry.update();
