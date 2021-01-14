@@ -244,8 +244,11 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
         if (improvedGamepad.x.isInitialPress()) {
 
+            int time = (int)(System.currentTimeMillis());
+
             try {
-                FileUtilities.writeConfigFile("vuforiaLogFile.csv", logMessages);
+                FileUtilities.writeConfigFile("vuforiaLogFile_" + time + "_.csv", logMessages);
+                logMessages.clear();
             } catch (IOException e) {
                 telemetry.addData("Error writing to file", e.getMessage());
             }
