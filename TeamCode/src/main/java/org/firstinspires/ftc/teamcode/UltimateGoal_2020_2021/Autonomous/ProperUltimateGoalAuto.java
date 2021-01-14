@@ -82,7 +82,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesCenter(-24);
 
-        if (starterStackResult == 2) {
+        if (starterStackResult == 0) {
             while(!gamepad1.a && opModeIsActive()){}
             goToA();
             while(!gamepad1.a && opModeIsActive()){}
@@ -123,11 +123,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             moveInchesForward(48, true);
             while(!gamepad1.a && opModeIsActive()){}
             goToB();
-        } else if (starterStackResult == 0) {
-            extendWobbleArm(true);
-            while(robot.wobbleElbow.getCurrentPosition() < 14500){}
-            releaseWobble();
-            extendWobbleArm(false);
+        } else if (starterStackResult == 2) {
+            goToC();
         } else {
             telemetry.addData("error", "How did this happen");
             telemetry.update();
