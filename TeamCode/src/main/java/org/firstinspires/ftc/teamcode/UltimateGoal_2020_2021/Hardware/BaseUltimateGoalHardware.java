@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.configuration.ConfigurationUtility;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotor;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockServo;
+import org.firstinspires.ftc.teamcode.Utility.ConfigUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +41,7 @@ public class BaseUltimateGoalHardware {
     public DcMotor wobbleElbow;
     public double forwardTicksPerInch;
     public double centerTicksPerInch;
+    public String hardwareClassName;
 
     public BaseUltimateGoalHardware() {}
 
@@ -175,11 +178,27 @@ public class BaseUltimateGoalHardware {
     public void configureWobbleGrabber(boolean isClosed){
         // If true is passed as the parameter, the wobble grabber will close.
         if(isClosed){
-            wobbleGrabber.setPosition(0.25);
+            wobbleGrabber.setPosition(.5);
         }
         // Otherwise, the wobble grabber will remain open.
         else{
-            wobbleGrabber.setPosition(0.75);
+            wobbleGrabber.setPosition(0);
         }
+    }
+
+    public static BaseUltimateGoalHardware create() {
+        BaseUltimateGoalHardware baseUltimateGoalHardware;
+        try{
+            String hardwareName = ConfigUtilities.getRobotConfigurationName();
+            baseUltimateGoalHardware = (BaseUltimateGoalHardware) Class.forName(hardwareName).newInstance();
+            baseUltimateGoalHardware.hardwareClassName = hardwareName;
+            return baseUltimateGoalHardware;
+        } catch (Exception ClassNotFoundException){
+            baseUltimateGoalHardware =  new BaseUltimateGoalHardware();
+            baseUltimateGoalHardware.hardwareClassName = "BaseUltimateGoalHardware";
+            return baseUltimateGoalHardware;
+
+        }
+
     }
 }

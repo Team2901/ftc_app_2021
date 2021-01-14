@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltima
 @Disabled
 @TeleOp(name = "NikkiTank", group = "2021_UltimateGoal")
 public class NikkiTankTeleop extends OpMode {
-    public BaseUltimateGoalHardware robot = new BaseUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     public BaseUltimateGoalAuto auto = new BaseUltimateGoalAuto(BaseUltimateGoalAuto.TeamColor.RED_TEAM);
     //variables for use in PID loop
     //float angleAfterTurn = robot.getAngle();

@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 @TeleOp(name = "Qualifier UltimateGoal", group = "2021_UltimateGoal")
 public class QualifierUltimateGoalTeleOp extends OpMode {
-    public QualifierUltimateGoalHardware robot = new QualifierUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();
@@ -52,6 +52,9 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         for(int i = 0; i < robot.failedHardware.size(); i++){
             telemetry.addData(String.valueOf(i + 1), robot.failedHardware.get(i));
         }
+
+        telemetry.addData("Current Hardware", robot.hardwareClassName);
+
         telemetry.update();
     }
 
@@ -220,11 +223,19 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
 
         // If dpad up is pressed we want the wobble elbow to keep on extending forward.
         if(gamepad1.dpad_up){
-            robot.wobbleElbow.setPower(0.5);
+            if(robot.wobbleElbow.getCurrentPosition() >= 500) {
+                robot.wobbleElbow.setPower(0.5);
+            } else {
+                robot.wobbleElbow.setPower(0);
+            }
         }
         // If dpad down is pressed we want the wobble elbow to keep on retracting.
         else if(gamepad1.dpad_down){
-            robot.wobbleElbow.setPower(-0.5);
+            if(robot.wobbleElbow.getCurrentPosition() <= -15000) {
+                robot.wobbleElbow.setPower(-0.5);
+            } else {
+                robot.wobbleElbow.setPower(0);
+            }
         }
         // Otherwise, we want the robot's wobble elbow to stay still.
         else{
