@@ -8,6 +8,10 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 @TeleOp(name = "Qualifier UltimateGoal", group = "2021_UltimateGoal")
 public class QualifierUltimateGoalTeleOp extends OpMode {
@@ -24,6 +28,10 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
     double turnPowerRatio = 1;
     double movePowerRatio = 1;
     double shooterPowerRatio = 1;
+
+    ArrayList<String> logMessages = new ArrayList<String>();
+    ElapsedTime timestampTimer = new ElapsedTime();
+    ImprovedGamepad improvedGamepad;
 
     @Override
     public void init() {
@@ -259,6 +267,35 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         // Always have the shooter motors running at 100% speed.
         robot.shooterMotor.setPower(shooterPowerRatio);
         robot.shooterMotor2.setPower(shooterPowerRatio);
+
+        if (timer.milliseconds() >= 1) {
+             /*
+             Log information every millisecond
+             1) timestamp
+             2) encoder counts for shooter
+             3) encoder counts for shooter 2
+             */
+
+            String msg = String.format("%f, %f, %f", timestampTimer.milliseconds(), (float) robot.shooterMotor.getCurrentPosition(), (float) robot.shooterMotor2.getCurrentPosition());
+
+            logMessages.add(msg);
+
+            timer.reset();
+        }
+
+        if(improvedGamepad.back.isInitialPress()) {
+
+            int time = (int)(System.currentTimeMillis());
+
+            try {
+                FileUtilities.writeConfigFile("shooterLogFile_" + time + "_.csv", logMessages);
+                logMessages.clear();
+            } catch (IOException e) {
+                telemetry.addData("Error writing to file", e.getMessage());
+            }
+        }
+
+        telemetry.update();
 
         /*
          * This code below prints out the robot angle, right stick angle, right motor power, the
