@@ -192,7 +192,7 @@ public class BaseUltimateGoalHardware {
         BaseUltimateGoalHardware baseUltimateGoalHardware;
         try{
             String hardwareName = ConfigUtilities.getRobotConfigurationName();
-            baseUltimateGoalHardware = (BaseUltimateGoalHardware) Class.forName(hardwareName).newInstance();
+            baseUltimateGoalHardware = (BaseUltimateGoalHardware) Class.forName("org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware." + hardwareName).newInstance();
             baseUltimateGoalHardware.hardwareClassName = hardwareName;
             return baseUltimateGoalHardware;
         } catch (Exception ClassNotFoundException){

@@ -283,7 +283,7 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
             timer.reset();
         }
 
-        if(improvedGamepad.x.isInitialPress()) {
+        if(improvedGamepad.back.isInitialPress()) {
 
             int time = (int)(System.currentTimeMillis());
 
