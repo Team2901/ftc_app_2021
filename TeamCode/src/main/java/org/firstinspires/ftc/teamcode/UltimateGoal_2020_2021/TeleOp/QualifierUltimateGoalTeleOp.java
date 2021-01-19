@@ -29,6 +29,7 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
     double turnPowerRatio = 1;
     double movePowerRatio = 1;
     double shooterPowerRatio = 1;
+    double intakePowerRatio = .5;
 
     ArrayList<String> logMessages = new ArrayList<String>();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -129,6 +130,12 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         // that the movePowerRatio is greater than 0.
         else if(impGamepad2.a.isInitialPress() && movePowerRatio > 0){
             movePowerRatio -= 0.1;
+        }
+
+        if (impGamepad2.dpad_left.isInitialPress() && movePowerRatio < 1){
+            intakePowerRatio += .1;
+        } else if (impGamepad2.dpad_right.isInitialPress() && movePowerRatio > 0){
+            intakePowerRatio -= .1;
         }
 
         // Determine radii of joysticks through Pythagorean Theorem.
@@ -246,19 +253,19 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         // If the left trigger is pressed, then the intake and transfer motors will turn forward.
         if(gamepad1.left_trigger > 0)
         {
-            robot.intakeMotor.setPower(0.5);
-            robot.transferMotor.setPower(-0.5);
+            robot.intakeMotor.setPower(intakePowerRatio);
+            robot.transferMotor.setPower(-intakePowerRatio);
         }
         // Otherwise, if the right trigger is pressed, then the intake and transfer motors will turn backward.
         else if(gamepad1.right_trigger > 0)
         {
-            robot.intakeMotor.setPower(-0.5);
-            robot.transferMotor.setPower(0.5);
+            robot.intakeMotor.setPower(-intakePowerRatio);
+            robot.transferMotor.setPower(intakePowerRatio);
         }
         // Otherwise, the intake and transfer motors will stop turning.
         else {
             if (isIntakeOn) {
-                robot.intakeMotor.setPower(0.5);
+                robot.intakeMotor.setPower(intakePowerRatio);
             } else {
                 robot.intakeMotor.setPower(0);
             }
