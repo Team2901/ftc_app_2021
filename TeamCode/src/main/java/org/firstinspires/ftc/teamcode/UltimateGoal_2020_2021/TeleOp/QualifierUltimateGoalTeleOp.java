@@ -132,9 +132,9 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
             movePowerRatio -= 0.1;
         }
 
-        if (impGamepad2.dpad_left.isInitialPress() && movePowerRatio < 1){
+        if (impGamepad2.dpad_left.isInitialPress() && intakePowerRatio < 1){
             intakePowerRatio += .1;
-        } else if (impGamepad2.dpad_right.isInitialPress() && movePowerRatio > 0){
+        } else if (impGamepad2.dpad_right.isInitialPress() && intakePowerRatio > 0){
             intakePowerRatio -= .1;
         }
 
