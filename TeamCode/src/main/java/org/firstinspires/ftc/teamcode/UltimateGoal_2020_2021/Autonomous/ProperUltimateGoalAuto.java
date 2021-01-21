@@ -80,7 +80,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         ringShot(3);
 
-        moveInchesCenter(-20);
+        moveInchesCenter(-14);
 
         if (starterStackResult == 0) {
             while(!gamepad1.a && opModeIsActive()){}
