@@ -65,6 +65,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         grabWobble();
 
+        /*
         moveInchesCenter(-12);
 
         ElapsedTime timer = new ElapsedTime();
@@ -73,6 +74,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         starterStackResult = starterStackSensor();
 
         moveInchesCenter(12);
+        */
 
         extendWobbleArm(true);
 
