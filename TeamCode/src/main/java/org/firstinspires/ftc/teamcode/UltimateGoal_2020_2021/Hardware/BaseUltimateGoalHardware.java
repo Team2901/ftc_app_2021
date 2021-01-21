@@ -42,6 +42,7 @@ public class BaseUltimateGoalHardware {
     public double forwardTicksPerInch;
     public double centerTicksPerInch;
     public String hardwareClassName;
+    public Servo kicker;
 
     public BaseUltimateGoalHardware() {
 
@@ -105,6 +106,7 @@ public class BaseUltimateGoalHardware {
         wobbleElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wobbleElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wobbleGrabber = getServo(hwMap, "grabber");
+        kicker = getServo(hwMap, "kicker");
     }
 
     public String initWebCamera(HardwareMap hardwareMap){
@@ -199,8 +201,6 @@ public class BaseUltimateGoalHardware {
             baseUltimateGoalHardware =  new BaseUltimateGoalHardware();
             baseUltimateGoalHardware.hardwareClassName = "BaseUltimateGoalHardware";
             return baseUltimateGoalHardware;
-
         }
-
     }
 }

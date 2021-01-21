@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.internal.android.dx.rop.cst.CstArray;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierUltimateGoalHardware;
@@ -28,6 +29,7 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
     double turnPowerRatio = 1;
     double movePowerRatio = 1;
     double shooterPowerRatio = 1;
+    double intakePowerRatio = .5;
 
     ArrayList<String> logMessages = new ArrayList<String>();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -129,6 +131,14 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         else if(impGamepad2.a.isInitialPress() && movePowerRatio > 0){
             movePowerRatio -= 0.1;
         }
+
+        if (impGamepad2.dpad_left.isInitialPress() && intakePowerRatio < 1){
+            intakePowerRatio += .1;
+        } else if (impGamepad2.dpad_right.isInitialPress() && intakePowerRatio > 0){
+            intakePowerRatio -= .1;
+        }
+
+        telemetry.addData("Intake Power", intakePowerRatio);
 
         // Determine radii of joysticks through Pythagorean Theorem.
         double rightStickRadius = Math.hypot(rightStickX, rightStickY);
@@ -245,19 +255,19 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         // If the left trigger is pressed, then the intake and transfer motors will turn forward.
         if(gamepad1.left_trigger > 0)
         {
-            robot.intakeMotor.setPower(0.5);
-            robot.transferMotor.setPower(-0.5);
+            robot.intakeMotor.setPower(intakePowerRatio);
+            robot.transferMotor.setPower(-intakePowerRatio);
         }
         // Otherwise, if the right trigger is pressed, then the intake and transfer motors will turn backward.
         else if(gamepad1.right_trigger > 0)
         {
-            robot.intakeMotor.setPower(-0.5);
-            robot.transferMotor.setPower(0.5);
+            robot.intakeMotor.setPower(-intakePowerRatio);
+            robot.transferMotor.setPower(intakePowerRatio);
         }
         // Otherwise, the intake and transfer motors will stop turning.
         else {
             if (isIntakeOn) {
-                robot.intakeMotor.setPower(0.5);
+                robot.intakeMotor.setPower(intakePowerRatio);
             } else {
                 robot.intakeMotor.setPower(0);
             }
