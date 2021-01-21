@@ -123,7 +123,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
         robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.middleMotor.setPower(1);
+        robot.middleMotor.setPower(.75);
 
         while (opModeIsActive() && (robot.middleMotor.isBusy())){
             telemetry.addData("stackID", starterStackResult);
