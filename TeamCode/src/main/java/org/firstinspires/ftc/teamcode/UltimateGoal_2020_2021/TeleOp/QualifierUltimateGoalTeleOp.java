@@ -138,8 +138,6 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
             intakePowerRatio -= .1;
         }
 
-        telemetry.addData("Intake Power", intakePowerRatio);
-
         // Determine radii of joysticks through Pythagorean Theorem.
         double rightStickRadius = Math.hypot(rightStickX, rightStickY);
         double leftStickRadius = Math.hypot(leftStickX, leftStickY);
