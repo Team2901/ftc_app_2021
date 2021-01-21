@@ -80,21 +80,44 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
 
         // If we press the dpad_left button, then the current mode will be changed to absolute mode.
         if(gamepad1.dpad_left){
-            currentMode = ABSOLUTE_MODE;
+            isIntakeOn = true;
         }
         // If we press the dpad_right button, then the current mode will be changed to relative mode.
         else if(gamepad1.dpad_right){
+            isIntakeOn = false;
+        }
+
+        if(gamepad2.left_trigger > 0) {
+            currentMode = ABSOLUTE_MODE;
+        }
+        else if(gamepad2.right_trigger > 0) {
             currentMode = RELATIVE_MODE;
         }
 
         // If we press the left bumper, we turn the intake mechanism off.
         if(gamepad2.left_bumper){
-            isIntakeOn = false;
+            robot.intakeMotor.setPower(intakePowerRatio);
+            robot.transferMotor.setPower(-intakePowerRatio);
         }
         // If we press the left bumper, we turn the intake mechanism on.
         else if(gamepad2.right_bumper){
-            isIntakeOn = true;
+            robot.intakeMotor.setPower(-intakePowerRatio);
+            robot.transferMotor.setPower(intakePowerRatio);
         }
+        else {
+            if (isIntakeOn) {
+                robot.intakeMotor.setPower(intakePowerRatio);
+            } else {
+                robot.intakeMotor.setPower(0);
+            }
+            robot.transferMotor.setPower(0);
+        }
+
+        if(gamepad1.left_trigger > 0) {
+        }
+        else if(gamepad1.right_trigger > 0) {
+        }
+
 
         // Prints out the current mode that we are in.
         telemetry.addData("Current Mode", currentMode == 1 ? "Relative" : "Absolute");
@@ -250,28 +273,6 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         // Otherwise, we want the robot's wobble elbow to stay still.
         else{
             robot.wobbleElbow.setPower(0);
-        }
-
-        // If the left trigger is pressed, then the intake and transfer motors will turn forward.
-        if(gamepad1.left_trigger > 0)
-        {
-            robot.intakeMotor.setPower(intakePowerRatio);
-            robot.transferMotor.setPower(-intakePowerRatio);
-        }
-        // Otherwise, if the right trigger is pressed, then the intake and transfer motors will turn backward.
-        else if(gamepad1.right_trigger > 0)
-        {
-            robot.intakeMotor.setPower(-intakePowerRatio);
-            robot.transferMotor.setPower(intakePowerRatio);
-        }
-        // Otherwise, the intake and transfer motors will stop turning.
-        else {
-            if (isIntakeOn) {
-                robot.intakeMotor.setPower(intakePowerRatio);
-            } else {
-                robot.intakeMotor.setPower(0);
-            }
-            robot.transferMotor.setPower(0);
         }
 
         // Always have the shooter motors running at 100% speed.
