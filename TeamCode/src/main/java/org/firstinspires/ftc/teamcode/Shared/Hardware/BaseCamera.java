@@ -100,7 +100,7 @@ public class BaseCamera {
             tfodParameters.minResultConfidence = (float) minimumConfidence;
             tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
             tfod.loadModelFromAsset(assetName, labels);
-            tfod.setZoom(2.4, 1.7);
+            tfod.setZoom(2, 1.7);
             tfod.setClippingMargins(0, 200, 200, 0);
         }
 
