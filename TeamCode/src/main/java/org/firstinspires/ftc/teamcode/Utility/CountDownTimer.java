@@ -3,42 +3,31 @@ package org.firstinspires.ftc.teamcode.Utility;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class CountDownTimer {
+    ElapsedTime elapsedTime;
+    int targetTime;
 
-    private final ElapsedTime elapsedTime;
-    private double startTime = 0;
-
-    public CountDownTimer() {
-        this(ElapsedTime.Resolution.MILLISECONDS, 0);
+    public CountDownTimer(ElapsedTime.Resolution resolution){
+        elapsedTime = new ElapsedTime(resolution);
     }
-
-    public CountDownTimer(ElapsedTime.Resolution resolution) {
-        this(resolution, 0);
-    }
-
-    public CountDownTimer(ElapsedTime.Resolution resolution, double startTime) {
-        this.elapsedTime = new ElapsedTime(resolution);
-        this.reset(startTime);
-    }
-
-    public void reset() {
-        reset(this.startTime);
-    }
-
-    public void reset(double startTime) {
-        this.startTime = startTime;
+    public void setTargetTime(int targetTime){
         elapsedTime.reset();
+        this.targetTime = targetTime;
     }
 
-    public double getRawRemainingTime() {
-        return startTime - elapsedTime.time();
+    public double getRemainingTime(){
+        double currentTime = elapsedTime.time();
+        double remainingTime = targetTime - currentTime;
+        if(remainingTime < 0){
+            return 0;
+        }
+        return remainingTime;
     }
 
-    public double getRemainingTime() {
-        double rawRemainingTime = getRawRemainingTime();
-        return Math.max(rawRemainingTime, 0);
-    }
-
-    public boolean hasRemainingTime() {
-        return getRemainingTime() > 0;
+    public boolean hasRemainingTime(){
+        if(getRemainingTime() > 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

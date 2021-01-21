@@ -95,10 +95,13 @@ public class BaseUltimateGoalHardware {
 
         intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         shooterMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         shooterMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         shooterMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         transferMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         transferMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wobbleElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

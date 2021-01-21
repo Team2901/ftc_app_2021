@@ -30,6 +30,7 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
     double movePowerRatio = 1;
     double shooterPowerRatio = 1;
     double intakePowerRatio = .5;
+    boolean pauseShooterMode; //Stealth Mode
 
     ArrayList<String> logMessages = new ArrayList<String>();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -161,8 +162,6 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
             intakePowerRatio -= .1;
         }
 
-        telemetry.addData("Intake Power", intakePowerRatio);
-
         // Determine radii of joysticks through Pythagorean Theorem.
         double rightStickRadius = Math.hypot(rightStickX, rightStickY);
         double leftStickRadius = Math.hypot(leftStickX, leftStickY);
@@ -275,9 +274,13 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
             robot.wobbleElbow.setPower(0);
         }
 
-        // Always have the shooter motors running at 100% speed.
-        robot.shooterMotor.setPower(shooterPowerRatio);
-        robot.shooterMotor2.setPower(shooterPowerRatio);
+        if(!pauseShooterMode) {
+            robot.shooterMotor.setPower(shooterPowerRatio);
+            robot.shooterMotor2.setPower(shooterPowerRatio);
+        } else {
+            robot.shooterMotor.setPower(0);
+            robot.shooterMotor2.setPower(0);
+        }
 
         if (timer.milliseconds() >= 1) {
              /*
@@ -321,6 +324,8 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Turn Power Ratio", turnPowerRatio);
         telemetry.addData("Move Power Ratio", movePowerRatio);
         telemetry.addData("Shooter Power Ratio", shooterPowerRatio);
+        telemetry.addData("Shooter Motor Paused", pauseShooterMode);
+        telemetry.addData("Intake Power", intakePowerRatio);
         telemetry.update();
     }
 
