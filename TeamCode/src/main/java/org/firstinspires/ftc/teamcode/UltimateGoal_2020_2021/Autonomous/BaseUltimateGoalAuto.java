@@ -198,7 +198,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     //a single PID overflow so that we only have to change the value in one place
     public double pidTuneOverflow(double startingAngle, double currentAngle){
-        double correction = (currentAngle - startingAngle) / 150;
+        double correction = (currentAngle - startingAngle) / 100;
         return correction;
     }
 
