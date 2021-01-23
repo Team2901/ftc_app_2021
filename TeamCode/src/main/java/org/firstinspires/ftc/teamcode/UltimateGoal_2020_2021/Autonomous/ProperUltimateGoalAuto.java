@@ -76,7 +76,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         extendWobbleArm(true);
 
-        moveInchesForward(60, false);
+        moveInchesForward(60, true);
 
         ringShot(3);
 
