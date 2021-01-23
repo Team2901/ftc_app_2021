@@ -32,6 +32,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     double intakePowerRatio = .5;
     boolean pauseShooterMode; //Stealth Mode
     double kickerPosition = 0.5;
+    int shooterOffset = 5;
 
     ArrayList<String> logMessages = new ArrayList<String>();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -205,13 +206,13 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
          * angle that we want it to be turned to.
          */
         if(rightStickRadius > 0.8 || gamepad1.left_bumper || gamepad1.right_bumper) {
-            // If x is pressed, the robot will turn to 180 degrees.
+            // If left bumper is pressed, the robot will turn to 0 degrees.
             if(gamepad1.left_bumper) {
-                desiredAngle = 0;
+                desiredAngle = 0 + shooterOffset;
             }
-            // If b is pressed, the robot will turn to 0 degrees.
+            // If right bumper is pressed, the robot will turn to 180 degrees.
             else if(gamepad1.right_bumper){
-                desiredAngle = 180;
+                desiredAngle = 180 + shooterOffset;
             }
             // Otherwise, the robot will turn to the angle that we point the right stick down in.
             else{
