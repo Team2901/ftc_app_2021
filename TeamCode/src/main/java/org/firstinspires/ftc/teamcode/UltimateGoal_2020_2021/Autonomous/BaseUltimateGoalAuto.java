@@ -222,7 +222,10 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
      RED_TEAM, BLUE_TEAM
     }
 
-    public void ringShot(int num){
+    public void ringShot(int num) throws InterruptedException {
+        robot.kicker.setPosition(.25);
+        wait(500);
+        robot.kicker.setPosition(.75);
         telemetry.addData("Shooting Rings: ", num);
         //TODO Figure out how transfer/shooting works and implement code
     }
