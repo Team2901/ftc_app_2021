@@ -65,7 +65,6 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         grabWobble();
 
-        /*
         moveInchesCenter(-12);
 
         ElapsedTime timer = new ElapsedTime();
@@ -74,15 +73,16 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         starterStackResult = starterStackSensor();
 
         moveInchesCenter(12);
-        */
 
         extendWobbleArm(true);
 
-        moveInchesForward(60, true);
+        moveInchesForward(66, true);
+
+        turnToDesiredAngle(0);
 
         ringShot(3);
 
-        moveInchesCenter(-14);
+        moveInchesCenter(-20);
 
         if (starterStackResult == 0) {
             while(!gamepad1.a && opModeIsActive()){}
