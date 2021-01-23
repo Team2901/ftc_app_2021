@@ -5,10 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.internal.android.dx.rop.cst.CstArray;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
-import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
 
 import java.io.IOException;
@@ -30,7 +28,7 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
     double movePowerRatio = 1;
     double shooterPowerRatio = 1;
     double intakePowerRatio = .5;
-    boolean pauseShooterMode; //Stealth Mode
+    boolean stealthMode; //Stealth Mode
 
     ArrayList<String> logMessages = new ArrayList<String>();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -115,8 +113,19 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         }
 
         if(gamepad1.left_trigger > 0) {
+            robot.kicker.setPosition(.75);
         }
         else if(gamepad1.right_trigger > 0) {
+            robot.kicker.setPosition(.25);
+        }
+
+        if(impGamepad1.back.isInitialPress()){
+            if(stealthMode){
+                stealthMode = false;
+            }
+            else{
+                stealthMode = true;
+            }
         }
 
 
@@ -274,7 +283,7 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
             robot.wobbleElbow.setPower(0);
         }
 
-        if(!pauseShooterMode) {
+        if(!stealthMode) {
             robot.shooterMotor.setPower(shooterPowerRatio);
             robot.shooterMotor2.setPower(shooterPowerRatio);
         } else {
@@ -297,6 +306,7 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
             timer.reset();
         }
 
+        /*
         if(improvedGamepad.back.isInitialPress()) {
 
             int time = (int)(System.currentTimeMillis());
@@ -308,6 +318,8 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
                 telemetry.addData("Error writing to file", e.getMessage());
             }
         }
+
+         */
 
         telemetry.update();
 
@@ -324,7 +336,7 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Turn Power Ratio", turnPowerRatio);
         telemetry.addData("Move Power Ratio", movePowerRatio);
         telemetry.addData("Shooter Power Ratio", shooterPowerRatio);
-        telemetry.addData("Shooter Motor Paused", pauseShooterMode);
+        telemetry.addData("Stealth Mode Activated", stealthMode);
         telemetry.addData("Intake Power", intakePowerRatio);
         telemetry.update();
     }
