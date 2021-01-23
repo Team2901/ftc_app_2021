@@ -159,7 +159,7 @@ public class BaseUltimateGoalHardware {
         }
 
         // Return the speed that the motor should be turning to.
-        return speed;
+        return (speed * 3) / 4;
     }
 
     public DcMotor getMotor(HardwareMap hwMap, String name) {
