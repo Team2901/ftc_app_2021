@@ -20,6 +20,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     public int starterStackResult = -1;
+    public double forwardMotorPower = .75;
 
     public BaseUltimateGoalAuto(TeamColor teamColor) {
         super();
@@ -148,8 +149,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.leftMotor.setPower(angleTuning + .75);
-        robot.rightMotor.setPower(-angleTuning + .75);
+        robot.leftMotor.setPower(angleTuning + forwardMotorPower);
+        robot.rightMotor.setPower(-angleTuning + forwardMotorPower);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
             if(correctingRun) {
