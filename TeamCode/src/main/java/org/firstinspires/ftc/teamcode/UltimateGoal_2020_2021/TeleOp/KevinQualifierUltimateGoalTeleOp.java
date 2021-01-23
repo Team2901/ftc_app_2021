@@ -32,7 +32,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     double intakePowerRatio = .5;
     boolean pauseShooterMode; //Stealth Mode
     double kickerPosition = 0.5;
-    int shooterOffset = 5;
+    int shooterOffset = 5; //Offset launch angle
 
     ArrayList<String> logMessages = new ArrayList<String>();
     ElapsedTime timestampTimer = new ElapsedTime();
