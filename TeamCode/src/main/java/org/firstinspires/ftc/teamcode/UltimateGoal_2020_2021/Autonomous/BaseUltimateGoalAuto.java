@@ -20,6 +20,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     public int starterStackResult = -1;
+    public double forwardMotorPower = .75;
 
     public BaseUltimateGoalAuto(TeamColor teamColor) {
         super();
@@ -148,8 +149,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.leftMotor.setPower(angleTuning + .75);
-        robot.rightMotor.setPower(-angleTuning + .75);
+        robot.leftMotor.setPower(angleTuning + forwardMotorPower);
+        robot.rightMotor.setPower(-angleTuning + forwardMotorPower);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
             if(correctingRun) {
@@ -197,7 +198,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     //a single PID overflow so that we only have to change the value in one place
     public double pidTuneOverflow(double startingAngle, double currentAngle){
-        double correction = (currentAngle - startingAngle) / 200;
+        double correction = (currentAngle - startingAngle) / 100;
         return correction;
     }
 

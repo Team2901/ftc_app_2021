@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.Utility.CountDownTimer;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();
+    CountDownTimer countDownTimer = new CountDownTimer(ElapsedTime.Resolution.MILLISECONDS);
     // Relative to you
     public static final int ABSOLUTE_MODE = 0;
     // Relative to front of robot
@@ -29,10 +31,11 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     double shooterPowerRatio = 1;
     double intakePowerRatio = .5;
     boolean pauseShooterMode; //Stealth Mode
+    double kickerPosition = 0.5;
+    int shooterOffset = 5; //Offset launch angle
 
     ArrayList<String> logMessages = new ArrayList<String>();
     ElapsedTime timestampTimer = new ElapsedTime();
-    ImprovedGamepad improvedGamepad;
 
     @Override
     public void init() {
@@ -110,11 +113,16 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             robot.transferMotor.setPower(0);
         }
 
-        if(gamepad1.left_trigger > 0) {
-        }
-        else if(gamepad1.right_trigger > 0) {
+        if(gamepad1.right_trigger > 0) {
+            countDownTimer.setTargetTime(1500);
+
         }
 
+        if(countDownTimer.hasRemainingTime()){
+            robot.kicker.setPosition(kickerPosition);
+        } else {
+            robot.kicker.setPosition(0);
+        }
 
         // Prints out the current mode that we are in.
         telemetry.addData("Current Mode", currentMode == 1 ? "Relative" : "Absolute");
@@ -162,45 +170,35 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         double rightStickRadius = Math.hypot(rightStickX, rightStickY);
         double leftStickRadius = Math.hypot(leftStickX, leftStickY);
 
-        // When pressing the left bumper, the robot will turn counterclockwise.
-        if(gamepad1.left_bumper){
-            leftMotorPower = -turnPowerRatio;
-            rightMotorPower = turnPowerRatio;
-        }
-        // When pressing the right bumper, the robot will turn clockwise.
-        else if(gamepad1.right_bumper){
-            leftMotorPower = turnPowerRatio;
-            rightMotorPower = -turnPowerRatio;
-        }
         // This sets the motor's power to however far the left joystick is pushed.
-        else {
-            // Declare variable for storing the angle relative to field to move at.
-            double angleToMoveFieldTo;
 
-            if(currentMode == ABSOLUTE_MODE){
-                // Step 1: Calculate angle relative to field to move at (from left joystick)
-                angleToMoveFieldTo = leftStickAngle + 180;
-            }
-            else
-            {
-                // Step 1: Calculate angle relative to field to move at (from robot)
-                angleToMoveFieldTo = (robotAngle + leftStickAngle)-90;
-            }
+        // Declare variable for storing the angle relative to field to move at.
+        double angleToMoveFieldTo;
 
-            // Step 2: Calculate angle relative to the robot to move at
-            double angleToMoveRobotTo = angleToMoveFieldTo - robotAngle;
-            // Step 3: Calculate forwards/sideways components to move at
-            double xToMoveTo = Math.cos(Math.toRadians(angleToMoveRobotTo));
-            double yToMoveTo = Math.sin(Math.toRadians(angleToMoveRobotTo));
-            // Step 4: Calculate forwards/sideways powers to move at
-            leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
-            rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
-            middleMotorPower = leftStickRadius * yToMoveTo * movePowerRatio;
-
-            telemetry.addData("x To Move To", xToMoveTo);
-            telemetry.addData("y To Move To", yToMoveTo);
-            telemetry.addData("Angle To Move To", angleToMoveRobotTo);
+        if(currentMode == ABSOLUTE_MODE){
+            // Step 1: Calculate angle relative to field to move at (from left joystick)
+            angleToMoveFieldTo = leftStickAngle + 180;
         }
+        else
+        {
+            // Step 1: Calculate angle relative to field to move at (from robot)
+            angleToMoveFieldTo = (robotAngle + leftStickAngle)-90;
+        }
+
+        // Step 2: Calculate angle relative to the robot to move at
+        double angleToMoveRobotTo = angleToMoveFieldTo - robotAngle;
+        // Step 3: Calculate forwards/sideways components to move at
+        double xToMoveTo = Math.cos(Math.toRadians(angleToMoveRobotTo));
+        double yToMoveTo = Math.sin(Math.toRadians(angleToMoveRobotTo));
+        // Step 4: Calculate forwards/sideways powers to move at
+        leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
+        rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
+        middleMotorPower = leftStickRadius * yToMoveTo * movePowerRatio;
+
+        telemetry.addData("x To Move To", xToMoveTo);
+        telemetry.addData("y To Move To", yToMoveTo);
+        telemetry.addData("Angle To Move To", angleToMoveRobotTo);
+
 
         /*
          * If the radius of the right stick is greater than the radius of our circular dead zone (0.8)
@@ -208,13 +206,13 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
          * angle that we want it to be turned to.
          */
         if(rightStickRadius > 0.8 || gamepad1.left_bumper || gamepad1.right_bumper) {
-            // If x is pressed, the robot will turn to 180 degrees.
+            // If left bumper is pressed, the robot will turn to 0 degrees.
             if(gamepad1.left_bumper) {
-                desiredAngle = angleToTurnTo(2);
+                desiredAngle = 0 + shooterOffset;
             }
-            // If b is pressed, the robot will turn to 0 degrees.
+            // If right bumper is pressed, the robot will turn to 180 degrees.
             else if(gamepad1.right_bumper){
-                desiredAngle = angleToTurnTo(4);
+                desiredAngle = 180 + shooterOffset;
             }
             // Otherwise, the robot will turn to the angle that we point the right stick down in.
             else{
@@ -298,7 +296,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             timer.reset();
         }
 
-        if(improvedGamepad.back.isInitialPress()) {
+        if(impGamepad1.back.isInitialPress()) {
 
             int time = (int)(System.currentTimeMillis());
 
@@ -328,35 +326,5 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Shooter Motor Paused", pauseShooterMode);
         telemetry.addData("Intake Power", intakePowerRatio);
         telemetry.update();
-    }
-
-    /**
-     * This method has the robot turn to a certain angle based on the letter button that is pressed.
-     * @param buttonDeterminer the number used to determine how many degrees the robot should turn by
-     * @return
-     */
-    public int angleToTurnTo(int buttonDeterminer){
-        // Declare angle variable.
-        int angle = 0;
-
-        // If y is pressed, the robot will turn by 90 degrees.
-        if(buttonDeterminer == 1){
-            angle = 90;
-        }
-        // If x is pressed, the robot will turn by 180 degrees.
-        else if(buttonDeterminer == 2){
-            angle = 180;
-        }
-        // If a is pressed, the robot will turn by 270 degrees.
-        else if(buttonDeterminer == 3){
-            angle = 270;
-        }
-        // If b is pressed, the robot will turn by 360 degrees.
-        else if(buttonDeterminer == 4){
-            angle = 360;
-        }
-
-        // Return angle variable.
-        return angle + 180;
     }
 }
