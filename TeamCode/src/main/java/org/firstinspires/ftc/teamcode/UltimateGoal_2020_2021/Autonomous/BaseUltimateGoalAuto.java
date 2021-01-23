@@ -222,6 +222,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
      RED_TEAM, BLUE_TEAM
     }
 
+    //will this work
+
     public void ringShot(int num) throws InterruptedException {
         robot.kicker.setPosition(.25);
         wait(500);
