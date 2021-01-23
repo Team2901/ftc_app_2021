@@ -29,8 +29,8 @@ public class BaseUltimateGoalHardware {
     public DcMotor rightMotor = null;
     BNO055IMU imu;
     public BaseCamera webCamera = new BaseCamera();
-    public static double robotTurnRampDownAngle = 45;
-    public static double robotTurnStopAngle = 5;
+    public double robotTurnRampDownAngle = 45;
+    public double robotTurnStopAngle = 5;
     public List<String> failedHardware = new ArrayList<>();
     public DcMotor middleMotor = null;
     public DcMotor intakeMotor = null;
@@ -49,8 +49,13 @@ public class BaseUltimateGoalHardware {
     }
 
     public BaseUltimateGoalHardware(double forwardTicksPerInch, double centerTicksPerInch) {
+        this(forwardTicksPerInch, centerTicksPerInch, 5);
+    }
+
+    public BaseUltimateGoalHardware(double forwardTicksPerInch, double centerTicksPerInch, double turningDeadzone) {
         this.forwardTicksPerInch = forwardTicksPerInch;
         this.centerTicksPerInch = centerTicksPerInch;
+        this.robotTurnStopAngle = turningDeadzone;
     }
 
     public void init(HardwareMap hwMap) {

@@ -19,7 +19,7 @@ public class MetoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
     public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
 
     public MetoebesUltimateGoalHardware() {
-        super(FORWARD_TICKS_PER_INCH, CENTER_TICKS_PER_INCH);
+        super(FORWARD_TICKS_PER_INCH, CENTER_TICKS_PER_INCH, 1);
     }
 
     @Override
