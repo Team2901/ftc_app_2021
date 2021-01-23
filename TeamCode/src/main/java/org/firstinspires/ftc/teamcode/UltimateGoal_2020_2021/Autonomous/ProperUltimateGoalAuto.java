@@ -78,7 +78,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         moveInchesCenter(-12);
 
         ElapsedTime timer = new ElapsedTime();
-        while(timer.seconds() < 1){}
+        while(timer.seconds() < 1 && opModeIsActive()){}
 
         starterStackResult = starterStackSensor();
 
