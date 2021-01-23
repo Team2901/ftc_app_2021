@@ -27,11 +27,11 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
     }
 
     public void waitForContinue(){
-        while(!gamepad1.a) {
+        while(!gamepad1.a && opModeIsActive()) {
             if(gamepad1.dpad_up){
-                forwardMotorPower += .25;
+                forwardMotorPower = .75;
             } else if(gamepad1.dpad_down) {
-                forwardMotorPower -= .25;
+                forwardMotorPower = .5;
             }
         }
     }
