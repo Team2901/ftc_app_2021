@@ -218,11 +218,11 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         if(rightStickRadius > 0.8 || gamepad1.left_bumper || gamepad1.right_bumper) {
             // If x is pressed, the robot will turn to 180 degrees.
             if(gamepad1.left_bumper) {
-                desiredAngle = angleToTurnTo(2);
+                desiredAngle = 0;
             }
             // If b is pressed, the robot will turn to 0 degrees.
             else if(gamepad1.right_bumper){
-                desiredAngle = angleToTurnTo(4);
+                desiredAngle = 180;
             }
             // Otherwise, the robot will turn to the angle that we point the right stick down in.
             else{
@@ -336,35 +336,5 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Shooter Motor Paused", pauseShooterMode);
         telemetry.addData("Intake Power", intakePowerRatio);
         telemetry.update();
-    }
-
-    /**
-     * This method has the robot turn to a certain angle based on the letter button that is pressed.
-     * @param buttonDeterminer the number used to determine how many degrees the robot should turn by
-     * @return
-     */
-    public int angleToTurnTo(int buttonDeterminer){
-        // Declare angle variable.
-        int angle = 0;
-
-        // If y is pressed, the robot will turn by 90 degrees.
-        if(buttonDeterminer == 1){
-            angle = 90;
-        }
-        // If x is pressed, the robot will turn by 180 degrees.
-        else if(buttonDeterminer == 2){
-            angle = 180;
-        }
-        // If a is pressed, the robot will turn by 270 degrees.
-        else if(buttonDeterminer == 3){
-            angle = 270;
-        }
-        // If b is pressed, the robot will turn by 360 degrees.
-        else if(buttonDeterminer == 4){
-            angle = 360;
-        }
-
-        // Return angle variable.
-        return angle + 180;
     }
 }
