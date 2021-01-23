@@ -169,45 +169,35 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         double rightStickRadius = Math.hypot(rightStickX, rightStickY);
         double leftStickRadius = Math.hypot(leftStickX, leftStickY);
 
-        // When pressing the left bumper, the robot will turn counterclockwise.
-        if(gamepad1.left_bumper){
-            leftMotorPower = -turnPowerRatio;
-            rightMotorPower = turnPowerRatio;
-        }
-        // When pressing the right bumper, the robot will turn clockwise.
-        else if(gamepad1.right_bumper){
-            leftMotorPower = turnPowerRatio;
-            rightMotorPower = -turnPowerRatio;
-        }
         // This sets the motor's power to however far the left joystick is pushed.
-        else {
-            // Declare variable for storing the angle relative to field to move at.
-            double angleToMoveFieldTo;
 
-            if(currentMode == ABSOLUTE_MODE){
-                // Step 1: Calculate angle relative to field to move at (from left joystick)
-                angleToMoveFieldTo = leftStickAngle + 180;
-            }
-            else
-            {
-                // Step 1: Calculate angle relative to field to move at (from robot)
-                angleToMoveFieldTo = (robotAngle + leftStickAngle)-90;
-            }
+        // Declare variable for storing the angle relative to field to move at.
+        double angleToMoveFieldTo;
 
-            // Step 2: Calculate angle relative to the robot to move at
-            double angleToMoveRobotTo = angleToMoveFieldTo - robotAngle;
-            // Step 3: Calculate forwards/sideways components to move at
-            double xToMoveTo = Math.cos(Math.toRadians(angleToMoveRobotTo));
-            double yToMoveTo = Math.sin(Math.toRadians(angleToMoveRobotTo));
-            // Step 4: Calculate forwards/sideways powers to move at
-            leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
-            rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
-            middleMotorPower = leftStickRadius * yToMoveTo * movePowerRatio;
-
-            telemetry.addData("x To Move To", xToMoveTo);
-            telemetry.addData("y To Move To", yToMoveTo);
-            telemetry.addData("Angle To Move To", angleToMoveRobotTo);
+        if(currentMode == ABSOLUTE_MODE){
+            // Step 1: Calculate angle relative to field to move at (from left joystick)
+            angleToMoveFieldTo = leftStickAngle + 180;
         }
+        else
+        {
+            // Step 1: Calculate angle relative to field to move at (from robot)
+            angleToMoveFieldTo = (robotAngle + leftStickAngle)-90;
+        }
+
+        // Step 2: Calculate angle relative to the robot to move at
+        double angleToMoveRobotTo = angleToMoveFieldTo - robotAngle;
+        // Step 3: Calculate forwards/sideways components to move at
+        double xToMoveTo = Math.cos(Math.toRadians(angleToMoveRobotTo));
+        double yToMoveTo = Math.sin(Math.toRadians(angleToMoveRobotTo));
+        // Step 4: Calculate forwards/sideways powers to move at
+        leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
+        rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
+        middleMotorPower = leftStickRadius * yToMoveTo * movePowerRatio;
+
+        telemetry.addData("x To Move To", xToMoveTo);
+        telemetry.addData("y To Move To", yToMoveTo);
+        telemetry.addData("Angle To Move To", angleToMoveRobotTo);
+
 
         /*
          * If the radius of the right stick is greater than the radius of our circular dead zone (0.8)
