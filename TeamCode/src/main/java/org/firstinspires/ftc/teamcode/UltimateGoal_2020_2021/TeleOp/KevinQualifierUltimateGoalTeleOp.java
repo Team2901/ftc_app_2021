@@ -35,7 +35,6 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
 
     ArrayList<String> logMessages = new ArrayList<String>();
     ElapsedTime timestampTimer = new ElapsedTime();
-    ImprovedGamepad improvedGamepad;
 
     @Override
     public void init() {
@@ -306,7 +305,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             timer.reset();
         }
 
-        if(improvedGamepad.back.isInitialPress()) {
+        if(impGamepad1.back.isInitialPress()) {
 
             int time = (int)(System.currentTimeMillis());
 
