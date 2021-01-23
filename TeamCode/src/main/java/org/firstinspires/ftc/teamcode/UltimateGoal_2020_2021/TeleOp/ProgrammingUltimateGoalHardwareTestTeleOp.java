@@ -25,7 +25,7 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
     String[] motorNames = {"left_drive", "right_drive", "middle_drive", "intake_motor", "transfer_motor", "shooter_motor", "shooter_motor_2", "elbow_motor"};
 
     // List of all of the servo names.
-    String[] servoNames = {"grabber"};
+    String[] servoNames = {"grabber", "kicker"};
 
     int motorIndex;
 
