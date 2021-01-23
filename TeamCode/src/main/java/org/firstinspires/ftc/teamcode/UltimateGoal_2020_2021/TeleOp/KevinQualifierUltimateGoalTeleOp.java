@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.Utility.CountDownTimer;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();
+    CountDownTimer countDownTimer = new CountDownTimer(ElapsedTime.Resolution.MILLISECONDS);
     // Relative to you
     public static final int ABSOLUTE_MODE = 0;
     // Relative to front of robot
@@ -29,6 +31,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     double shooterPowerRatio = 1;
     double intakePowerRatio = .5;
     boolean pauseShooterMode; //Stealth Mode
+    double kickerPosition = 0.5;
 
     ArrayList<String> logMessages = new ArrayList<String>();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -110,11 +113,16 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             robot.transferMotor.setPower(0);
         }
 
-        if(gamepad1.left_trigger > 0) {
-        }
-        else if(gamepad1.right_trigger > 0) {
+        if(gamepad1.right_trigger > 0) {
+            countDownTimer.setTargetTime(1500);
+
         }
 
+        if(countDownTimer.hasRemainingTime()){
+            robot.kicker.setPosition(kickerPosition);
+        } else {
+            robot.kicker.setPosition(0);
+        }
 
         // Prints out the current mode that we are in.
         telemetry.addData("Current Mode", currentMode == 1 ? "Relative" : "Absolute");
