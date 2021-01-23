@@ -223,10 +223,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
 
     //will this work
-
-    public void ringShot(int num) throws InterruptedException {
+    public void ringShot(int num){
         robot.kicker.setPosition(.25);
-        wait(500);
+        //wait(500);
         robot.kicker.setPosition(.75);
         telemetry.addData("Shooting Rings: ", num);
         //TODO Figure out how transfer/shooting works and implement code
