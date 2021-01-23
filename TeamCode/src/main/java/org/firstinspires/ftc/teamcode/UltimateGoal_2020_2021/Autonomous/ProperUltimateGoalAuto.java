@@ -86,7 +86,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         extendWobbleArm(true);
 
-        moveInchesForward(66, true);
+        moveInchesForward(60, true);
 
         turnToDesiredAngle(0);
 
