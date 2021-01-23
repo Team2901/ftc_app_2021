@@ -60,8 +60,10 @@ public class BaseUltimateGoalHardware {
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         // Set up the parameters with which we will use our IMU. Note that integration
@@ -86,6 +88,7 @@ public class BaseUltimateGoalHardware {
         middleMotor.setDirection(DcMotor.Direction.REVERSE);
         middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         middleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        middleMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         intakeMotor = getMotor(hwMap,"intake_motor");
         shooterMotor = getMotor(hwMap,"shooter_motor");
@@ -106,6 +109,7 @@ public class BaseUltimateGoalHardware {
         transferMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wobbleElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wobbleElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wobbleElbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         wobbleGrabber = getServo(hwMap, "grabber");
         kicker = getServo(hwMap, "kicker");
     }
