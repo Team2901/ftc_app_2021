@@ -113,10 +113,10 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         }
 
         if(gamepad1.left_trigger > 0) {
-            robot.kicker.setPosition(.75);
+            robot.kicker.setPosition(.6);
         }
         else if(gamepad1.right_trigger > 0) {
-            robot.kicker.setPosition(.25);
+            robot.kicker.setPosition(.3);
         }
 
         if(impGamepad1.back.isInitialPress()){
