@@ -120,9 +120,9 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         }
 
         if(countDownTimer.hasRemainingTime()){
-            robot.kicker.setPosition(kickerPosition);
-        } else {
             robot.kicker.setPosition(.3);
+        } else {
+            robot.kicker.setPosition(.6);
         }
 
         // Prints out the current mode that we are in.
