@@ -49,10 +49,10 @@ public class MecanumTeleOp extends OpMode {
         double speed = 4*(speed(x, y) / 3);
         double angle = angle(x, y);
 
-        double pFL = speed * (Math.sin(angle + Math.PI / 4)) + .75*r;
-        double pFR = speed * (Math.cos(angle + Math.PI / 4)) - .75*r;
-        double pBL = speed * (Math.cos(angle + Math.PI / 4)) + .75*r;
-        double pBR = speed * (Math.sin(angle + Math.PI / 4)) - .75*r;
+        double pFL = speed * Math.sin(angle + Math.PI / 4) + r;
+        double pFR = speed * Math.cos(angle + Math.PI / 4) - r;
+        double pBL = speed * Math.cos(angle + Math.PI / 4) + r;
+        double pBR = speed * Math.sin(angle + Math.PI / 4) - r;
 
         if(pFL > 1){
             pFL = 1;
