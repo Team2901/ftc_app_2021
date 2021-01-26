@@ -107,10 +107,11 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         else {
             if (isIntakeOn) {
                 robot.intakeMotor.setPower(intakePowerRatio);
+                robot.transferMotor.setPower(-intakePowerRatio);
             } else {
                 robot.intakeMotor.setPower(0);
+                robot.transferMotor.setPower(0);
             }
-            robot.transferMotor.setPower(0);
         }
 
         if(gamepad1.right_trigger > 0) {
