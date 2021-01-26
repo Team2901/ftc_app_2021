@@ -29,7 +29,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     double turnPowerRatio = 1;
     double movePowerRatio = 1;
     double shooterPowerRatio = .8;
-    double intakePowerRatio = .5;
+    double intakePowerRatio = -0.9;
     boolean pauseShooterMode; //Stealth Mode
     double kickerPosition = 0.6;
     int shooterOffset = 5; //Offset launch angle
