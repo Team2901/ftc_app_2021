@@ -172,28 +172,28 @@ public class VuforiaUltimateGoalTest extends OpMode {
             float zAngle = orientation.thirdAngle;
 
             // x, y, z positions (x, y, z) (in inches)
-            telemetry.addData("x, y, z positions", String.format("(%f, %f, %f)", x * MM_TO_INCHES, y * MM_TO_INCHES, z * MM_TO_INCHES));
+            telemetry.addData("x, y, z positions", String.format("(%.1f, %.1f, %.1f)", x * MM_TO_INCHES, y * MM_TO_INCHES, z * MM_TO_INCHES));
 
             // x, y, z rotations (x, y, z)
-            telemetry.addData("x, y, z rotations", String.format("(%f, %f, %f)", xAngle, yAngle, zAngle));
+            telemetry.addData("x, y, z rotations", String.format("(%.1f, %.1f, %.1f)", xAngle, yAngle, zAngle));
 
             // Calculate the angle relative to the robot and print it out.
             double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
-            telemetry.addData("Angle relative to the robot", relativeRobotAngle);
+            telemetry.addData("Angle relative to the robot", "%.1", relativeRobotAngle);
 
             // Calculate angle relative to the field.
             relativeFieldAngle = relativeRobotAngle + robot.getAngle();
 
             // Print angle relative to the robot and the angle relative to the field.
-            telemetry.addData("Angle relative to the field", relativeFieldAngle);
+            telemetry.addData("Angle relative to the field", "%.1f", relativeFieldAngle);
 
             // Determine the angle difference between relativeFieldAngle and the robot's angle.
             angleDifference = AngleUnit.normalizeDegrees(relativeFieldAngle - robot.getAngle());
-            telemetry.addData("Angle difference", angleDifference);
+            telemetry.addData("Angle difference", "%.1f", angleDifference);
 
             // Determine the speed that the motors should be set to.
             velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
-            telemetry.addData("Velocity", velocity);
+            telemetry.addData("Velocity", "%.1f", velocity);
 
 
             // Only make the robot turn relative to the field if a on the first gamepad is pressed.
