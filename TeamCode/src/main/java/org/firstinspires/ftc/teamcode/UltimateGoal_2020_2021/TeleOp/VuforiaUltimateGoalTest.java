@@ -171,7 +171,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
             // Calculate the angle relative to the robot and print it out.
             double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
-            telemetry.addData("Angle relative to the robot", "%.1", relativeRobotAngle);
+            telemetry.addData("Angle relative to the robot", "%.1f", relativeRobotAngle);
 
             // Calculate angle relative to the field.
             relativeFieldAngle = relativeRobotAngle + robot.getAngle();
