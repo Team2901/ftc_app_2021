@@ -16,7 +16,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
-import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.GrantHardware;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
 
 import java.io.IOException;
@@ -29,10 +28,12 @@ public class VuforiaUltimateGoalTest extends OpMode {
     public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
 
     public static final float MM_TO_INCHES = 0.0393701f;
+    public static final double MAX_TURN_POWER = 0.5;
 
     List<String> logMessages = new ArrayList<>();
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime timestampTimer = new ElapsedTime();
+
 
     ImprovedGamepad improvedGamepad;
 
@@ -131,20 +132,11 @@ public class VuforiaUltimateGoalTest extends OpMode {
             }
         }
 
+        double leftMotorPower = 0;
+        double rightMotorPower = 0;
+
         double relativeFieldAngle;
 
-        // When pressing the left bumper, the robot will turn counterclockwise.
-        if(gamepad1.left_bumper)
-        {
-            robot.leftMotor.setPower(-0.5);
-            robot.rightMotor.setPower(0.5);
-        }
-        // When pressing the right bumper, the robot will turn clockwise.
-        else if(gamepad1.right_bumper)
-        {
-            robot.leftMotor.setPower(0.5);
-            robot.rightMotor.setPower(-0.5);
-        }
 
         boolean isVisible = robotLocation != null;
 
@@ -172,56 +164,58 @@ public class VuforiaUltimateGoalTest extends OpMode {
             float zAngle = orientation.thirdAngle;
 
             // x, y, z positions (x, y, z) (in inches)
-            telemetry.addData("x, y, z positions", String.format("(%f, %f, %f)", x * MM_TO_INCHES, y * MM_TO_INCHES, z * MM_TO_INCHES));
+            telemetry.addData("x, y, z positions", String.format("(%.1f, %.1f, %.1f)", x * MM_TO_INCHES, y * MM_TO_INCHES, z * MM_TO_INCHES));
 
             // x, y, z rotations (x, y, z)
-            telemetry.addData("x, y, z rotations", String.format("(%f, %f, %f)", xAngle, yAngle, zAngle));
+            telemetry.addData("x, y, z rotations", String.format("(%.1f, %.1f, %.1f)", xAngle, yAngle, zAngle));
 
             // Calculate the angle relative to the robot and print it out.
             double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
-            telemetry.addData("Angle relative to the robot", relativeRobotAngle);
+            telemetry.addData("Angle relative to the robot", "%.1f", relativeRobotAngle);
 
             // Calculate angle relative to the field.
             relativeFieldAngle = relativeRobotAngle + robot.getAngle();
 
             // Print angle relative to the robot and the angle relative to the field.
-            telemetry.addData("Angle relative to the field", relativeFieldAngle);
+            telemetry.addData("Angle relative to the field", "%.1f", relativeFieldAngle);
 
             // Determine the angle difference between relativeFieldAngle and the robot's angle.
             angleDifference = AngleUnit.normalizeDegrees(relativeFieldAngle - robot.getAngle());
-            telemetry.addData("Angle difference", angleDifference);
+            telemetry.addData("Angle difference", "%.1f", angleDifference);
 
             // Determine the speed that the motors should be set to.
             velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
-            telemetry.addData("Velocity", velocity);
-
+            telemetry.addData("Velocity", "%.1f", velocity);
 
             // Only make the robot turn relative to the field if a on the first gamepad is pressed.
             if(gamepad1.a){
-                // Make the robot only turn at 50% speed.
-                velocity *= 0.5;
-
                 // Make the robot turn counterclockwise.
-                robot.leftMotor.setPower(-velocity);
-                robot.rightMotor.setPower(velocity);
+                leftMotorPower = -velocity * MAX_TURN_POWER;
+                rightMotorPower = velocity * MAX_TURN_POWER;
             }
-            else
-            {
-                // Make the robot stop.
-                robot.leftMotor.setPower(0);
-                robot.rightMotor.setPower(0);
-            }
-
         }
         else
         {
             // We want to face the tower goal, so set the angle to 0.
             relativeFieldAngle = 0;
-
-            // Sets right and left motor powers to zero.
-            robot.leftMotor.setPower(0);
-            robot.rightMotor.setPower(0);
         }
+
+        // When pressing the left bumper, the robot will turn counterclockwise.
+        if(gamepad1.left_bumper)
+        {
+            leftMotorPower = -MAX_TURN_POWER;
+            rightMotorPower = MAX_TURN_POWER;
+        }
+        // When pressing the right bumper, the robot will turn clockwise.
+        else if(gamepad1.right_bumper)
+        {
+            leftMotorPower = MAX_TURN_POWER;
+            rightMotorPower = -MAX_TURN_POWER;
+        }
+
+        robot.leftMotor.setPower(leftMotorPower);
+        robot.rightMotor.setPower(rightMotorPower);
+
         // Find where the trackers are.
 
         if (timer.milliseconds() >= 1) {
