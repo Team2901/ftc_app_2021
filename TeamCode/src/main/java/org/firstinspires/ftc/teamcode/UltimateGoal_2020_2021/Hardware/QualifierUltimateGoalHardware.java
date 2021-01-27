@@ -21,5 +21,4 @@ public class QualifierUltimateGoalHardware extends BaseUltimateGoalHardware {
     public void init(HardwareMap hwMap) {
         super.init(hwMap);
     }
-
 }

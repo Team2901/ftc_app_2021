@@ -4,11 +4,12 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.TankUltimateGoalHardware;
 
 @TeleOp(name = "Tank UltimateGoal", group = "2021_UltimateGoal")
 public class TankUltimateGoalTeleOp extends OpMode{
-    public TankUltimateGoalHardware robot = new TankUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
 
     @Override
     public void init() {

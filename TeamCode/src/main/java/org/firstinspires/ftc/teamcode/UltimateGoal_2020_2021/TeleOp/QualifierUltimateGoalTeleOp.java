@@ -7,11 +7,14 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
-import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
+
+import java.io.IOException;
+import java.util.ArrayList;
 
 @TeleOp(name = "Qualifier UltimateGoal", group = "2021_UltimateGoal")
 public class QualifierUltimateGoalTeleOp extends OpMode {
-    public QualifierUltimateGoalHardware robot = new QualifierUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();
@@ -24,6 +27,12 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
     double turnPowerRatio = 1;
     double movePowerRatio = 1;
     double shooterPowerRatio = 1;
+    double intakePowerRatio = .5;
+    boolean stealthMode; //Stealth Mode
+
+    ArrayList<String> logMessages = new ArrayList<String>();
+    ElapsedTime timestampTimer = new ElapsedTime();
+    ImprovedGamepad improvedGamepad;
 
     @Override
     public void init() {
@@ -44,6 +53,9 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         for(int i = 0; i < robot.failedHardware.size(); i++){
             telemetry.addData(String.valueOf(i + 1), robot.failedHardware.get(i));
         }
+
+        telemetry.addData("Current Hardware", robot.hardwareClassName);
+
         telemetry.update();
     }
 
@@ -67,21 +79,55 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
 
         // If we press the dpad_left button, then the current mode will be changed to absolute mode.
         if(gamepad1.dpad_left){
-            currentMode = ABSOLUTE_MODE;
+            isIntakeOn = true;
         }
         // If we press the dpad_right button, then the current mode will be changed to relative mode.
         else if(gamepad1.dpad_right){
+            isIntakeOn = false;
+        }
+
+        if(gamepad2.left_trigger > 0) {
+            currentMode = ABSOLUTE_MODE;
+        }
+        else if(gamepad2.right_trigger > 0) {
             currentMode = RELATIVE_MODE;
         }
 
         // If we press the left bumper, we turn the intake mechanism off.
         if(gamepad2.left_bumper){
-            isIntakeOn = false;
+            robot.intakeMotor.setPower(intakePowerRatio);
+            robot.transferMotor.setPower(-intakePowerRatio);
         }
         // If we press the left bumper, we turn the intake mechanism on.
         else if(gamepad2.right_bumper){
-            isIntakeOn = true;
+            robot.intakeMotor.setPower(-intakePowerRatio);
+            robot.transferMotor.setPower(intakePowerRatio);
         }
+        else {
+            if (isIntakeOn) {
+                robot.intakeMotor.setPower(intakePowerRatio);
+            } else {
+                robot.intakeMotor.setPower(0);
+            }
+            robot.transferMotor.setPower(0);
+        }
+
+        if(gamepad1.left_trigger > 0) {
+            robot.kicker.setPosition(.6);
+        }
+        else if(gamepad1.right_trigger > 0) {
+            robot.kicker.setPosition(.3);
+        }
+
+        if(impGamepad1.back.isInitialPress()){
+            if(stealthMode){
+                stealthMode = false;
+            }
+            else{
+                stealthMode = true;
+            }
+        }
+
 
         // Prints out the current mode that we are in.
         telemetry.addData("Current Mode", currentMode == 1 ? "Relative" : "Absolute");
@@ -117,6 +163,12 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         // that the movePowerRatio is greater than 0.
         else if(impGamepad2.a.isInitialPress() && movePowerRatio > 0){
             movePowerRatio -= 0.1;
+        }
+
+        if (impGamepad2.dpad_left.isInitialPress() && intakePowerRatio < 1){
+            intakePowerRatio += .1;
+        } else if (impGamepad2.dpad_right.isInitialPress() && intakePowerRatio > 0){
+            intakePowerRatio -= .1;
         }
 
         // Determine radii of joysticks through Pythagorean Theorem.
@@ -231,31 +283,45 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
             robot.wobbleElbow.setPower(0);
         }
 
-        // If the left trigger is pressed, then the intake and transfer motors will turn forward.
-        if(gamepad1.left_trigger > 0)
-        {
-            robot.intakeMotor.setPower(0.5);
-            robot.transferMotor.setPower(-0.5);
-        }
-        // Otherwise, if the right trigger is pressed, then the intake and transfer motors will turn backward.
-        else if(gamepad1.right_trigger > 0)
-        {
-            robot.intakeMotor.setPower(-0.5);
-            robot.transferMotor.setPower(0.5);
-        }
-        // Otherwise, the intake and transfer motors will stop turning.
-        else {
-            if (isIntakeOn) {
-                robot.intakeMotor.setPower(0.5);
-            } else {
-                robot.intakeMotor.setPower(0);
-            }
-            robot.transferMotor.setPower(0);
+        if(!stealthMode) {
+            robot.shooterMotor.setPower(shooterPowerRatio);
+            robot.shooterMotor2.setPower(shooterPowerRatio);
+        } else {
+            robot.shooterMotor.setPower(0);
+            robot.shooterMotor2.setPower(0);
         }
 
-        // Always have the shooter motors running at 100% speed.
-        robot.shooterMotor.setPower(shooterPowerRatio);
-        robot.shooterMotor2.setPower(shooterPowerRatio);
+        if (timer.milliseconds() >= 1) {
+             /*
+             Log information every millisecond
+             1) timestamp
+             2) encoder counts for shooter
+             3) encoder counts for shooter 2
+             */
+
+            String msg = String.format("%f, %f, %f", timestampTimer.milliseconds(), (float) robot.shooterMotor.getCurrentPosition(), (float) robot.shooterMotor2.getCurrentPosition());
+
+            logMessages.add(msg);
+
+            timer.reset();
+        }
+
+        /*
+        if(improvedGamepad.back.isInitialPress()) {
+
+            int time = (int)(System.currentTimeMillis());
+
+            try {
+                FileUtilities.writeConfigFile("shooterLogFile_" + time + "_.csv", logMessages);
+                logMessages.clear();
+            } catch (IOException e) {
+                telemetry.addData("Error writing to file", e.getMessage());
+            }
+        }
+
+         */
+
+        telemetry.update();
 
         /*
          * This code below prints out the robot angle, right stick angle, right motor power, the
@@ -270,6 +336,8 @@ public class QualifierUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Turn Power Ratio", turnPowerRatio);
         telemetry.addData("Move Power Ratio", movePowerRatio);
         telemetry.addData("Shooter Power Ratio", shooterPowerRatio);
+        telemetry.addData("Stealth Mode Activated", stealthMode);
+        telemetry.addData("Intake Power", intakePowerRatio);
         telemetry.update();
     }
 

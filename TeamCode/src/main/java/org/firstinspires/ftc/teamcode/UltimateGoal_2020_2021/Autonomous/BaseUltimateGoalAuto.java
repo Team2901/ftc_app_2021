@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.ScrimmageUltimateGoalHardware;
 
 import java.util.List;
@@ -17,8 +18,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public final TeamColor teamColor;
 
-    public ScrimmageUltimateGoalHardware robot = new ScrimmageUltimateGoalHardware();
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     public int starterStackResult = -1;
+    public double forwardMotorPower = .75;
 
     public BaseUltimateGoalAuto(TeamColor teamColor) {
         super();
@@ -71,13 +73,12 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
 
     public void grabWobble() {
-        robot.configureWobbleGrabber(false);
-        sleep(3000);
         robot.configureWobbleGrabber(true);
     }
 
     public void releaseWobble() {
         robot.configureWobbleGrabber(false);
+        sleep(500);
     }
 
     public void turnToDesiredAngle(float desiredAngle){
@@ -123,7 +124,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
         robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.middleMotor.setPower(1);
+        robot.middleMotor.setPower(.75);
 
         while (opModeIsActive() && (robot.middleMotor.isBusy())){
             telemetry.addData("stackID", starterStackResult);
@@ -148,8 +149,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.leftMotor.setPower(angleTuning + .75);
-        robot.rightMotor.setPower(-angleTuning + .75);
+        robot.leftMotor.setPower(angleTuning + forwardMotorPower);
+        robot.rightMotor.setPower(-angleTuning + forwardMotorPower);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
             if(correctingRun) {
@@ -221,7 +222,11 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
      RED_TEAM, BLUE_TEAM
     }
 
+    //will this work
     public void ringShot(int num){
+        robot.kicker.setPosition(.25);
+        //wait(500);
+        robot.kicker.setPosition(.75);
         telemetry.addData("Shooting Rings: ", num);
         //TODO Figure out how transfer/shooting works and implement code
     }

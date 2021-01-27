@@ -5,6 +5,7 @@ import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+import com.qualcomm.robotcore.hardware.configuration.ConfigurationUtility;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -13,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotor;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockServo;
+import org.firstinspires.ftc.teamcode.Utility.ConfigUtilities;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +29,8 @@ public class BaseUltimateGoalHardware {
     public DcMotor rightMotor = null;
     BNO055IMU imu;
     public BaseCamera webCamera = new BaseCamera();
-    public static double robotTurnRampDownAngle = 45;
-    public static double robotTurnStopAngle = 0.5;
+    public double robotTurnRampDownAngle = 45;
+    public double robotTurnStopAngle = 5;
     public List<String> failedHardware = new ArrayList<>();
     public DcMotor middleMotor = null;
     public DcMotor intakeMotor = null;
@@ -39,12 +41,21 @@ public class BaseUltimateGoalHardware {
     public DcMotor wobbleElbow;
     public double forwardTicksPerInch;
     public double centerTicksPerInch;
+    public String hardwareClassName;
+    public Servo kicker;
 
-    public BaseUltimateGoalHardware() {}
+    public BaseUltimateGoalHardware() {
+
+    }
 
     public BaseUltimateGoalHardware(double forwardTicksPerInch, double centerTicksPerInch) {
+        this(forwardTicksPerInch, centerTicksPerInch, 5);
+    }
+
+    public BaseUltimateGoalHardware(double forwardTicksPerInch, double centerTicksPerInch, double turningDeadzone) {
         this.forwardTicksPerInch = forwardTicksPerInch;
         this.centerTicksPerInch = centerTicksPerInch;
+        this.robotTurnStopAngle = turningDeadzone;
     }
 
     public void init(HardwareMap hwMap) {
@@ -56,8 +67,10 @@ public class BaseUltimateGoalHardware {
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
         leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
         // Set up the parameters with which we will use our IMU. Note that integration
@@ -82,6 +95,7 @@ public class BaseUltimateGoalHardware {
         middleMotor.setDirection(DcMotor.Direction.REVERSE);
         middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         middleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        middleMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         intakeMotor = getMotor(hwMap,"intake_motor");
         shooterMotor = getMotor(hwMap,"shooter_motor");
@@ -91,15 +105,20 @@ public class BaseUltimateGoalHardware {
 
         intakeMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         intakeMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         shooterMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         shooterMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         shooterMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         shooterMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        shooterMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.FLOAT);
         transferMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         transferMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wobbleElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wobbleElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wobbleElbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         wobbleGrabber = getServo(hwMap, "grabber");
+        kicker = getServo(hwMap, "kicker");
     }
 
     public String initWebCamera(HardwareMap hardwareMap){
@@ -150,7 +169,7 @@ public class BaseUltimateGoalHardware {
         }
 
         // Return the speed that the motor should be turning to.
-        return speed;
+        return (speed * 3) / 4;
     }
 
     public DcMotor getMotor(HardwareMap hwMap, String name) {
@@ -178,11 +197,25 @@ public class BaseUltimateGoalHardware {
     public void configureWobbleGrabber(boolean isClosed){
         // If true is passed as the parameter, the wobble grabber will close.
         if(isClosed){
-            wobbleGrabber.setPosition(0.25);
+            wobbleGrabber.setPosition(.5);
         }
         // Otherwise, the wobble grabber will remain open.
         else{
-            wobbleGrabber.setPosition(0.75);
+            wobbleGrabber.setPosition(0);
+        }
+    }
+
+    public static BaseUltimateGoalHardware create() {
+        BaseUltimateGoalHardware baseUltimateGoalHardware;
+        try{
+            String hardwareName = ConfigUtilities.getRobotConfigurationName();
+            baseUltimateGoalHardware = (BaseUltimateGoalHardware) Class.forName("org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware." + hardwareName).newInstance();
+            baseUltimateGoalHardware.hardwareClassName = hardwareName;
+            return baseUltimateGoalHardware;
+        } catch (Exception ClassNotFoundException){
+            baseUltimateGoalHardware =  new BaseUltimateGoalHardware();
+            baseUltimateGoalHardware.hardwareClassName = "BaseUltimateGoalHardware";
+            return baseUltimateGoalHardware;
         }
     }
 }

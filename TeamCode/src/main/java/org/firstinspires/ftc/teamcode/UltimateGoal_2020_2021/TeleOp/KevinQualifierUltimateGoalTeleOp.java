@@ -7,13 +7,19 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
+import org.firstinspires.ftc.teamcode.Utility.CountDownTimer;
+import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
 
-@TeleOp(name = "Official Scrimmage UltimateGoal Red Field", group = "2021_UltimateGoal")
-public class ScrimmageOfficialUltimateGoalTeleOp extends OpMode {
+import java.io.IOException;
+import java.util.ArrayList;
+
+@TeleOp(name = "Kevin Qualifier UltimateGoal", group = "2021_UltimateGoal")
+public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     ImprovedGamepad impGamepad1;
     ImprovedGamepad impGamepad2;
     ElapsedTime timer = new ElapsedTime();
+    CountDownTimer countDownTimer = new CountDownTimer(ElapsedTime.Resolution.MILLISECONDS);
     // Relative to you
     public static final int ABSOLUTE_MODE = 0;
     // Relative to front of robot
@@ -22,7 +28,14 @@ public class ScrimmageOfficialUltimateGoalTeleOp extends OpMode {
     public boolean isIntakeOn = false;
     double turnPowerRatio = 1;
     double movePowerRatio = 1;
-    double shooterPowerRatio = 1;
+    double shooterPowerRatio = .8;
+    double intakePowerRatio = -0.9;
+    boolean pauseShooterMode; //Stealth Mode
+    double kickerPosition = 0.6;
+    int shooterOffset = 5; //Offset launch angle
+
+    ArrayList<String> logMessages = new ArrayList<String>();
+    ElapsedTime timestampTimer = new ElapsedTime();
 
     @Override
     public void init() {
@@ -43,6 +56,8 @@ public class ScrimmageOfficialUltimateGoalTeleOp extends OpMode {
         for(int i = 0; i < robot.failedHardware.size(); i++){
             telemetry.addData(String.valueOf(i + 1), robot.failedHardware.get(i));
         }
+
+        telemetry.addData("Current Hardware", robot.hardwareClassName);
 
         telemetry.update();
     }
@@ -65,22 +80,49 @@ public class ScrimmageOfficialUltimateGoalTeleOp extends OpMode {
         double desiredAngle = 0;
         boolean isLetterOnGamepad1Pressed = gamepad1.b || gamepad1.x;
 
-        // If we press the dpad_left button, then the current mode will be changed to absolute mode.
-        if(gamepad1.dpad_left){
-            currentMode = ABSOLUTE_MODE;
-        }
-        // If we press the dpad_right button, then the current mode will be changed to relative mode.
-        else if(gamepad1.dpad_right){
-            currentMode = RELATIVE_MODE;
+        // If we press the b button on game pad 1, then the intake will switch between off and on.
+        if(impGamepad1.b.isInitialPress()){
+            isIntakeOn = !isIntakeOn;
         }
 
-        // If we press the left bumper, we turn the intake mechanism off.
-        if(gamepad2.left_bumper){
-            isIntakeOn = false;
+        // If the y button is pressed on game pad 1, then it will switch to absolute or relative mode.
+        if(impGamepad1.y.isInitialPress()){
+            if(currentMode == ABSOLUTE_MODE){
+                currentMode = RELATIVE_MODE;
+            }else{
+                currentMode = ABSOLUTE_MODE;
+            }
         }
-        // If we press the left bumper, we turn the intake mechanism on.
-        else if(gamepad2.right_bumper){
-            isIntakeOn = true;
+
+        // If we press the left trigger, we move the intake/transfer inwards.
+        if(gamepad2.left_trigger > 0.5){
+            robot.intakeMotor.setPower(intakePowerRatio);
+            robot.transferMotor.setPower(-intakePowerRatio);
+        }
+        // If we press the right trigger, we move the intake/transfer outwards.
+        else if(gamepad2.right_trigger > 0.5){
+            robot.intakeMotor.setPower(-intakePowerRatio);
+            robot.transferMotor.setPower(intakePowerRatio);
+        }
+        else {
+            if (isIntakeOn) {
+                robot.intakeMotor.setPower(intakePowerRatio);
+                robot.transferMotor.setPower(-intakePowerRatio);
+            } else {
+                robot.intakeMotor.setPower(0);
+                robot.transferMotor.setPower(0);
+            }
+        }
+
+        if(gamepad1.right_trigger > 0) {
+            countDownTimer.setTargetTime(1500);
+
+        }
+
+        if(countDownTimer.hasRemainingTime()){
+            robot.kicker.setPosition(.3);
+        } else {
+            robot.kicker.setPosition(.6);
         }
 
         // Prints out the current mode that we are in.
@@ -119,67 +161,63 @@ public class ScrimmageOfficialUltimateGoalTeleOp extends OpMode {
             movePowerRatio -= 0.1;
         }
 
+        if (impGamepad2.dpad_left.isInitialPress() && intakePowerRatio < 1){
+            intakePowerRatio += .1;
+        } else if (impGamepad2.dpad_right.isInitialPress() && intakePowerRatio > 0){
+            intakePowerRatio -= .1;
+        }
+
         // Determine radii of joysticks through Pythagorean Theorem.
         double rightStickRadius = Math.hypot(rightStickX, rightStickY);
         double leftStickRadius = Math.hypot(leftStickX, leftStickY);
 
-        // When pressing the left bumper, the robot will turn counterclockwise.
-        if(gamepad1.left_bumper){
-            leftMotorPower = -turnPowerRatio;
-            rightMotorPower = turnPowerRatio;
-        }
-        // When pressing the right bumper, the robot will turn clockwise.
-        else if(gamepad1.right_bumper){
-            leftMotorPower = turnPowerRatio;
-            rightMotorPower = -turnPowerRatio;
-        }
         // This sets the motor's power to however far the left joystick is pushed.
-        else {
-            // Declare variable for storing the angle relative to field to move at.
-            double angleToMoveFieldTo;
 
-            if(currentMode == ABSOLUTE_MODE){
-                // Step 1: Calculate angle relative to field to move at (from left joystick)
-                angleToMoveFieldTo = leftStickAngle;
-            }
-            else
-            {
-                // Step 1: Calculate angle relative to field to move at (from robot)
-                angleToMoveFieldTo = (robotAngle + leftStickAngle)-90;
-            }
+        // Declare variable for storing the angle relative to field to move at.
+        double angleToMoveFieldTo;
 
-            // Step 2: Calculate angle relative to the robot to move at
-            double angleToMoveRobotTo = angleToMoveFieldTo - robotAngle;
-            // Step 3: Calculate forwards/sideways components to move at
-            double xToMoveTo = Math.cos(Math.toRadians(angleToMoveRobotTo));
-            double yToMoveTo = Math.sin(Math.toRadians(angleToMoveRobotTo));
-            // Step 4: Calculate forwards/sideways powers to move at
-            leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
-            rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
-            middleMotorPower = leftStickRadius * yToMoveTo * movePowerRatio;
-
-            telemetry.addData("x To Move To", xToMoveTo);
-            telemetry.addData("y To Move To", yToMoveTo);
-            telemetry.addData("Angle To Move To", angleToMoveRobotTo);
+        if(currentMode == ABSOLUTE_MODE){
+            // Step 1: Calculate angle relative to field to move at (from left joystick)
+            angleToMoveFieldTo = leftStickAngle + 180;
         }
+        else
+        {
+            // Step 1: Calculate angle relative to field to move at (from robot)
+            angleToMoveFieldTo = (robotAngle + leftStickAngle)-90;
+        }
+
+        // Step 2: Calculate angle relative to the robot to move at
+        double angleToMoveRobotTo = angleToMoveFieldTo - robotAngle;
+        // Step 3: Calculate forwards/sideways components to move at
+        double xToMoveTo = Math.cos(Math.toRadians(angleToMoveRobotTo));
+        double yToMoveTo = Math.sin(Math.toRadians(angleToMoveRobotTo));
+        // Step 4: Calculate forwards/sideways powers to move at
+        leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
+        rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
+        middleMotorPower = leftStickRadius * yToMoveTo * movePowerRatio;
+
+        telemetry.addData("x To Move To", xToMoveTo);
+        telemetry.addData("y To Move To", yToMoveTo);
+        telemetry.addData("Angle To Move To", angleToMoveRobotTo);
+
 
         /*
          * If the radius of the right stick is greater than the radius of our circular dead zone (0.8)
          * or if one of the letter buttons on the controller is pressed, the robot will turn to the
          * angle that we want it to be turned to.
          */
-        if(rightStickRadius > 0.8 || isLetterOnGamepad1Pressed) {
-            // If x is pressed, the robot will turn to 180 degrees.
-            if(gamepad1.x) {
-                desiredAngle = angleToTurnTo(2);
+        if(rightStickRadius > 0.8 || gamepad1.left_bumper || gamepad1.right_bumper) {
+            // If left bumper is pressed, the robot will turn to 0 degrees.
+            if(gamepad1.left_bumper) {
+                desiredAngle = 0 + shooterOffset;
             }
-            // If b is pressed, the robot will turn to 0 degrees.
-            else if(gamepad1.b){
-                desiredAngle = angleToTurnTo(4);
+            // If right bumper is pressed, the robot will turn to 180 degrees.
+            else if(gamepad1.right_bumper){
+                desiredAngle = 180 + shooterOffset;
             }
             // Otherwise, the robot will turn to the angle that we point the right stick down in.
             else{
-                desiredAngle = rightStickAngle;
+                desiredAngle = rightStickAngle + 180;
             }
 
             // This prints out what the angle difference is.
@@ -201,53 +239,77 @@ public class ScrimmageOfficialUltimateGoalTeleOp extends OpMode {
         robot.rightMotor.setPower(rightMotorPower);
         robot.middleMotor.setPower(middleMotorPower);
 
-        // If the y button is pressed, then the wobble grabber will open.
-        if(gamepad1.y){
+        // If the dpad right button is pressed, then the wobble grabber will open.
+        if(gamepad1.dpad_right){
             robot.configureWobbleGrabber(false);
         }
-        // Otherwise, if the a button is pressed, then the wobble grabber will open.
-        else if(gamepad1.a){
+        // Otherwise, if the dpad left button is pressed, then the wobble grabber will closed.
+        else if(gamepad1.dpad_left){
             robot.configureWobbleGrabber(true);
         }
 
         // If dpad up is pressed we want the wobble elbow to keep on extending forward.
         if(gamepad1.dpad_up){
-            robot.wobbleElbow.setPower(0.5);
+            if(robot.wobbleElbow.getCurrentPosition() >= 500) {
+                robot.wobbleElbow.setPower(0.5);
+            } else {
+                robot.wobbleElbow.setPower(0);
+            }
         }
         // If dpad down is pressed we want the wobble elbow to keep on retracting.
         else if(gamepad1.dpad_down){
-            robot.wobbleElbow.setPower(-0.5);
+            if(robot.wobbleElbow.getCurrentPosition() <= -15000) {
+                robot.wobbleElbow.setPower(-0.5);
+            } else {
+                robot.wobbleElbow.setPower(0);
+            }
         }
         // Otherwise, we want the robot's wobble elbow to stay still.
         else{
             robot.wobbleElbow.setPower(0);
         }
 
-        // If the left trigger is pressed, then the intake and transfer motors will turn forward.
-        if(gamepad1.left_trigger > 0)
-        {
-            robot.intakeMotor.setPower(0.5);
-            robot.transferMotor.setPower(-0.5);
-        }
-        // Otherwise, if the right trigger is pressed, then the intake and transfer motors will turn backward.
-        else if(gamepad1.right_trigger > 0)
-        {
-            robot.intakeMotor.setPower(-0.5);
-            robot.transferMotor.setPower(0.5);
-        }
-        // Otherwise, the intake and transfer motors will stop turning.
-        else {
-            if (isIntakeOn) {
-                robot.intakeMotor.setPower(0.5);
-            } else {
-                robot.intakeMotor.setPower(0);
-            }
-            robot.transferMotor.setPower(0);
+        // If x is pressed then the launcher will turn on or off.
+        if(impGamepad1.x.isInitialPress()){
+            pauseShooterMode = !pauseShooterMode;
         }
 
-        // Always have the shooter motors running at 100% speed.
-        robot.shooterMotor.setPower(shooterPowerRatio);
-        robot.shooterMotor2.setPower(shooterPowerRatio);
+        if(!pauseShooterMode) {
+            robot.shooterMotor.setPower(shooterPowerRatio);
+            robot.shooterMotor2.setPower(shooterPowerRatio);
+        } else {
+            robot.shooterMotor.setPower(0);
+            robot.shooterMotor2.setPower(0);
+        }
+
+        if (timer.milliseconds() >= 1) {
+             /*
+             Log information every millisecond
+             1) timestamp
+             2) encoder counts for shooter
+             3) encoder counts for shooter 2
+             */
+
+            String msg = String.format("%f, %f, %f", timestampTimer.milliseconds(), (float) robot.shooterMotor.getCurrentPosition(), (float) robot.shooterMotor2.getCurrentPosition());
+
+            logMessages.add(msg);
+
+            timer.reset();
+        }
+
+        if(impGamepad1.back.isInitialPress()) {
+
+            int time = (int)(System.currentTimeMillis());
+
+            try {
+                FileUtilities.writeConfigFile("shooterLogFile_" + time + "_.csv", logMessages);
+                logMessages.clear();
+            } catch (IOException e) {
+                telemetry.addData("Error writing to file", e.getMessage());
+            }
+        }
+
+        telemetry.update();
 
         /*
          * This code below prints out the robot angle, right stick angle, right motor power, the
@@ -262,36 +324,8 @@ public class ScrimmageOfficialUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Turn Power Ratio", turnPowerRatio);
         telemetry.addData("Move Power Ratio", movePowerRatio);
         telemetry.addData("Shooter Power Ratio", shooterPowerRatio);
+        telemetry.addData("Shooter Motor Paused", pauseShooterMode);
+        telemetry.addData("Intake Power", intakePowerRatio);
         telemetry.update();
-    }
-
-    /**
-     * This method has the robot turn to a certain angle based on the letter button that is pressed.
-     * @param buttonDeterminer the number used to determine how many degrees the robot should turn by
-     * @return
-     */
-    public int angleToTurnTo(int buttonDeterminer){
-        // Declare angle variable.
-        int angle = 0;
-
-        // If y is pressed, the robot will turn by 90 degrees.
-        if(buttonDeterminer == 1){
-            angle = 90;
-        }
-        // If x is pressed, the robot will turn by 180 degrees.
-        else if(buttonDeterminer == 2){
-            angle = 180;
-        }
-        // If a is pressed, the robot will turn by 270 degrees.
-        else if(buttonDeterminer == 3){
-            angle = 270;
-        }
-        // If b is pressed, the robot will turn by 360 degrees.
-        else if(buttonDeterminer == 4){
-            angle = 360;
-        }
-
-        // Return angle variable.
-        return angle;
     }
 }

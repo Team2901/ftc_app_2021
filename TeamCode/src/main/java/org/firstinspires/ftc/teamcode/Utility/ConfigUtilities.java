@@ -21,7 +21,7 @@ public class ConfigUtilities {
                 throw new IllegalArgumentException("No context could be retrieved!");
             }
         }
-        private static String getRobotConfigurationName() {
+        public static String getRobotConfigurationName() {
             Context context = getContext();
             SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(context);
             String objSerialized = preferences.getString("pref_hardware_config_filename", null);
