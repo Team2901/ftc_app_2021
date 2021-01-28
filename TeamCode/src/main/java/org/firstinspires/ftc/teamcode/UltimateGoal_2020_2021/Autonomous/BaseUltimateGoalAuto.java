@@ -140,11 +140,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public void moveInchesForward(double inches, boolean correctingRun) {
         int ticks = (int) (inches * robot.forwardTicksPerInch);
         double startAngle = robot.getAngle();
-        double toleranceRange = 10.0;
         double angleTuning = 0;
-        double distanceTraveled = 0;
-        double slope = 0;
         double minSpeed = .02;
+        double maxSpeed = .5;
 
 
         robot.leftMotor.setTargetPosition(robot.leftMotor.getCurrentPosition() + ticks);
@@ -153,15 +151,15 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.leftMotor.setPower(angleTuning + forwardMotorPower);
-        robot.rightMotor.setPower(-angleTuning + forwardMotorPower);
-
-        while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy()) &&
-                inches - distanceTraveled > toleranceRange) {
-            double rampUpSpeed = distanceTraveled * slope + minSpeed;
+        while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+            double sinRampSpeed = Math.sin(1/inches * Math.PI) * maxSpeed + minSpeed;
+            double motorSpeed = sinRampSpeed;
             if(correctingRun) {
                 angleTuning = pidTune(startAngle, robot.getAngle());
             }
+
+            robot.leftMotor.setPower(angleTuning + motorSpeed);
+            robot.rightMotor.setPower(-angleTuning + motorSpeed);
 
             telemetry.addData("Adjusting:", angleTuning);
             telemetry.addData("stackID", starterStackResult);
