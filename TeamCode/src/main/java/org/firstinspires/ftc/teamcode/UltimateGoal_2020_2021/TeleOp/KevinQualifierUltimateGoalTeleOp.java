@@ -33,6 +33,9 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     boolean pauseShooterMode; //Stealth Mode
     double kickerPosition = 0.7;
     int shooterOffset = 5; //Offset launch angle
+    public boolean wobbleOverride = false;
+    int wobbleElbowMinPosition = 0;
+    int wobbleElboxMaxPosition = 13500;
 
     ArrayList<String> logMessages = new ArrayList<String>();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -249,24 +252,21 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         }
 
         // If dpad up is pressed we want the wobble elbow to keep on extending forward.
-        if(gamepad1.dpad_up){
-            if(robot.wobbleElbow.getCurrentPosition() >= 500) {
+        if(gamepad1.dpad_up && (robot.wobbleElbow.getCurrentPosition() <= wobbleElboxMaxPosition || wobbleOverride)){
                 robot.wobbleElbow.setPower(0.5);
-            } else {
-                robot.wobbleElbow.setPower(0);
-            }
         }
         // If dpad down is pressed we want the wobble elbow to keep on retracting.
-        else if(gamepad1.dpad_down){
-            if(robot.wobbleElbow.getCurrentPosition() >= 13500) {
+        else if(gamepad1.dpad_down && (robot.wobbleElbow.getCurrentPosition() >= wobbleElbowMinPosition || wobbleOverride)){
                 robot.wobbleElbow.setPower(-0.5);
-            } else {
-                robot.wobbleElbow.setPower(0);
-            }
         }
         // Otherwise, we want the robot's wobble elbow to stay still.
         else{
             robot.wobbleElbow.setPower(0);
+        }
+
+        // If a is pressed then we want to toggle wobble override.
+        if(impGamepad1.a.isInitialPress()){
+            wobbleOverride = !wobbleOverride;
         }
 
         // If x is pressed then the launcher will turn on or off.
@@ -326,6 +326,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Shooter Power Ratio", shooterPowerRatio);
         telemetry.addData("Shooter Motor Paused", pauseShooterMode);
         telemetry.addData("Intake Power", intakePowerRatio);
+        telemetry.addData("Wobble Override", wobbleOverride);
         telemetry.update();
     }
 }
