@@ -326,6 +326,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Shooter Power Ratio", shooterPowerRatio);
         telemetry.addData("Shooter Motor Paused", pauseShooterMode);
         telemetry.addData("Intake Power", intakePowerRatio);
+        telemetry.addData("Wobble Override", wobbleOverride);
         telemetry.update();
     }
 }
