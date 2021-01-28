@@ -142,6 +142,10 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         double startAngle = robot.getAngle();
         double toleranceRange = 10.0;
         double angleTuning = 0;
+        double distanceTraveled = 0;
+        double slope = 0;
+        double minSpeed = .02;
+
 
         robot.leftMotor.setTargetPosition(robot.leftMotor.getCurrentPosition() + ticks);
         robot.rightMotor.setTargetPosition(robot.rightMotor.getCurrentPosition() + ticks);
@@ -152,7 +156,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.leftMotor.setPower(angleTuning + forwardMotorPower);
         robot.rightMotor.setPower(-angleTuning + forwardMotorPower);
 
-        while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
+        while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy()) &&
+                inches - distanceTraveled > toleranceRange) {
+            double rampUpSpeed = distanceTraveled * slope + minSpeed;
             if(correctingRun) {
                 angleTuning = pidTune(startAngle, robot.getAngle());
             }
