@@ -258,7 +258,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         }
         // If dpad down is pressed we want the wobble elbow to keep on retracting.
         else if(gamepad1.dpad_down){
-            if(robot.wobbleElbow.getCurrentPosition() <= -15000) {
+            if(robot.wobbleElbow.getCurrentPosition() >= 13500) {
                 robot.wobbleElbow.setPower(-0.5);
             } else {
                 robot.wobbleElbow.setPower(0);
