@@ -31,7 +31,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     double shooterPowerRatio = .8;
     double intakePowerRatio = -0.9;
     boolean pauseShooterMode; //Stealth Mode
-    double kickerPosition = 0.6;
+    double kickerPosition = 0.7;
     int shooterOffset = 5; //Offset launch angle
 
     ArrayList<String> logMessages = new ArrayList<String>();
@@ -122,7 +122,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         if(countDownTimer.hasRemainingTime()){
             robot.kicker.setPosition(.3);
         } else {
-            robot.kicker.setPosition(.6);
+            robot.kicker.setPosition(.7);
         }
 
         // Prints out the current mode that we are in.
