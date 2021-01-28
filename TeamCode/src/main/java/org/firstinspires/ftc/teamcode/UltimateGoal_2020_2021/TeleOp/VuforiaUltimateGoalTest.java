@@ -87,7 +87,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
         // Sets up the position of the Vuforia web image and web camera.
 
-        OpenGLMatrix webcamLocation = OpenGLMatrix.translation(0, 0, 0).multiplied(
+        OpenGLMatrix webcamLocation = OpenGLMatrix.translation(-6/MM_TO_INCHES, -0.5f/MM_TO_INCHES, 0).multiplied(
                 Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XZY, AngleUnit.DEGREES,
                         90, 90, 0));
 
