@@ -28,8 +28,8 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     public boolean isIntakeOn = false;
     double turnPowerRatio = 1;
     double movePowerRatio = 1;
-    double shooterPowerRatio = .8;
-    double intakePowerRatio = -0.9;
+    double shooterPowerRatio = 0.8;
+    double intakePowerRatio = 0.9;
     boolean pauseShooterMode; //Stealth Mode
     double kickerPosition = 0.65;
     int shooterOffset = 5; //Offset launch angle
@@ -100,17 +100,17 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         // If we press the left trigger, we move the intake/transfer inwards.
         if(gamepad2.left_trigger > 0.5){
             robot.intakeMotor.setPower(intakePowerRatio);
-            robot.transferMotor.setPower(-intakePowerRatio);
+            robot.transferMotor.setPower(intakePowerRatio);
         }
         // If we press the right trigger, we move the intake/transfer outwards.
         else if(gamepad2.right_trigger > 0.5){
             robot.intakeMotor.setPower(-intakePowerRatio);
-            robot.transferMotor.setPower(intakePowerRatio);
+            robot.transferMotor.setPower(-intakePowerRatio);
         }
         else {
             if (isIntakeOn) {
                 robot.intakeMotor.setPower(intakePowerRatio);
-                robot.transferMotor.setPower(-intakePowerRatio);
+                robot.transferMotor.setPower(intakePowerRatio);
             } else {
                 robot.intakeMotor.setPower(0);
                 robot.transferMotor.setPower(0);
