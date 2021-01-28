@@ -141,18 +141,22 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         int ticks = (int) (inches * robot.forwardTicksPerInch);
         double startAngle = robot.getAngle();
         double angleTuning = 0;
+        double distanceTraveled = 0;
         double minSpeed = .02;
         double maxSpeed = .5;
 
 
-        robot.leftMotor.setTargetPosition(robot.leftMotor.getCurrentPosition() + ticks);
-        robot.rightMotor.setTargetPosition(robot.rightMotor.getCurrentPosition() + ticks);
+        robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.leftMotor.setTargetPosition(ticks);
+        robot.rightMotor.setTargetPosition(ticks);
 
         robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
-            double sinRampSpeed = Math.sin(1/inches * Math.PI) * maxSpeed + minSpeed;
+            double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * maxSpeed + minSpeed;
             double motorSpeed = sinRampSpeed;
             if(correctingRun) {
                 angleTuning = pidTune(startAngle, robot.getAngle());
@@ -169,6 +173,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
             robot.leftMotor.setPower(angleTuning + .75);
             robot.rightMotor.setPower(-angleTuning + .75);
+
+            distanceTraveled = robot.leftMotor.getCurrentPosition() / robot.forwardTicksPerInch;
         }
 
         robot.leftMotor.setPower(0);
