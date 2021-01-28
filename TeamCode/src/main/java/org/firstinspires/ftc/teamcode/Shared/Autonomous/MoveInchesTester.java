@@ -14,6 +14,8 @@ public class MoveInchesTester extends BaseUltimateGoalAuto {
 
         init(false);
 
+        waitForStart();
+
         moveInchesForward(60, true);
 
         moveInchesForward(10, true);
