@@ -135,13 +135,14 @@ public class VuforiaUltimateGoalTest extends OpMode {
         double leftMotorPower = 0;
         double rightMotorPower = 0;
 
-        double relativeFieldAngle;
+        double targetFieldAngle;
 
 
         boolean isVisible = robotLocation != null;
 
         float x = 0;
         float y = 0;
+        float zAngle = 0;
         double angleDifference = 0;
         double velocity = 0;
 
@@ -161,7 +162,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
             Orientation orientation = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             float xAngle = orientation.firstAngle;
             float yAngle = orientation.secondAngle;
-            float zAngle = orientation.thirdAngle;
+            zAngle = orientation.thirdAngle;
 
             // x, y, z positions (x, y, z) (in inches)
             telemetry.addData("x, y, z positions", String.format("(%.1f, %.1f, %.1f)", x * MM_TO_INCHES, y * MM_TO_INCHES, z * MM_TO_INCHES));
@@ -169,22 +170,17 @@ public class VuforiaUltimateGoalTest extends OpMode {
             // x, y, z rotations (x, y, z)
             telemetry.addData("x, y, z rotations", String.format("(%.1f, %.1f, %.1f)", xAngle, yAngle, zAngle));
 
-            // Calculate the angle relative to the robot and print it out.
-            double relativeRobotAngle = Math.toDegrees(Math.atan(y/x));
-            telemetry.addData("Angle relative to the robot", "%.1f", relativeRobotAngle);
-
-            // Calculate angle relative to the field.
-            relativeFieldAngle = relativeRobotAngle + robot.getAngle();
-
+            // Calculate the angle relative to the field and print it out.
+            targetFieldAngle = Math.toDegrees(Math.atan(y/x));
             // Print angle relative to the robot and the angle relative to the field.
-            telemetry.addData("Angle relative to the field", "%.1f", relativeFieldAngle);
+            telemetry.addData("Angle relative to the field", "%.1f", targetFieldAngle);
 
-            // Determine the angle difference between relativeFieldAngle and the robot's angle.
-            angleDifference = AngleUnit.normalizeDegrees(relativeFieldAngle - robot.getAngle());
+            // Determine the angle difference between targetFieldAngle and the robot's angle.
+            angleDifference = AngleUnit.normalizeDegrees(targetFieldAngle - zAngle);
             telemetry.addData("Angle difference", "%.1f", angleDifference);
 
             // Determine the speed that the motors should be set to.
-            velocity = robot.getMotorTurnSpeed(relativeFieldAngle, robot.getAngle());
+            velocity = robot.getMotorTurnSpeed(targetFieldAngle, zAngle);
             telemetry.addData("Velocity", "%.1f", velocity);
 
             // Only make the robot turn relative to the field if a on the first gamepad is pressed.
@@ -197,7 +193,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
         else
         {
             // We want to face the tower goal, so set the angle to 0.
-            relativeFieldAngle = 0;
+            targetFieldAngle = 0;
         }
 
         // When pressing the left bumper, the robot will turn counterclockwise.
@@ -229,7 +225,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
              6) x diff
              7) y diff
              */
-            String msg = String.format("%f, %f, %b, %f, %f, %f, %f", timestampTimer.milliseconds(), robot.getAngle(), isVisible, angleDifference, velocity, x,  y);
+            String msg = String.format("%f, %f, %b, %f, %f, %f, %f", timestampTimer.milliseconds(), zAngle, isVisible, angleDifference, velocity, x,  y);
 
             logMessages.add(msg);
 
