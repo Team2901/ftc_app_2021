@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-@Autonomous(name = "Shooting test auto", group = "Red Team")
+@Autonomous(name = "Shooting test auto", group = "Testers")
 public class GrabAndShootTester extends BaseUltimateGoalAuto {
     public GrabAndShootTester() {
         super(TeamColor.RED_TEAM);

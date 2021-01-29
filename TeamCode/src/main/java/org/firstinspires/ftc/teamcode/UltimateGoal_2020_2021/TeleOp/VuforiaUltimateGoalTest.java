@@ -87,8 +87,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
         // Sets up the position of the Vuforia web image and web camera.
 
-        float camaeraOffsetX = -5.0f / MM_TO_INCHES;
-        OpenGLMatrix webcamLocation = OpenGLMatrix.translation(camaeraOffsetX, 0, 0).multiplied(
+        OpenGLMatrix webcamLocation = OpenGLMatrix.translation(-6/MM_TO_INCHES, -0.5f/MM_TO_INCHES, 0).multiplied(
                 Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XZY, AngleUnit.DEGREES,
                         90, 90, 0));
 
@@ -136,16 +135,16 @@ public class VuforiaUltimateGoalTest extends OpMode {
         double leftMotorPower = 0;
         double rightMotorPower = 0;
 
+        double targetFieldAngle;
+
+
         boolean isVisible = robotLocation != null;
 
         float x = 0;
         float y = 0;
+        float zAngle = 0;
+        double angleDifference = 0;
         double velocity = 0;
-
-        final double currentAngleImu = robot.getAngle();
-
-        Double currentAngleVuforia = null;
-        Double targetAngle = null;
 
         /*
          * If the robot location is not null, we translate the robot's location. In other words,
@@ -163,7 +162,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
             Orientation orientation = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
             float xAngle = orientation.firstAngle;
             float yAngle = orientation.secondAngle;
-            float zAngle = orientation.thirdAngle;
+            zAngle = orientation.thirdAngle;
 
             // x, y, z positions (x, y, z) (in inches)
             telemetry.addData("x, y, z positions", String.format("(%.1f, %.1f, %.1f)", x * MM_TO_INCHES, y * MM_TO_INCHES, z * MM_TO_INCHES));
@@ -171,21 +170,17 @@ public class VuforiaUltimateGoalTest extends OpMode {
             // x, y, z rotations (x, y, z)
             telemetry.addData("x, y, z rotations", String.format("(%.1f, %.1f, %.1f)", xAngle, yAngle, zAngle));
 
-            // Calculate angle required to be pointing at the vuforia image
-            targetAngle = Math.toDegrees(Math.atan(y/x));
+            // Calculate the angle relative to the field and print it out.
+            targetFieldAngle = Math.toDegrees(Math.atan(y/x));
+            // Print angle relative to the robot and the angle relative to the field.
+            telemetry.addData("Angle relative to the field", "%.1f", targetFieldAngle);
 
-            currentAngleVuforia = (double) zAngle;
-
-            telemetry.addData("currentAngle (imu)", "%.1f", robot.getAngle());
-            telemetry.addData("currentAngle (vuforia)", "%.1f", currentAngleVuforia);
-            telemetry.addData("targetAngle", "%.1f", targetAngle);
-
-            // Determine the angle difference between the target and the current angle.
-            double angleDifference = AngleUnit.normalizeDegrees(targetAngle - currentAngleVuforia);
-            telemetry.addData("AngleDifference", "%.1f", angleDifference);
+            // Determine the angle difference between targetFieldAngle and the robot's angle.
+            angleDifference = AngleUnit.normalizeDegrees(targetFieldAngle - zAngle);
+            telemetry.addData("Angle difference", "%.1f", angleDifference);
 
             // Determine the speed that the motors should be set to.
-            velocity = robot.getMotorTurnSpeed(targetAngle, currentAngleVuforia);
+            velocity = robot.getMotorTurnSpeed(targetFieldAngle, zAngle);
             telemetry.addData("Velocity", "%.1f", velocity);
 
             // Only make the robot turn relative to the field if a on the first gamepad is pressed.
@@ -198,7 +193,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
         else
         {
             // We want to face the tower goal, so set the angle to 0.
-            targetAngle = 0.0;
+            targetFieldAngle = 0;
         }
 
         // When pressing the left bumper, the robot will turn counterclockwise.
@@ -225,13 +220,12 @@ public class VuforiaUltimateGoalTest extends OpMode {
              1) timestamp
              2) robot angle
              3) visible?
-             4) currentAngleVuforia
-             5) targetAngle
-             6) velocity
-             7) x diff
-             8) y diff
+             4) angleDiff
+             5) velocity
+             6) x diff
+             7) y diff
              */
-            String msg = String.format("%f, %f, %b, %f, %f, %f, %f, %f", timestampTimer.milliseconds(), currentAngleImu, isVisible, currentAngleVuforia, targetAngle, velocity, x,  y);
+            String msg = String.format("%f, %f, %b, %f, %f, %f, %f", timestampTimer.milliseconds(), zAngle, isVisible, angleDifference, velocity, x,  y);
 
             logMessages.add(msg);
 
