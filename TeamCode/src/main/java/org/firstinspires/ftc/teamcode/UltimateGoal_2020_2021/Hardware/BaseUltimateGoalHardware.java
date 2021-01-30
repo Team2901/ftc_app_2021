@@ -217,4 +217,9 @@ public class BaseUltimateGoalHardware {
             return baseUltimateGoalHardware;
         }
     }
+
+    public double getSpeed(double desiredFeetPerSecond){
+        //1 = FEET_PER_SECOND, x=desiredFeetPerSecond
+        return 1.0;
+    }
 }
