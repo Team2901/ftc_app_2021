@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.Utility;
 import android.annotation.SuppressLint;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -33,9 +34,9 @@ public class MatrixHelper {
      */
     public static OpenGLMatrix buildMatrixMM(float xPositionMM, float yPositionMM, float zPositionMM,
                                              AxesOrder axesOrder,
-                                             float angle1, float angle2, float angle3) {
-        // TODO implement
-        return null;
+                                             float angle1, float angle2, float angle3){
+        return OpenGLMatrix.translation(xPositionMM, yPositionMM, zPositionMM)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, axesOrder, DEGREES, angle1, angle2, angle3));
     }
 
     /**
@@ -55,8 +56,8 @@ public class MatrixHelper {
     public static OpenGLMatrix buildMatrixInches(float xPositionInches, float yPositionInches, float zPositionInches,
                                                  AxesOrder axesOrder,
                                                  float angle1, float angle2, float angle3) {
-        // TODO implement
-        return null;
+        return OpenGLMatrix.translation(xPositionInches, yPositionInches, zPositionInches)
+                .multiplied(Orientation.getRotationMatrix(EXTRINSIC, axesOrder, DEGREES, angle1, angle2, angle3));
     }
 
     /**
@@ -68,6 +69,10 @@ public class MatrixHelper {
      */
     public static Float getXPositionMM(final OpenGLMatrix openGLMatrix) {
         // TODO implement
+        if (openGLMatrix != null) {
+            VectorF vector = openGLMatrix.getTranslation();
+            return vector.get(0);
+        }
         return null;
     }
 
@@ -79,7 +84,10 @@ public class MatrixHelper {
      * @see OpenGLMatrix#getTranslation()
      */
     public static Float getYPositionMM(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
+        if (openGLMatrix != null) {
+            VectorF vector = openGLMatrix.getTranslation();
+            return vector.get(1);
+        }
         return null;
     }
 
@@ -91,7 +99,10 @@ public class MatrixHelper {
      * @see OpenGLMatrix#getTranslation()
      */
     public static Float getZPositionMM(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
+        if (openGLMatrix != null) {
+            VectorF vector = openGLMatrix.getTranslation();
+            return vector.get(2);
+        }
         return null;
     }
 
@@ -103,7 +114,10 @@ public class MatrixHelper {
      * @see OpenGLMatrix#getTranslation()
      */
     public static Float getXPositionInches(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
+        if (openGLMatrix != null) {
+            VectorF vector = openGLMatrix.getTranslation();
+            return MM_TO_INCHES * vector.get(0);
+        }
         return null;
     }
 
@@ -115,7 +129,10 @@ public class MatrixHelper {
      * @see OpenGLMatrix#getTranslation()
      */
     public static Float getYPositionInches(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
+        if (openGLMatrix != null) {
+            VectorF vector = openGLMatrix.getTranslation();
+            return MM_TO_INCHES * vector.get(1);
+        }
         return null;
     }
 
@@ -127,7 +144,10 @@ public class MatrixHelper {
      * @see OpenGLMatrix#getTranslation()
      */
     public static Float getZPositionInches(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
+        if (openGLMatrix != null) {
+            VectorF vector = openGLMatrix.getTranslation();
+            return MM_TO_INCHES * vector.get(2);
+        }
         return null;
     }
 
@@ -139,7 +159,10 @@ public class MatrixHelper {
      * @see Orientation#getOrientation
      */
     public static Float getXAngle(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
+        if (openGLMatrix != null) {
+            Orientation orientation = Orientation.getOrientation(openGLMatrix, EXTRINSIC, XYZ, DEGREES);
+            return orientation.firstAngle;
+        }
         return null;
     }
 
@@ -151,7 +174,10 @@ public class MatrixHelper {
      * @see Orientation#getOrientation
      */
     public static Float getYAngle(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
+        if (openGLMatrix != null) {
+            Orientation orientation = Orientation.getOrientation(openGLMatrix, EXTRINSIC, XYZ, DEGREES);
+            return orientation.secondAngle;
+        }
         return null;
     }
 
@@ -163,7 +189,10 @@ public class MatrixHelper {
      * @see Orientation#getOrientation
      */
     public static Float getZAngle(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
+        if (openGLMatrix != null) {
+            Orientation orientation = Orientation.getOrientation(openGLMatrix, EXTRINSIC, XYZ, DEGREES);
+            return orientation.thirdAngle;
+        }
         return null;
     }
 
@@ -174,8 +203,11 @@ public class MatrixHelper {
      * @return formatting string of the x,y,z positions (in MM)
      */
     public static String getPositionsMMString(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
-        return null;
+        if (openGLMatrix != null) {
+            VectorF vector = openGLMatrix.getTranslation();
+            return String.format("x, y, z positions in MM (%.1f, %.1f, %.1f)", vector.get(0), vector.get(1), vector.get(2));
+        }
+        return "N/A";
     }
 
     /**
@@ -185,8 +217,11 @@ public class MatrixHelper {
      * @return formatting string of the x,y,z positions (in inches)
      */
     public static String getInchesPositionString(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
-        return null;
+        if (openGLMatrix != null) {
+            VectorF vector = openGLMatrix.getTranslation();
+            return String.format("x, y, z positions in inches (%.1f, %.1f, %.1f)", MM_TO_INCHES*vector.get(0), MM_TO_INCHES*vector.get(1), MM_TO_INCHES*vector.get(2));
+        }
+        return "N/A";
     }
 
     /**
@@ -196,7 +231,10 @@ public class MatrixHelper {
      * @return formatting string of the x,y,z angles (in degrees)
      */
     public static String getAngleString(final OpenGLMatrix openGLMatrix) {
-        // TODO implement
-        return null;
+        if (openGLMatrix != null) {
+            Orientation orientation = Orientation.getOrientation(openGLMatrix, EXTRINSIC, XYZ, DEGREES);
+            return String.format("x, y, z angles in degrees (%.1f, %.1f, %.1f)", orientation.firstAngle, orientation.secondAngle, orientation.thirdAngle);
+        }
+        return "N/A";
     }
 }
