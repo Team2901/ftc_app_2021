@@ -17,6 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
+import org.firstinspires.ftc.teamcode.Utility.MatrixHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,9 +76,13 @@ public class VuforiaUltimateGoalTest extends OpMode {
         double rightMotorPower = 0;
 
         // Returns robot location and prints whether a trackable is visible or not.
-        OpenGLMatrix robotLocation = getRobotLocation();
+        OpenGLMatrix robotLocation = robot.webCamera.getRobotLocation();
         boolean isVisible = robotLocation != null;
         telemetry.addData("Is visible", isVisible);
+
+        telemetry.addData("robot position", MatrixHelper.getInchesPositionString(robotLocation));
+        telemetry.addData("robot angle", MatrixHelper.getAngleString(robotLocation));
+
 
         float x = 0;
         float y = 0;
@@ -85,7 +90,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
         double angleDifference = 0;
         double velocity = 0;
 
-        Double targetFieldAngle = getRobotTurnAngle(robotLocation, false);
+        Double targetFieldAngle = robot.webCamera.getRobotTurnAngle(robotLocation, false);
 
         /*
          * If the robot location is not null, we translate the robot's location. In other words,
@@ -161,43 +166,5 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
         telemetry.update();
 
-    }
-
-    public OpenGLMatrix getRobotLocation(){
-        // Check if trackers are visible.
-        for(int i = 0; i < robot.webCamera.vuforiaTrackables.size(); i++) {
-            // Store current element in variable.
-            VuforiaTrackable currentTrackable = robot.webCamera.vuforiaTrackables.get(i);
-
-            // Gets listener before checking if current tracker is visible.
-            VuforiaTrackableDefaultListener currentTrackableDefaultListener = (VuforiaTrackableDefaultListener) currentTrackable.getListener();
-
-            // Determines whether current trackable is visible.
-            boolean isTrackableVisible = currentTrackableDefaultListener.isVisible();
-
-            if(isTrackableVisible){
-                // Gets the robot's location.
-                return currentTrackableDefaultListener.getRobotLocation();
-            }
-        }
-        // If we get to this point, we know none of the trackables are visible and we return null.
-        return null;
-    }
-
-    public Double getRobotTurnAngle(OpenGLMatrix robotLocation, boolean defaultToNull){
-        if(robotLocation == null){
-            if(defaultToNull){
-                return null;
-            }else{
-                return 0.0;
-            }
-        }
-        // This gets what this trackable thinks that the robot's position is.
-        VectorF robotLocationTranslation = robotLocation.getTranslation();
-        float x = robotLocationTranslation.get(0);
-        float y = robotLocationTranslation.get(1);
-
-        // Calculate the angle relative to the field and print it out.
-        return Math.toDegrees(Math.atan(y/x));
     }
 }

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
@@ -161,5 +162,43 @@ public class BaseCamera {
         VuforiaTrackable.Listener webcamListenerRed = vuforiaRedTower.getListener();
         VuforiaTrackableDefaultListener webcamDefaultListenerRed = (VuforiaTrackableDefaultListener) webcamListenerRed;
         webcamDefaultListenerRed.setCameraLocationOnRobot(parameters.cameraName, webcamLocation);
+    }
+
+    public OpenGLMatrix getRobotLocation(){
+        // Check if trackers are visible.
+        for(int i = 0; i < vuforiaTrackables.size(); i++) {
+            // Store current element in variable.
+            VuforiaTrackable currentTrackable = vuforiaTrackables.get(i);
+
+            // Gets listener before checking if current tracker is visible.
+            VuforiaTrackableDefaultListener currentTrackableDefaultListener = (VuforiaTrackableDefaultListener) currentTrackable.getListener();
+
+            // Determines whether current trackable is visible.
+            boolean isTrackableVisible = currentTrackableDefaultListener.isVisible();
+
+            if(isTrackableVisible){
+                // Gets the robot's location.
+                return currentTrackableDefaultListener.getRobotLocation();
+            }
+        }
+        // If we get to this point, we know none of the trackables are visible and we return null.
+        return null;
+    }
+
+    public Double getRobotTurnAngle(OpenGLMatrix robotLocation, boolean defaultToNull){
+        if(robotLocation == null){
+            if(defaultToNull){
+                return null;
+            }else{
+                return 0.0;
+            }
+        }
+        // This gets what this trackable thinks that the robot's position is.
+        VectorF robotLocationTranslation = robotLocation.getTranslation();
+        float x = robotLocationTranslation.get(0);
+        float y = robotLocationTranslation.get(1);
+
+        // Calculate the angle relative to the field and print it out.
+        return Math.toDegrees(Math.atan(y/x));
     }
 }
