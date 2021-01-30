@@ -144,8 +144,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         double cruisingSpeed = .75;
         double distanceTraveled = 0;
         double minSpeed = .02;
-        double maxSpeed = .5;
-        double slope = 1.0/30.0;
+        double startSlope = 1.0/20.0;
+        double endSlope = 1.0/30.0;
 
 
         robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -160,8 +160,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
             double distanceRemaining = inches - distanceTraveled;
             //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * maxSpeed + minSpeed;
-            double rampUpSpeed = distanceTraveled * slope + minSpeed;
-            double rampDownSpeed = distanceRemaining * slope + minSpeed;
+            double rampUpSpeed = distanceTraveled * startSlope + minSpeed;
+            double rampDownSpeed = distanceRemaining * endSlope + minSpeed;
 
             double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
 
