@@ -141,9 +141,11 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         int ticks = (int) (inches * robot.forwardTicksPerInch);
         double startAngle = robot.getAngle();
         double angleTuning = 0;
+        double cruisingSpeed = .75;
         double distanceTraveled = 0;
         double minSpeed = .02;
         double maxSpeed = .5;
+        double slope = 1.0/20.0;
 
 
         robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -156,8 +158,13 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
-            double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * maxSpeed + minSpeed;
-            double motorSpeed = sinRampSpeed;
+            double distanceRemaining = inches - distanceTraveled;
+            //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * maxSpeed + minSpeed;
+            double rampUpSpeed = distanceTraveled * slope + minSpeed;
+            double rampDownSpeed = distanceRemaining * slope + minSpeed;
+
+            double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
+
             if(correctingRun) {
                 angleTuning = pidTune(startAngle, robot.getAngle());
             }
@@ -170,9 +177,6 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
             telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
             telemetry.update();
-
-            robot.leftMotor.setPower(angleTuning + .75);
-            robot.rightMotor.setPower(-angleTuning + .75);
 
             distanceTraveled = robot.leftMotor.getCurrentPosition() / robot.forwardTicksPerInch;
         }
