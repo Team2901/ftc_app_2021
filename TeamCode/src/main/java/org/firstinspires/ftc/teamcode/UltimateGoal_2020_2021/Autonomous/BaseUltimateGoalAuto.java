@@ -145,7 +145,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         double distanceTraveled = 0;
         double minSpeed = .02;
         double maxSpeed = .5;
-        double slope = 1.0/20.0;
+        double slope = 1.0/30.0;
 
 
         robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
