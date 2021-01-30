@@ -7,36 +7,26 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
-import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
 import org.firstinspires.ftc.teamcode.Utility.MatrixHelper;
-import org.firstinspires.ftc.teamcode.Utility.RobotFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
 import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.YXZ;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesReference.EXTRINSIC;
+import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
 
 @SuppressLint("DefaultLocale")
 @TeleOp(name = "Coaches Vuforia UltimateGoal Test", group = "2021_UltimateGoal")
 public class CoachesVuforiaUltimateGoalTest extends OpMode {
-    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
-
     public static final double MAX_TURN_POWER = 0.5;
-
+    public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     List<String> logMessages = new ArrayList<>();
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -52,7 +42,7 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
 
         String errorMessage = robot.initWebCamera(this.hardwareMap);
 
-        if(errorMessage != null) {
+        if (errorMessage != null) {
             robot.webCamera.errorMessage = null;
             robot.initPhoneCamera(this.hardwareMap);
         }
@@ -61,19 +51,19 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
         robot.webCamera.loadVuforiaTrackables("UltimateGoal");
 
         // Sets up the position of the web camera on the robot (6 inches in front of and .5 inches to the left of center)
-        OpenGLMatrix webcamLocation = MatrixHelper.buildMatrixInches(-6.0f, -0.5f, 0, 90, 0 , 90);
+        OpenGLMatrix webcamLocation = MatrixHelper.buildMatrixInches(-6.0f, -0.5f, 0, XZY, 90, 90, 0);
 
         // Set up the blue tower trackable (propped up in the middle of the field.
         VuforiaTrackable vuforiaBlueTower = robot.webCamera.vuforiaTrackables.get(0);
         vuforiaBlueTower.setName("Blue Tower");
-        OpenGLMatrix blueTowerLocation = MatrixHelper.buildMatrixInches(0, 0, 0, 90,0, -90);
+        OpenGLMatrix blueTowerLocation = MatrixHelper.buildMatrixInches(0, 0, 0, XYZ, 90, 0, -90);
         vuforiaBlueTower.setLocation(blueTowerLocation);
         ((VuforiaTrackableDefaultListener) vuforiaBlueTower.getListener()).setCameraLocationOnRobot(robot.webCamera.parameters.cameraName, webcamLocation);
 
         // Set up the red tower trackable (propped up in the middle of the field.
         VuforiaTrackable vuforiaRedTower = robot.webCamera.vuforiaTrackables.get(1);
         vuforiaRedTower.setName("Red Tower");
-        OpenGLMatrix redTowerLocation = MatrixHelper.buildMatrixInches(0, 0, 0, 90,0, -90);
+        OpenGLMatrix redTowerLocation = MatrixHelper.buildMatrixInches(0, 0, 0, XYZ, 90, 0, -90);
         vuforiaRedTower.setLocation(redTowerLocation);
         ((VuforiaTrackableDefaultListener) vuforiaRedTower.getListener()).setCameraLocationOnRobot(robot.webCamera.parameters.cameraName, webcamLocation);
 
@@ -93,7 +83,7 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
         for (VuforiaTrackable currentTrackable : robot.webCamera.vuforiaTrackables) {
             VuforiaTrackableDefaultListener currentTrackableDefaultListener = (VuforiaTrackableDefaultListener) currentTrackable.getListener();
 
-            if(currentTrackableDefaultListener.isVisible()){
+            if (currentTrackableDefaultListener.isVisible()) {
                 robotLocation = currentTrackableDefaultListener.getRobotLocation();
                 trackableName = currentTrackable.getName();
             }
@@ -124,7 +114,7 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
 
         if (isVisible) {
             // Calculate the angle relative to the field
-            targetFieldAngle = Math.toDegrees(Math.atan(y/x));
+            targetFieldAngle = Math.toDegrees(Math.atan(y / x));
         } else {
             targetFieldAngle = null;
         }
@@ -150,14 +140,12 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
         }
 
         // When pressing the left bumper, the robot will turn counterclockwise.
-        if(gamepad1.left_bumper)
-        {
+        if (gamepad1.left_bumper) {
             leftMotorPower = -MAX_TURN_POWER;
             rightMotorPower = MAX_TURN_POWER;
         }
         // When pressing the right bumper, the robot will turn clockwise.
-        else if(gamepad1.right_bumper)
-        {
+        else if (gamepad1.right_bumper) {
             leftMotorPower = MAX_TURN_POWER;
             rightMotorPower = -MAX_TURN_POWER;
         }
@@ -178,13 +166,13 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
              6) x diff
              7) y diff
              */
-            String msg = String.format("%f, %f, %b, %f, %f, %f, %f", timestampTimer.milliseconds(), zAngle, isVisible, angleDifference, velocity, x,  y);
+            String msg = String.format("%f, %f, %b, %f, %f, %f, %f", timestampTimer.milliseconds(), zAngle, isVisible, angleDifference, velocity, x, y);
             logMessages.add(msg);
             timer.reset();
         }
 
         if (improvedGamepad.x.isInitialPress()) {
-            int time = (int)(System.currentTimeMillis());
+            int time = (int) (System.currentTimeMillis());
             try {
                 FileUtilities.writeConfigFile("vuforiaLogFile_" + time + "_.csv", logMessages);
                 logMessages.clear();

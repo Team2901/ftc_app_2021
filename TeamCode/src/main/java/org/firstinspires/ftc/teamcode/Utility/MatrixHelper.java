@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.Utility;
 import android.annotation.SuppressLint;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
 import static org.firstinspires.ftc.robotcore.external.navigation.AngleUnit.DEGREES;
@@ -15,136 +17,224 @@ import static org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities.MM_TO_INCH
 @SuppressLint("DefaultLocale")
 public class MatrixHelper {
 
-    public static OpenGLMatrix buildMatrixMM(float xPositionMM,
-                                             float yPositionMM,
-                                             float zPositionMM,
-                                             float xAngle,
-                                             float yAngle,
-                                             float zAngle) {
-        return buildMatrix(xPositionMM, yPositionMM, zPositionMM,  xAngle, yAngle, zAngle, XYZ, 1);
-    }
-
-    public static OpenGLMatrix buildMatrixMM(float xPositionMM,
-                                             float yPositionMM,
-                                             float zPositionMM,
-                                             float angle1,
-                                             float angle2,
-                                             float angle3,
-                                             AxesOrder axesOrder) {
-        return buildMatrix(xPositionMM, yPositionMM, zPositionMM,  angle1, angle2, angle3, axesOrder, 1);
-    }
-
-    public static OpenGLMatrix buildMatrixInches(float xPositionInches,
-                                                 float yPositionInches,
-                                                 float zPositionInches,
-                                                 float xAngle,
-                                                 float yAngle,
-                                                 float zAngle) {
-        return buildMatrix(xPositionInches, yPositionInches, zPositionInches, xAngle, yAngle, zAngle, XYZ, INCHES_TO_MM);
-    }
-
-    public static OpenGLMatrix buildMatrixInches(float xPositionInches,
-                                                 float yPositionInches,
-                                                 float zPositionInches,
-                                                 float angle1,
-                                                 float angle2,
-                                                 float angle3,
-                                                 AxesOrder axesOrder) {
-        return  buildMatrix(xPositionInches, yPositionInches, zPositionInches, angle1, angle2, angle3, axesOrder, INCHES_TO_MM);
-    }
-
-    private static OpenGLMatrix buildMatrix(float xPositionInches,
-                                            float yPositionInches,
-                                            float zPositionInches,
-                                            float angle1,
-                                            float angle2,
-                                            float angle3,
-                                            AxesOrder axesOrder,
-                                            float multiplier) {
-        return OpenGLMatrix.translation(xPositionInches * multiplier, yPositionInches * multiplier,zPositionInches * multiplier).multiplied
+    /**
+     * Builds a Matrix with the given translation (in MM) and orientation (in Degrees)
+     *
+     * @param xPositionMM x translations (in MM)
+     * @param yPositionMM y translation (in MM)
+     * @param zPositionMM z translation (in MM)
+     * @param axesOrder   order of axes to rotate around
+     * @param angle1      first angle rotation
+     * @param angle2      second angle rotation
+     * @param angle3      third angle rotation
+     * @return Matrix with the given translation (in MM) and orientation (in Degrees)
+     * @see OpenGLMatrix#translation(float, float, float)
+     * @see Orientation#getRotationMatrix(AxesReference, AxesOrder, AngleUnit, float, float, float)
+     */
+    public static OpenGLMatrix buildMatrixMM(float xPositionMM, float yPositionMM, float zPositionMM,
+                                             AxesOrder axesOrder,
+                                             float angle1, float angle2, float angle3) {
+        return OpenGLMatrix.translation(xPositionMM, yPositionMM, zPositionMM).multiplied
                 (Orientation.getRotationMatrix(EXTRINSIC, axesOrder, DEGREES, angle1, angle2, angle3));
     }
 
+    /**
+     * Builds a Matrix with the given translation (in MM) and orientation (in Degrees)
+     *
+     * @param xPositionInches x translations (in inches)
+     * @param yPositionInches y translation (in inches)
+     * @param zPositionInches z translation (in inches)
+     * @param axesOrder       order of axes to rotate around (ex XYZ to rotate around x first, y second, and z third)
+     * @param angle1          first angle rotation
+     * @param angle2          second angle rotation
+     * @param angle3          third angle rotation
+     * @return Matrix with the given translation (in MM) and orientation (in Degrees)
+     * @see OpenGLMatrix#translation(float, float, float)
+     * @see Orientation#getRotationMatrix(AxesReference, AxesOrder, AngleUnit, float, float, float)
+     */
+    public static OpenGLMatrix buildMatrixInches(float xPositionInches, float yPositionInches, float zPositionInches,
+                                                 AxesOrder axesOrder,
+                                                 float angle1, float angle2, float angle3) {
+        return buildMatrixMM(INCHES_TO_MM * xPositionInches, INCHES_TO_MM * yPositionInches, INCHES_TO_MM * zPositionInches,
+                axesOrder, angle1, angle2, angle3);
+    }
+
+    /**
+     * Gets the X position (in MM) for the given Matrix, else null if the matrix is null
+     *
+     * @param openGLMatrix Matrix to get position from
+     * @return X position (in MM) for the given matrix
+     * @see OpenGLMatrix#getTranslation()
+     */
     public static Float getXPositionMM(final OpenGLMatrix openGLMatrix) {
-        return getPosition(openGLMatrix, 0, 1);
-    }
-
-    public static Float getYPositionMM(final OpenGLMatrix openGLMatrix) {
-        return getPosition(openGLMatrix, 1, 1);
-    }
-
-    public static Float getZPositionMM(final OpenGLMatrix openGLMatrix) {
-        return getPosition(openGLMatrix, 2, 1);
-    }
-
-    public static Float getXPositionInches(final OpenGLMatrix openGLMatrix) {
-        return getPosition(openGLMatrix, 0, MM_TO_INCHES);
-    }
-
-    public static Float getYPositionInches(final OpenGLMatrix openGLMatrix) {
-        return getPosition(openGLMatrix, 1, MM_TO_INCHES);
-    }
-
-    public static Float getZPositionInches(final OpenGLMatrix openGLMatrix) {
-        return getPosition(openGLMatrix, 2, MM_TO_INCHES);
-    }
-
-    public static Float getXAngle(final OpenGLMatrix openGLMatrix) {
-        return getAngle(openGLMatrix, 0);
-    }
-
-    public static Float getYAngle(final OpenGLMatrix openGLMatrix) {
-        return getAngle(openGLMatrix, 1);
-    }
-
-    public static Float getZAngle(final OpenGLMatrix openGLMatrix) {
-        return getAngle(openGLMatrix, 2);
-    }
-
-    private static Float getPosition(OpenGLMatrix openGLMatrix, int index, float multiplier) {
-
         if (openGLMatrix != null) {
-            return openGLMatrix.getTranslation().get(index) * multiplier;
+            return openGLMatrix.getTranslation().get(0);
         } else {
             return null;
         }
     }
 
-    private static Float getAngle(OpenGLMatrix openGLMatrix, int index) {
+    /**
+     * Gets the Y position (in MM) for the given Matrix, else null if the matrix is null
+     *
+     * @param openGLMatrix Matrix to get position from
+     * @return Y position (in MM) for the given matrix
+     * @see OpenGLMatrix#getTranslation()
+     */
+    public static Float getYPositionMM(final OpenGLMatrix openGLMatrix) {
+        if (openGLMatrix != null) {
+            return openGLMatrix.getTranslation().get(1);
+        } else {
+            return null;
+        }
+    }
 
+    /**
+     * Gets the Z position (in MM) for the given Matrix, else null if the matrix is null
+     *
+     * @param openGLMatrix Matrix to get position from
+     * @return Z position (in MM) for the given matrix
+     * @see OpenGLMatrix#getTranslation()
+     */
+    public static Float getZPositionMM(final OpenGLMatrix openGLMatrix) {
+        if (openGLMatrix != null) {
+            return openGLMatrix.getTranslation().get(2);
+        } else {
+            return null;
+        }
+    }
+
+
+    /**
+     * Gets the X position (in inches) for the given Matrix, else null if the matrix is null
+     *
+     * @param openGLMatrix Matrix to get position from
+     * @return X position (in inches)
+     * @see OpenGLMatrix#getTranslation()
+     */
+    public static Float getXPositionInches(final OpenGLMatrix openGLMatrix) {
+        if (openGLMatrix != null) {
+            return openGLMatrix.getTranslation().get(0) * MM_TO_INCHES;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the Y position (in inches) for the given Matrix, else null if the matrix is null
+     *
+     * @param openGLMatrix Matrix to get position from
+     * @return Y position (in inches)
+     * @see OpenGLMatrix#getTranslation()
+     */
+    public static Float getYPositionInches(final OpenGLMatrix openGLMatrix) {
+        if (openGLMatrix != null) {
+            return openGLMatrix.getTranslation().get(1) * MM_TO_INCHES;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the Z position (in inches) for the given Matrix, else null if the matrix is null
+     *
+     * @param openGLMatrix Matrix to get position from
+     * @return Z position (in inches)
+     * @see OpenGLMatrix#getTranslation()
+     */
+    public static Float getZPositionInches(final OpenGLMatrix openGLMatrix) {
+        if (openGLMatrix != null) {
+            return openGLMatrix.getTranslation().get(2) * MM_TO_INCHES;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Gets the X angle (in degrees) for the given Matrix, else null if the matrix is null
+     *
+     * @param openGLMatrix Matrix to get angle from
+     * @return X angle (in degrees)
+     * @see Orientation#getOrientation
+     */
+    public static Float getXAngle(final OpenGLMatrix openGLMatrix) {
         if (openGLMatrix != null) {
             Orientation orientation = Orientation.getOrientation(openGLMatrix, EXTRINSIC, XYZ, DEGREES);
-
-            switch (index) {
-                case 0:
-                    return orientation.firstAngle;
-                case 1:
-                    return orientation.secondAngle;
-                case 2:
-                default:
-                    return orientation.thirdAngle;
-            }
+            return orientation.firstAngle;
         } else {
             return null;
         }
     }
 
-    public static String getPositionsMMString(OpenGLMatrix openGLMatrix) {
-        return getString(getXPositionMM(openGLMatrix), getYPositionMM(openGLMatrix), getZPositionMM(openGLMatrix));
+    /**
+     * Gets the Y angle (in degrees) for the given Matrix, else null if the matrix is null
+     *
+     * @param openGLMatrix Matrix to get angle from
+     * @return Y angle (in degrees)
+     * @see Orientation#getOrientation
+     */
+    public static Float getYAngle(final OpenGLMatrix openGLMatrix) {
+        if (openGLMatrix != null) {
+            Orientation orientation = Orientation.getOrientation(openGLMatrix, EXTRINSIC, XYZ, DEGREES);
+            return orientation.secondAngle;
+        } else {
+            return null;
+        }
     }
 
-    public static String getInchesPositionString(OpenGLMatrix openGLMatrix) {
-        return getString(getXPositionInches(openGLMatrix), getYPositionInches(openGLMatrix), getZPositionInches(openGLMatrix));
+    /**
+     * Gets the Y angle (in degrees) for the given Matrix, else null if the matrix is null
+     *
+     * @param openGLMatrix Matrix to get angle from
+     * @return Y angle (in degrees)
+     * @see Orientation#getOrientation
+     */
+    public static Float getZAngle(final OpenGLMatrix openGLMatrix) {
+        if (openGLMatrix != null) {
+            Orientation orientation = Orientation.getOrientation(openGLMatrix, EXTRINSIC, XYZ, DEGREES);
+            return orientation.thirdAngle;
+        } else {
+            return null;
+        }
     }
 
-    public static String getAngleString(OpenGLMatrix openGLMatrix) {
-        return getString(getXAngle(openGLMatrix), getYAngle(openGLMatrix), getZAngle(openGLMatrix));
+    /**
+     * Builds a formatted string of the x,y,z positions (in MM) that rounds to the nearest tenth (ie one decimal place), else "N/A" if the matrix is null
+     *
+     * @param openGLMatrix Matrix to build position string for
+     * @return formatting string of the x,y,z positions (in MM)
+     */
+    public static String getPositionsMMString(final OpenGLMatrix openGLMatrix) {
+        if (openGLMatrix != null) {
+            return String.format("(%.1f, %.1f, %.1f)", getXPositionMM(openGLMatrix), getYPositionMM(openGLMatrix), getZPositionMM(openGLMatrix));
+        } else {
+            return "N/A";
+        }
     }
 
-    private static String getString(Float x, Float y, Float z) {
+    /**
+     * Builds a formatted string of the x,y,z positions (in inches) that rounds to the nearest tenth (ie one decimal place), else "N/A" if the matrix is null
+     *
+     * @param openGLMatrix Matrix to build position string for
+     * @return formatting string of the x,y,z positions (in inches)
+     */
+    public static String getInchesPositionString(final OpenGLMatrix openGLMatrix) {
+        if (openGLMatrix != null) {
+            return String.format("(%.1f, %.1f, %.1f)", getXPositionInches(openGLMatrix), getYPositionInches(openGLMatrix), getZPositionInches(openGLMatrix));
+        } else {
+            return "N/A";
+        }
+    }
 
-        if (x != null && y != null && z != null) {
-            return String.format("(%.1f, %.1f, %.1f)", x, y, z);
+    /**
+     * Builds a formatted string of the x,y,z angles (in degrees) that rounds to the nearest tenth (ie one decimal place), else "N/A" if the matrix is null
+     *
+     * @param openGLMatrix Matrix to build angle string for
+     * @return formatting string of the x,y,z angles (in degrees)
+     */
+    public static String getAngleString(final OpenGLMatrix openGLMatrix) {
+        if (openGLMatrix != null) {
+            return String.format("(%.1f, %.1f, %.1f)", getXAngle(openGLMatrix), getYAngle(openGLMatrix), getZAngle(openGLMatrix));
         } else {
             return "N/A";
         }
