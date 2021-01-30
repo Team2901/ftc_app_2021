@@ -46,7 +46,6 @@ public class BaseUltimateGoalHardware {
     public Servo kicker;
 
     public BaseUltimateGoalHardware() {
-
     }
 
     public BaseUltimateGoalHardware(double forwardTicksPerInch, double centerTicksPerInch) {
