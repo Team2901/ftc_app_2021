@@ -34,7 +34,6 @@ public class VuforiaUltimateGoalTest extends OpMode {
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime timestampTimer = new ElapsedTime();
 
-
     ImprovedGamepad improvedGamepad;
 
     @Override
@@ -55,51 +54,13 @@ public class VuforiaUltimateGoalTest extends OpMode {
         // Loading the Vuforia trackables.
         robot.webCamera.loadVuforiaTrackables("UltimateGoal");
 
-        // Saves blue tower trackable.
-        VuforiaTrackable vuforiaBlueTower = robot.webCamera.vuforiaTrackables.get(0);
-
-        // This is used for telemetry purposes for identifying that the camera is seeing the blue tower trackable.
-        vuforiaBlueTower.setName("Blue Tower");
-
-        // This props up the blue tower, it is currently in the middle of the field.
-        OpenGLMatrix blueTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
-        vuforiaBlueTower.setLocation(blueTowerLocation);
-
-        OpenGLMatrix blueTowerLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied
-                (Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES,
-                        90,0, -90));
-        vuforiaBlueTower.setLocation(blueTowerLocationTwo);
-
-        // Saves red tower trackable.
-        VuforiaTrackable vuforiaRedTower = robot.webCamera.vuforiaTrackables.get(1);
-
-        // This is used for telemetry purposes for identifying that the camera is seeing the red tower trackable.
-        vuforiaRedTower.setName("Red Tower");
-
-        // This props up the red tower, it is currently in the middle of the field.
-        OpenGLMatrix redTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
-        vuforiaRedTower.setLocation(redTowerLocation);
-
-        OpenGLMatrix redTowerLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied(
-                Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES,
-                        90,0, -90));
-        vuforiaRedTower.setLocation(redTowerLocationTwo);
-
         // Sets up the position of the Vuforia web image and web camera.
-
         OpenGLMatrix webcamLocation = OpenGLMatrix.translation(-6/MM_TO_INCHES, -0.5f/MM_TO_INCHES, 0).multiplied(
                 Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XZY, AngleUnit.DEGREES,
                         90, 90, 0));
 
-        // We are telling the blue tower image where the camera is on the robot.
-        VuforiaTrackable.Listener webcamListenerBlue = vuforiaBlueTower.getListener();
-        VuforiaTrackableDefaultListener webcamDefaultListenerBlue = (VuforiaTrackableDefaultListener) webcamListenerBlue;
-        webcamDefaultListenerBlue.setCameraLocationOnRobot(robot.webCamera.parameters.cameraName, webcamLocation);
-
-        // We are telling the red tower image where the camera is on the robot.
-        VuforiaTrackable.Listener webcamListenerRed = vuforiaRedTower.getListener();
-        VuforiaTrackableDefaultListener webcamDefaultListenerRed = (VuforiaTrackableDefaultListener) webcamListenerRed;
-        webcamDefaultListenerRed.setCameraLocationOnRobot(robot.webCamera.parameters.cameraName, webcamLocation);
+        // Sets up vuforia trackables.
+        robot.webCamera.ultimateGoalSetupTrackables(webcamLocation);
 
         // We are ready to use the trackables and this gives us the opportunity to deactivate them later.
         robot.webCamera.vuforiaTrackables.activate();

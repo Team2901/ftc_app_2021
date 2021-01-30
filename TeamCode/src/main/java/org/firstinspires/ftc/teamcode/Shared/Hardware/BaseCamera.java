@@ -4,7 +4,13 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities;
@@ -125,4 +131,35 @@ public class BaseCamera {
         }
     }
 
+    public void ultimateGoalSetupTrackables(OpenGLMatrix webcamLocation){
+        // Saves blue tower trackable.
+        VuforiaTrackable vuforiaBlueTower = vuforiaTrackables.get(0);
+
+        // This is used for telemetry purposes for identifying that the camera is seeing the blue tower trackable.
+        vuforiaBlueTower.setName("Blue Tower");
+
+        // This props up the blue tower, it is currently in the middle of the field.
+        OpenGLMatrix blueTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
+        vuforiaBlueTower.setLocation(blueTowerLocation);
+
+        // Saves red tower trackable.
+        VuforiaTrackable vuforiaRedTower = vuforiaTrackables.get(1);
+
+        // This is used for telemetry purposes for identifying that the camera is seeing the red tower trackable.
+        vuforiaRedTower.setName("Red Tower");
+
+        // This props up the red tower, it is currently in the middle of the field.
+        OpenGLMatrix redTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
+        vuforiaRedTower.setLocation(redTowerLocation);
+
+        // We are telling the blue tower image where the camera is on the robot.
+        VuforiaTrackable.Listener webcamListenerBlue = vuforiaBlueTower.getListener();
+        VuforiaTrackableDefaultListener webcamDefaultListenerBlue = (VuforiaTrackableDefaultListener) webcamListenerBlue;
+        webcamDefaultListenerBlue.setCameraLocationOnRobot(parameters.cameraName, webcamLocation);
+
+        // We are telling the red tower image where the camera is on the robot.
+        VuforiaTrackable.Listener webcamListenerRed = vuforiaRedTower.getListener();
+        VuforiaTrackableDefaultListener webcamDefaultListenerRed = (VuforiaTrackableDefaultListener) webcamListenerRed;
+        webcamDefaultListenerRed.setCameraLocationOnRobot(parameters.cameraName, webcamLocation);
+    }
 }
