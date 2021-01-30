@@ -117,8 +117,12 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public void moveInchesCenter(double inches){
         int direction = (TeamColor.RED_TEAM == this.teamColor) ? 1:-1;
-
         int ticks = (int) (inches * robot.centerTicksPerInch * direction);
+        double cruisingSpeed = .75;
+        double distanceTraveled = 0;
+        double minSpeed = .02;
+        double startSlope = 1.0/20.0;
+        double endSlope = 1.0/30.0;
 
         robot.middleMotor.setTargetPosition(robot.middleMotor.getCurrentPosition() + ticks);
 
@@ -127,6 +131,17 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.middleMotor.setPower(.75);
 
         while (opModeIsActive() && (robot.middleMotor.isBusy())){
+            double distanceRemaining = inches - distanceTraveled;
+            //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * maxSpeed + minSpeed;
+            double rampUpSpeed = distanceTraveled * startSlope + minSpeed;
+            double rampDownSpeed = distanceRemaining * endSlope + minSpeed;
+
+            double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
+
+            robot.leftMotor.setPower(motorSpeed);
+            robot.rightMotor.setPower(motorSpeed);
+
+
             telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
             telemetry.update();
