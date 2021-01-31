@@ -135,8 +135,6 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
         robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.middleMotor.setPower(.75);
-
         while (opModeIsActive() && (robot.middleMotor.isBusy())){
             double distanceRemaining = inches - distanceTraveled;
             //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * cruisingSpeed + minSpeed;
@@ -145,8 +143,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
             double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
 
-            robot.leftMotor.setPower(motorSpeed);
-            robot.rightMotor.setPower(motorSpeed);
+            robot.middleMotor.setPower(motorSpeed);
 
             telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
