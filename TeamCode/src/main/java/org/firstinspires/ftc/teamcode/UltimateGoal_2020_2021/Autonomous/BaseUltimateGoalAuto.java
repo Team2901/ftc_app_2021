@@ -151,7 +151,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
             telemetry.update();
 
-            distanceTraveled = robot.middleMotor.getCurrentPosition() / robot.centerTicksPerInch;
+            distanceTraveled = Math.abs(robot.middleMotor.getCurrentPosition() / robot.centerTicksPerInch);
         }
         robot.middleMotor.setPower(0);
 
@@ -206,7 +206,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
             telemetry.update();
 
-            distanceTraveled = robot.leftMotor.getCurrentPosition() / robot.forwardTicksPerInch;
+            distanceTraveled = Math.abs(robot.leftMotor.getCurrentPosition() / robot.forwardTicksPerInch);
         }
 
         robot.leftMotor.setPower(0);
