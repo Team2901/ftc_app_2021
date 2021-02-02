@@ -8,8 +8,9 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
@@ -19,8 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XYZ;
-import static org.firstinspires.ftc.robotcore.external.navigation.AxesOrder.XZY;
+import static org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities.MM_TO_INCHES;
 
 @SuppressLint("DefaultLocale")
 @TeleOp(name = "Coaches Vuforia UltimateGoal Test", group = "2021_UltimateGoal")
@@ -40,32 +40,25 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
 
         improvedGamepad = new ImprovedGamepad(gamepad1, timestampTimer, "g1");
 
+        int cameraRotationX = 0;
         String errorMessage = robot.initWebCamera(this.hardwareMap);
 
         if (errorMessage != null) {
             robot.webCamera.errorMessage = null;
+            cameraRotationX = 90;
             robot.initPhoneCamera(this.hardwareMap);
         }
 
-        // Load the Vuforia trackables.
+        // Loading the Vuforia trackables.
         robot.webCamera.loadVuforiaTrackables("UltimateGoal");
 
-        // Sets up the position of the web camera on the robot (6 inches in front of and .5 inches to the left of center)
-        OpenGLMatrix webcamLocation = MatrixHelper.buildMatrixInches(-6.0f, -0.5f, 0, XZY, 90, 90, 0);
+        // Sets up the position of the Vuforia web image and web camera.
+        OpenGLMatrix webcamLocation = OpenGLMatrix.translation(-6 / MM_TO_INCHES, -0.5f / MM_TO_INCHES, 0).multiplied(
+                Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XZY, AngleUnit.DEGREES,
+                        90, 90, 0));
 
-        // Set up the blue tower trackable (propped up in the middle of the field.
-        VuforiaTrackable vuforiaBlueTower = robot.webCamera.vuforiaTrackables.get(0);
-        vuforiaBlueTower.setName("Blue Tower");
-        OpenGLMatrix blueTowerLocation = MatrixHelper.buildMatrixInches(0, 0, 0, XYZ, 90, 0, -90);
-        vuforiaBlueTower.setLocation(blueTowerLocation);
-        ((VuforiaTrackableDefaultListener) vuforiaBlueTower.getListener()).setCameraLocationOnRobot(robot.webCamera.parameters.cameraName, webcamLocation);
-
-        // Set up the red tower trackable (propped up in the middle of the field.
-        VuforiaTrackable vuforiaRedTower = robot.webCamera.vuforiaTrackables.get(1);
-        vuforiaRedTower.setName("Red Tower");
-        OpenGLMatrix redTowerLocation = MatrixHelper.buildMatrixInches(0, 0, 0, XYZ, 90, 0, -90);
-        vuforiaRedTower.setLocation(redTowerLocation);
-        ((VuforiaTrackableDefaultListener) vuforiaRedTower.getListener()).setCameraLocationOnRobot(robot.webCamera.parameters.cameraName, webcamLocation);
+        // Sets up vuforia trackables.
+        robot.webCamera.ultimateGoalSetupTrackables(webcamLocation);
 
         // We are ready to use the trackables and this gives us the opportunity to deactivate them later.
         robot.webCamera.vuforiaTrackables.activate();
@@ -76,50 +69,33 @@ public class CoachesVuforiaUltimateGoalTest extends OpMode {
 
         improvedGamepad.update();
 
-        OpenGLMatrix robotLocation = null;
-        String trackableName = null;
-
-        // Check if trackers are visible.
-        for (VuforiaTrackable currentTrackable : robot.webCamera.vuforiaTrackables) {
-            VuforiaTrackableDefaultListener currentTrackableDefaultListener = (VuforiaTrackableDefaultListener) currentTrackable.getListener();
-
-            if (currentTrackableDefaultListener.isVisible()) {
-                robotLocation = currentTrackableDefaultListener.getRobotLocation();
-                trackableName = currentTrackable.getName();
-            }
-        }
-
-        telemetry.addData("Visible Tracker", trackableName);
+        OpenGLMatrix robotLocation = robot.webCamera.getRobotLocation();
 
         double leftMotorPower = 0;
         double rightMotorPower = 0;
 
         boolean isVisible = robotLocation != null;
+        telemetry.addData("Is visible", isVisible);
+
+        telemetry.addData("robot position", MatrixHelper.getInchesPositionString(robotLocation));
+        telemetry.addData("robot angle", MatrixHelper.getAngleString(robotLocation));
 
         double angleDifference = 0;
         double velocity = 0;
-
-        Double targetFieldAngle;
 
         // Get what this tracker thinks the robot's position and orientation is
         Float x = MatrixHelper.getXPositionInches(robotLocation);
         Float y = MatrixHelper.getYPositionInches(robotLocation);
         Float zAngle = MatrixHelper.getZAngle(robotLocation);
 
-        // x, y, z positions (x, y, z) (in inches)
-        telemetry.addData("x, y, z positions", MatrixHelper.getInchesPositionString(robotLocation));
-
-        // x, y, z rotations (x, y, z)
-        telemetry.addData("x, y, z rotations", MatrixHelper.getAngleString(robotLocation));
-
-        if (isVisible) {
-            // Calculate the angle relative to the field
-            targetFieldAngle = Math.toDegrees(Math.atan(y / x));
-        } else {
-            targetFieldAngle = null;
-        }
+        Double targetFieldAngle = robot.webCamera.getRobotTurnAngle(robotLocation, false);
 
         if (targetFieldAngle != null) {
+
+            if (zAngle == null) {
+                zAngle = robot.getAngle();
+            }
+
             // Print angle relative to the robot and the angle relative to the field.
             telemetry.addData("Angle relative to the field", "%.1f", targetFieldAngle);
 

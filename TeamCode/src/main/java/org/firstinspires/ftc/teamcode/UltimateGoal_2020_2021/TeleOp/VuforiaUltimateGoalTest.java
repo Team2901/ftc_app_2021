@@ -17,6 +17,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
+import org.firstinspires.ftc.teamcode.Utility.MatrixHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -33,7 +34,6 @@ public class VuforiaUltimateGoalTest extends OpMode {
     List<String> logMessages = new ArrayList<>();
     ElapsedTime timer = new ElapsedTime();
     ElapsedTime timestampTimer = new ElapsedTime();
-
 
     ImprovedGamepad improvedGamepad;
 
@@ -55,51 +55,13 @@ public class VuforiaUltimateGoalTest extends OpMode {
         // Loading the Vuforia trackables.
         robot.webCamera.loadVuforiaTrackables("UltimateGoal");
 
-        // Saves blue tower trackable.
-        VuforiaTrackable vuforiaBlueTower = robot.webCamera.vuforiaTrackables.get(0);
-
-        // This is used for telemetry purposes for identifying that the camera is seeing the blue tower trackable.
-        vuforiaBlueTower.setName("Blue Tower");
-
-        // This props up the blue tower, it is currently in the middle of the field.
-        OpenGLMatrix blueTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
-        vuforiaBlueTower.setLocation(blueTowerLocation);
-
-        OpenGLMatrix blueTowerLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied
-                (Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES,
-                        90,0, -90));
-        vuforiaBlueTower.setLocation(blueTowerLocationTwo);
-
-        // Saves red tower trackable.
-        VuforiaTrackable vuforiaRedTower = robot.webCamera.vuforiaTrackables.get(1);
-
-        // This is used for telemetry purposes for identifying that the camera is seeing the red tower trackable.
-        vuforiaRedTower.setName("Red Tower");
-
-        // This props up the red tower, it is currently in the middle of the field.
-        OpenGLMatrix redTowerLocation = OpenGLMatrix.rotation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES, 90,0,-90);
-        vuforiaRedTower.setLocation(redTowerLocation);
-
-        OpenGLMatrix redTowerLocationTwo = OpenGLMatrix.translation(0, 0, 0).multiplied(
-                Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES,
-                        90,0, -90));
-        vuforiaRedTower.setLocation(redTowerLocationTwo);
-
         // Sets up the position of the Vuforia web image and web camera.
-
         OpenGLMatrix webcamLocation = OpenGLMatrix.translation(-6/MM_TO_INCHES, -0.5f/MM_TO_INCHES, 0).multiplied(
                 Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XZY, AngleUnit.DEGREES,
                         90, 90, 0));
 
-        // We are telling the blue tower image where the camera is on the robot.
-        VuforiaTrackable.Listener webcamListenerBlue = vuforiaBlueTower.getListener();
-        VuforiaTrackableDefaultListener webcamDefaultListenerBlue = (VuforiaTrackableDefaultListener) webcamListenerBlue;
-        webcamDefaultListenerBlue.setCameraLocationOnRobot(robot.webCamera.parameters.cameraName, webcamLocation);
-
-        // We are telling the red tower image where the camera is on the robot.
-        VuforiaTrackable.Listener webcamListenerRed = vuforiaRedTower.getListener();
-        VuforiaTrackableDefaultListener webcamDefaultListenerRed = (VuforiaTrackableDefaultListener) webcamListenerRed;
-        webcamDefaultListenerRed.setCameraLocationOnRobot(robot.webCamera.parameters.cameraName, webcamLocation);
+        // Sets up vuforia trackables.
+        robot.webCamera.ultimateGoalSetupTrackables(webcamLocation);
 
         // We are ready to use the trackables and this gives us the opportunity to deactivate them later.
         robot.webCamera.vuforiaTrackables.activate();
@@ -110,35 +72,17 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
         improvedGamepad.update();
 
-        OpenGLMatrix robotLocation = null;
-
-        // Check if trackers are visible.
-        for(int i = 0; i < robot.webCamera.vuforiaTrackables.size(); i++) {
-            // Store current element in variable.
-            VuforiaTrackable currentTrackable = robot.webCamera.vuforiaTrackables.get(i);
-
-            // Gets listener before checking if current tracker is visible.
-            VuforiaTrackableDefaultListener currentTrackableDefaultListener = (VuforiaTrackableDefaultListener) currentTrackable.getListener();
-
-            // Determines whether current trackable is visible.
-            boolean isTrackableVisible = currentTrackableDefaultListener.isVisible();
-
-            // Prints out whether the current trackable is visible.
-            telemetry.addData(currentTrackable.getName() + " is visible", isTrackableVisible);
-
-            if(isTrackableVisible){
-                // Gets the robot's location.
-                robotLocation = currentTrackableDefaultListener.getRobotLocation();
-            }
-        }
-
         double leftMotorPower = 0;
         double rightMotorPower = 0;
 
-        double targetFieldAngle;
-
-
+        // Returns robot location and prints whether a trackable is visible or not.
+        OpenGLMatrix robotLocation = robot.webCamera.getRobotLocation();
         boolean isVisible = robotLocation != null;
+        telemetry.addData("Is visible", isVisible);
+
+        telemetry.addData("robot position", MatrixHelper.getInchesPositionString(robotLocation));
+        telemetry.addData("robot angle", MatrixHelper.getAngleString(robotLocation));
+
 
         float x = 0;
         float y = 0;
@@ -146,32 +90,13 @@ public class VuforiaUltimateGoalTest extends OpMode {
         double angleDifference = 0;
         double velocity = 0;
 
+        Double targetFieldAngle = robot.webCamera.getRobotTurnAngle(robotLocation, false);
+
         /*
          * If the robot location is not null, we translate the robot's location. In other words,
          * if the tracker image is visible, we translate the robot's location.
          */
         if(isVisible){
-
-            // This gets what this trackable thinks that the robot's position is.
-            VectorF robotLocationTranslation = robotLocation.getTranslation();
-            x = robotLocationTranslation.get(0);
-            y = robotLocationTranslation.get(1);
-            float z = robotLocationTranslation.get(2);
-
-            // This gets what this trackable thinks that the robot's orientation is.
-            Orientation orientation = Orientation.getOrientation(robotLocation, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-            float xAngle = orientation.firstAngle;
-            float yAngle = orientation.secondAngle;
-            zAngle = orientation.thirdAngle;
-
-            // x, y, z positions (x, y, z) (in inches)
-            telemetry.addData("x, y, z positions", String.format("(%.1f, %.1f, %.1f)", x * MM_TO_INCHES, y * MM_TO_INCHES, z * MM_TO_INCHES));
-
-            // x, y, z rotations (x, y, z)
-            telemetry.addData("x, y, z rotations", String.format("(%.1f, %.1f, %.1f)", xAngle, yAngle, zAngle));
-
-            // Calculate the angle relative to the field and print it out.
-            targetFieldAngle = Math.toDegrees(Math.atan(y/x));
             // Print angle relative to the robot and the angle relative to the field.
             telemetry.addData("Angle relative to the field", "%.1f", targetFieldAngle);
 
@@ -189,11 +114,6 @@ public class VuforiaUltimateGoalTest extends OpMode {
                 leftMotorPower = -velocity * MAX_TURN_POWER;
                 rightMotorPower = velocity * MAX_TURN_POWER;
             }
-        }
-        else
-        {
-            // We want to face the tower goal, so set the angle to 0.
-            targetFieldAngle = 0;
         }
 
         // When pressing the left bumper, the robot will turn counterclockwise.

@@ -117,16 +117,34 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public void moveInchesCenter(double inches){
         int direction = (TeamColor.RED_TEAM == this.teamColor) ? 1:-1;
-
         int ticks = (int) (inches * robot.centerTicksPerInch * direction);
+        double cruisingSpeed = .75;
+        double distanceTraveled = 0;
+        double minSpeed = .02;
+        double startSlope = 1.0/20.0;
+        double endSlope = 1.0/30.0;
+
+        /*
+        cruisingSpeed = 1;
+        if(inches < 60){
+            cruisingSpeed = cruisingSpeed * (inches / 60);
+        }
+         */
 
         robot.middleMotor.setTargetPosition(robot.middleMotor.getCurrentPosition() + ticks);
 
         robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        robot.middleMotor.setPower(.75);
-
         while (opModeIsActive() && (robot.middleMotor.isBusy())){
+            double distanceRemaining = inches - distanceTraveled;
+            //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * cruisingSpeed + minSpeed;
+            double rampUpSpeed = distanceTraveled * startSlope + minSpeed;
+            double rampDownSpeed = distanceRemaining * endSlope + minSpeed;
+
+            double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
+
+            robot.middleMotor.setPower(motorSpeed);
+
             telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
             telemetry.update();
@@ -141,10 +159,18 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         int ticks = (int) (inches * robot.forwardTicksPerInch);
         double startAngle = robot.getAngle();
         double angleTuning = 0;
+        double cruisingSpeed = .75;
         double distanceTraveled = 0;
         double minSpeed = .02;
-        double maxSpeed = .5;
+        double startSlope = 1.0/20.0;
+        double endSlope = 1.0/30.0;
 
+        /*
+        cruisingSpeed = 1;
+        if(inches < 60){
+            cruisingSpeed = cruisingSpeed * (inches / 60);
+        }
+         */
 
         robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -156,8 +182,13 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
-            double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * maxSpeed + minSpeed;
-            double motorSpeed = sinRampSpeed;
+            double distanceRemaining = inches - distanceTraveled;
+            //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * cruisingSpeed + minSpeed;
+            double rampUpSpeed = distanceTraveled * startSlope + minSpeed;
+            double rampDownSpeed = distanceRemaining * endSlope + minSpeed;
+
+            double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
+
             if(correctingRun) {
                 angleTuning = pidTune(startAngle, robot.getAngle());
             }
@@ -170,9 +201,6 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
             telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
             telemetry.update();
-
-            robot.leftMotor.setPower(angleTuning + .75);
-            robot.rightMotor.setPower(-angleTuning + .75);
 
             distanceTraveled = robot.leftMotor.getCurrentPosition() / robot.forwardTicksPerInch;
         }
