@@ -84,9 +84,7 @@ public class VuforiaUltimateGoalTest extends OpMode {
         telemetry.addData("robot angle", MatrixHelper.getAngleString(robotLocation));
 
 
-        float x = 0;
-        float y = 0;
-        float zAngle = 0;
+        Float zAngle = MatrixHelper.getZAngle(robotLocation);
         double angleDifference = 0;
         double velocity = 0;
 
@@ -145,7 +143,9 @@ public class VuforiaUltimateGoalTest extends OpMode {
              6) x diff
              7) y diff
              */
-            String msg = String.format("%f, %f, %b, %f, %f, %f, %f", timestampTimer.milliseconds(), zAngle, isVisible, angleDifference, velocity, x,  y);
+            String msg = String.format("%f, %f, %b, %f, %f, %f, %f", timestampTimer.milliseconds(),
+                    zAngle, isVisible, angleDifference, velocity, MatrixHelper.getXPositionInches(robotLocation),
+                    MatrixHelper.getYPositionInches(robotLocation));
 
             logMessages.add(msg);
 
