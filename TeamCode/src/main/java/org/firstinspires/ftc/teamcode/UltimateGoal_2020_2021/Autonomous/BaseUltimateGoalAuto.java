@@ -140,8 +140,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         while (opModeIsActive() && (robot.middleMotor.isBusy())){
             double distanceRemaining = inches - distanceTraveled;
             //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * cruisingSpeed + minSpeed;
-            double rampUpSpeed = distanceTraveled * startSlope + minSpeed;
-            double rampDownSpeed = distanceRemaining * endSlope + minSpeed;
+            double rampUpSpeed = Math.abs(distanceTraveled * startSlope) + minSpeed;
+            double rampDownSpeed = Math.abs(distanceRemaining * endSlope) + minSpeed;
 
             double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
 
@@ -188,8 +188,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         while (opModeIsActive() && (robot.leftMotor.isBusy() && robot.rightMotor.isBusy())) {
             double distanceRemaining = inches - distanceTraveled;
             //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * cruisingSpeed + minSpeed;
-            double rampUpSpeed = distanceTraveled * startSlope + minSpeed;
-            double rampDownSpeed = distanceRemaining * endSlope + minSpeed;
+            double rampUpSpeed = Math.abs(distanceTraveled * startSlope) + minSpeed;
+            double rampDownSpeed = Math.abs(distanceRemaining * endSlope) + minSpeed;
 
             double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
 
