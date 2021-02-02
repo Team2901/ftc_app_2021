@@ -361,6 +361,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
 
         telemetry.addData("Current Mode", currentMode == 1 ? "Relative" : "Absolute");
         telemetry.addData("Robot angle", robotAngle);
+        telemetry.addData("Wobble Arm Position", robot.wobbleElbow.getCurrentPosition());
         telemetry.addData("Right Stick Angle", rightStickAngle);
         telemetry.addData("Left Stick Angle", leftStickAngle);
         telemetry.addData("Right Motor Power", rightMotorPower);
