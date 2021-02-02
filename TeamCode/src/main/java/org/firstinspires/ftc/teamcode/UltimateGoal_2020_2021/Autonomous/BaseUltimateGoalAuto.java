@@ -131,6 +131,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         }
          */
 
+        robot.middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
         robot.middleMotor.setTargetPosition(robot.middleMotor.getCurrentPosition() + ticks);
 
         robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
