@@ -148,6 +148,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
             telemetry.update();
+
+            distanceTraveled = robot.middleMotor.getCurrentPosition() / robot.centerTicksPerInch;
         }
         robot.middleMotor.setPower(0);
 
