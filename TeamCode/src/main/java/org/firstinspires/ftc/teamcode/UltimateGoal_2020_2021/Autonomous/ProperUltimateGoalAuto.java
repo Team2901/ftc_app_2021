@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     private ElapsedTime runtime = new ElapsedTime();
+    boolean debugging = false;
 
     public ProperUltimateGoalAuto() {
         super(TeamColor.BLUE_TEAM);
@@ -27,11 +28,13 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
     }
 
     public void waitForContinue() {
-        while (!gamepad1.a && opModeIsActive()) {
-            if (gamepad1.dpad_up) {
-                forwardMotorPower = .75;
-            } else if (gamepad1.dpad_down) {
-                forwardMotorPower = .5;
+        if (debugging) {
+            while (!gamepad1.a && opModeIsActive()) {
+                if (gamepad1.dpad_up) {
+                    forwardMotorPower = .75;
+                } else if (gamepad1.dpad_down) {
+                    forwardMotorPower = .5;
+                }
             }
         }
     }
@@ -57,6 +60,34 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         releaseWobble();
         moveInchesCenter(12);
         moveInchesForward(-60, false);
+    }
+
+    public void afterA(){
+        waitForContinue();
+        moveInchesForward(-42, false);
+        turnToDesiredAngle(90);
+        waitForContinue();
+        moveInchesCenter(-6);
+        grabWobble();
+        turnToDesiredAngle(0);
+        waitForContinue();
+        moveInchesForward(48, true);
+        waitForContinue();
+        goToA();
+    }
+
+    public void afterB(){
+        moveInchesCenter(-34);
+        waitForContinue();
+        moveInchesForward(-42, false);
+        turnToDesiredAngle(90);
+        moveInchesCenter(-6);
+        grabWobble();
+        waitForContinue();
+        turnToDesiredAngle(0);
+        moveInchesForward(48, true);
+        waitForContinue();
+        goToB();
     }
 
     @Override
@@ -100,17 +131,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         if (starterStackResult == 0) {
             waitForContinue();
             goToA();
-            waitForContinue();
-            moveInchesForward(-42, false);
-            turnToDesiredAngle(90);
-            waitForContinue();
-            moveInchesCenter(-6);
-            grabWobble();
-            turnToDesiredAngle(0);
-            waitForContinue();
-            moveInchesForward(48, true);
-            waitForContinue();
-            goToA();
+
         } else if (starterStackResult == 1) {
             waitForContinue();
             goToB();
@@ -127,17 +148,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             moveInchesForward(24, true);
             waitForContinue();
             ringShot(1);
-            moveInchesCenter(-34);
-            waitForContinue();
-            moveInchesForward(-42, false);
-            turnToDesiredAngle(90);
-            moveInchesCenter(-6);
-            grabWobble();
-            waitForContinue();
-            turnToDesiredAngle(0);
-            moveInchesForward(48, true);
-            waitForContinue();
-            goToB();
+            moveInchesForward(10, true);
         } else if (starterStackResult == 2) {
             goToC();
         } else {
