@@ -6,14 +6,21 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.CountDownTimer;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
+import org.firstinspires.ftc.teamcode.Utility.MatrixHelper;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import static org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities.MM_TO_INCHES;
 
 @SuppressLint("DefaultLocale")
 @TeleOp(name = "Kevin Qualifier UltimateGoal", group = "2021_UltimateGoal")
@@ -39,6 +46,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     int shooterOffset = 5; //Offset launch angle
     int wobbleElbowMinPosition = 0;
     int wobbleElboxMaxPosition = 13500;
+    boolean cameraLoaded = true;
 
     ArrayList<String> logMessages = new ArrayList<>();
     ElapsedTime timestampTimer = new ElapsedTime();
@@ -50,6 +58,29 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         impGamepad2 = new ImprovedGamepad(this.gamepad2, this.timer, "GP2");
 
         robot.init(this.hardwareMap);
+
+        int cameraRotationX = 0;
+        String errorMessage = robot.initWebCamera(this.hardwareMap);
+
+        if(errorMessage != null) {
+            cameraLoaded = false;
+        }
+
+        // Loading the Vuforia trackables.
+        robot.webCamera.loadVuforiaTrackables("UltimateGoal");
+
+        // Sets up the position of the Vuforia web image and web camera.
+        OpenGLMatrix webcamLocation = OpenGLMatrix.translation(-6/MM_TO_INCHES, -0.5f/MM_TO_INCHES, 0).multiplied(
+                Orientation.getRotationMatrix(AxesReference.EXTRINSIC, AxesOrder.XZY, AngleUnit.DEGREES,
+                        90, 90, 0));
+
+        // Sets up vuforia trackables.
+        robot.webCamera.ultimateGoalSetupTrackables(webcamLocation);
+
+        // We are ready to use the trackables and this gives us the opportunity to deactivate them later.
+        robot.webCamera.activateVuforiaTrackables();
+
+        telemetry.addData("Camera loaded", cameraLoaded);
 
         /*
         Failed Hardware: 2
@@ -263,10 +294,14 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
          * Use the bumpers and right joystick (g1) to turn the robot to face a given angle
          * Hold left bumper to turn to 0 degrees
          * Hold right bumper to 180 degrees
-         * Hold the right stick (g1) in a given angle to make the robot turn to that angle.
-         *
-         * The turn speed will be proportional to turnPowerRatio
+         * If you turn the right joystick to the left, the robot turns counterclockwise, and vice versa.
+         * If the left trigger is held down, the robot will face the tower goal image if it is
+         * visible or turn to degree 0.
+         * The turn speed will be proportional to turnPowerRatio.
          */
+
+        // Gets the robot's location.
+        OpenGLMatrix robotLocation = robot.webCamera.getRobotLocation();
 
         Double turnAngleAbsolute;
         if (gamepad1.left_bumper) {
@@ -275,6 +310,8 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         } else if (gamepad1.right_bumper) {
             // Hold right bumper to turn to 180 degrees.
             turnAngleAbsolute = 180.0 + shooterOffset;
+        } else if(gamepad1.left_trigger > 0.5){
+                turnAngleAbsolute = robot.webCamera.getRobotTurnAngle(robotLocation, false);
         } else {
             // Else, don't turn
             turnAngleAbsolute = null;
@@ -359,6 +396,9 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             }
         }
 
+        telemetry.addData("Is visible", robotLocation != null);
+        telemetry.addData("robot position", MatrixHelper.getInchesPositionString(robotLocation));
+        telemetry.addData("robot angle", MatrixHelper.getAngleString(robotLocation));
         telemetry.addData("Current Mode", currentMode == 1 ? "Relative" : "Absolute");
         telemetry.addData("Robot angle", robotAngle);
         telemetry.addData("Wobble Arm Position", robot.wobbleElbow.getCurrentPosition());
