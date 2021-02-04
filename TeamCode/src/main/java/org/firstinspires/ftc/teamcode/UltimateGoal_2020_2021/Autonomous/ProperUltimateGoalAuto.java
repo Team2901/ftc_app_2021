@@ -14,23 +14,23 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
     }
 
     public void extendWobbleArm(boolean extending) {
-        if(extending && opModeIsActive()) {
+        if (extending && opModeIsActive()) {
             robot.wobbleElbow.setTargetPosition(13500);
             robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.wobbleElbow.setPower(1);
         }
-        if(!extending && opModeIsActive()){
+        if (!extending && opModeIsActive()) {
             robot.wobbleElbow.setTargetPosition(0);
             robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.wobbleElbow.setPower(-1);
         }
     }
 
-    public void waitForContinue(){
-        while(!gamepad1.a && opModeIsActive()) {
-            if(gamepad1.dpad_up){
+    public void waitForContinue() {
+        while (!gamepad1.a && opModeIsActive()) {
+            if (gamepad1.dpad_up) {
                 forwardMotorPower = .75;
-            } else if(gamepad1.dpad_down) {
+            } else if (gamepad1.dpad_down) {
                 forwardMotorPower = .5;
             }
         }
@@ -41,6 +41,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         releaseWobble();
         moveInchesCenter(12);
     }
+
     public void goToB() {
         moveInchesForward(45, true);
         turnToDesiredAngle(180);
@@ -50,6 +51,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         turnToDesiredAngle(0);
         moveInchesForward(24, false);
     }
+
     public void goToC() {
         moveInchesForward(69, true);
         releaseWobble();
@@ -78,7 +80,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         moveInchesCenter(-12);
 
         ElapsedTime timer = new ElapsedTime();
-        while(timer.seconds() < 1 && opModeIsActive()){}
+        while (timer.seconds() < 1 && opModeIsActive()) {
+        }
 
         starterStackResult = starterStackSensor();
 
@@ -141,7 +144,6 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             telemetry.addData("error", "How did this happen");
             telemetry.update();
         }
-
 
 
         // run until the end of the match (driver presses STOP)
