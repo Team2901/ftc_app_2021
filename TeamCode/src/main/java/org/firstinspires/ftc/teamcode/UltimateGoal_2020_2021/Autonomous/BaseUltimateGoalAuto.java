@@ -1,7 +1,9 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -264,12 +266,22 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
      RED_TEAM, BLUE_TEAM
     }
 
+    public void safeWait(int milis){
+        ElapsedTime timer = new ElapsedTime();
+
+        while(opModeIsActive() && timer.milliseconds() < milis){
+
+        }
+    }
+
     //will this work
     public void ringShot(int num){
-        robot.kicker.setPosition(.25);
-        //wait(500);
-        robot.kicker.setPosition(.75);
         telemetry.addData("Shooting Rings: ", num);
-        //TODO Figure out how transfer/shooting works and implement code
+        for(int i = 0; i < num; i++) {
+            robot.kicker.setPosition(.25);
+            safeWait(250);
+            robot.kicker.setPosition(.75);
+            safeWait(750);
+        }
     }
 }
