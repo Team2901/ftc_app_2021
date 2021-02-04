@@ -33,41 +33,56 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
 
     }
+
     public void init(boolean camera) {
         robot.init(this.hardwareMap);
-        if(camera){
+        if (camera) {
             initAndActivateWebCameraWithTensorFlow();
         }
     }
+
     public int starterStackSensor() {
         int stackID = 0;
         double confidence = 0.0;
         if (robot.webCamera.tfod != null) {
             // getUpdatedRecognitions() will return null if no new information is available since
             // the last time that call was made.
-            List<Recognition> updatedRecognitions = robot.webCamera.tfod.getRecognitions();
-            if (updatedRecognitions != null) {
-                telemetry.addData("# Object Detected", updatedRecognitions.size());
 
-                // step through the list of recognitions and display boundary info.
-                int i = 0;
-                for (Recognition recognition : updatedRecognitions) {
-                    telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
-                    telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
-                            recognition.getLeft(), recognition.getTop());
-                    telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
-                            recognition.getRight(), recognition.getBottom());
-                    if(stackID != 2 && recognition.getLabel().equals(ELEMENT_SINGLE) && recognition.getConfidence() > 0.8) {
-                        stackID = 1;
-                        confidence = recognition.getConfidence();
-                    } else if(recognition.getLabel().equals(ELEMENT_QUAD) && recognition.getConfidence() > 0.8) {
-                        stackID = 2;
-                        confidence = recognition.getConfidence();
-                    }
+            ElapsedTime timer = new ElapsedTime();
+
+            while (true) {
+                if (!opModeIsActive()) {
+                    break;
                 }
-                telemetry.addData("stackID", stackID);
-                telemetry.addData("confidence", confidence);
-                telemetry.update();
+                if (stackID > 0){
+                    break;
+                }
+                if(timer.seconds() > 5){
+                    break;
+                }
+                List<Recognition> updatedRecognitions = robot.webCamera.tfod.getRecognitions();
+                if (updatedRecognitions != null) {
+                    telemetry.addData("# Object Detected", updatedRecognitions.size());
+                    // step through the list of recognitions and display boundary info.
+                    int i = 0;
+                    for (Recognition recognition : updatedRecognitions) {
+                        telemetry.addData(String.format("label (%d)", i), recognition.getLabel());
+                        telemetry.addData(String.format("  left,top (%d)", i), "%.03f , %.03f",
+                                recognition.getLeft(), recognition.getTop());
+                        telemetry.addData(String.format("  right,bottom (%d)", i), "%.03f , %.03f",
+                                recognition.getRight(), recognition.getBottom());
+                        if (stackID != 2 && recognition.getLabel().equals(ELEMENT_SINGLE) && recognition.getConfidence() > 0.8) {
+                            stackID = 1;
+                            confidence = recognition.getConfidence();
+                        } else if (recognition.getLabel().equals(ELEMENT_QUAD) && recognition.getConfidence() > 0.8) {
+                            stackID = 2;
+                            confidence = recognition.getConfidence();
+                        }
+                    }
+                    telemetry.addData("stackID", stackID);
+                    telemetry.addData("confidence", confidence);
+                    telemetry.update();
+                }
             }
         }
         robot.webCamera.deactivateTfod();
@@ -83,7 +98,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         sleep(500);
     }
 
-    public void turnToDesiredAngle(float desiredAngle){
+    public void turnToDesiredAngle(float desiredAngle) {
         // Robot's current angle
         float robotAngle = robot.getAngle();
 
@@ -91,13 +106,13 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle);
 
         // The robot should keep on turning until it reaches its desired angle.
-        while(speed != 0 && opModeIsActive()){
+        while (speed != 0 && opModeIsActive()) {
             // Set the motors to their appropriate powers.
             robot.leftMotor.setPower(-speed);
             robot.rightMotor.setPower(speed);
 
             // Print out what the speed is.
-            telemetry.addData("Speed",speed);
+            telemetry.addData("Speed", speed);
 
             // This prints out what the angle difference is.
             telemetry.addData("Angle difference", AngleUnit.normalizeDegrees(desiredAngle - robotAngle));
@@ -117,14 +132,14 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         robot.rightMotor.setPower(0);
     }
 
-    public void moveInchesCenter(double inches){
-        int direction = (TeamColor.RED_TEAM == this.teamColor) ? 1:-1;
+    public void moveInchesCenter(double inches) {
+        int direction = (TeamColor.RED_TEAM == this.teamColor) ? 1 : -1;
         int ticks = (int) (inches * robot.centerTicksPerInch * direction);
         double cruisingSpeed = .75;
         double distanceTraveled = 0;
         double minSpeed = .02;
-        double startSlope = 1.0/20.0;
-        double endSlope = 1.0/30.0;
+        double startSlope = 1.0 / 20.0;
+        double endSlope = 1.0 / 30.0;
 
         /*
         cruisingSpeed = 1;
@@ -139,7 +154,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
         robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (opModeIsActive() && (robot.middleMotor.isBusy())){
+        while (opModeIsActive() && (robot.middleMotor.isBusy())) {
             double distanceRemaining = Math.abs(inches) - distanceTraveled;
             //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * cruisingSpeed + minSpeed;
             double rampUpSpeed = Math.abs(distanceTraveled * startSlope) + minSpeed;
@@ -168,8 +183,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         double cruisingSpeed = .75;
         double distanceTraveled = 0;
         double minSpeed = .02;
-        double startSlope = 1.0/20.0;
-        double endSlope = 1.0/30.0;
+        double startSlope = 1.0 / 20.0;
+        double endSlope = 1.0 / 30.0;
 
         /*
         cruisingSpeed = 1;
@@ -195,7 +210,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
             double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
 
-            if(correctingRun) {
+            if (correctingRun) {
                 angleTuning = pidTune(startAngle, robot.getAngle());
             }
 
@@ -220,28 +235,28 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
 
     //PID tuning to keep straight line driving on track
-    public double pidTune(float startingAngle, float currentAngle){
-        double correction = pidTuneOverflow((double)startingAngle, (double)currentAngle);
+    public double pidTune(float startingAngle, float currentAngle) {
+        double correction = pidTuneOverflow((double) startingAngle, (double) currentAngle);
         return correction;
     }
 
-    public double pidTune(double startingAngle, float currentAngle){
-        double correction = pidTuneOverflow((double)startingAngle, (double)currentAngle);
+    public double pidTune(double startingAngle, float currentAngle) {
+        double correction = pidTuneOverflow((double) startingAngle, (double) currentAngle);
         return correction;
     }
 
-    public double pidTune(float startingAngle, double currentAngle){
-        double correction = pidTuneOverflow((double)startingAngle, (double)currentAngle);
+    public double pidTune(float startingAngle, double currentAngle) {
+        double correction = pidTuneOverflow((double) startingAngle, (double) currentAngle);
         return correction;
     }
 
-    public double pidTune(double startingAngle, double currentAngle){
-        double correction = pidTuneOverflow((double)startingAngle, (double)currentAngle);
+    public double pidTune(double startingAngle, double currentAngle) {
+        double correction = pidTuneOverflow((double) startingAngle, (double) currentAngle);
         return correction;
     }
 
     //a single PID overflow so that we only have to change the value in one place
-    public double pidTuneOverflow(double startingAngle, double currentAngle){
+    public double pidTuneOverflow(double startingAngle, double currentAngle) {
         double correction = (currentAngle - startingAngle) / 100;
         return correction;
     }
@@ -262,14 +277,15 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             telemetry.addData("Successful!", "");
         }
     }
+
     public enum TeamColor {
-     RED_TEAM, BLUE_TEAM
+        RED_TEAM, BLUE_TEAM
     }
 
-    public void safeWait(int milis){
+    public void safeWait(int millis){
         ElapsedTime timer = new ElapsedTime();
 
-        while(opModeIsActive() && timer.milliseconds() < milis){
+        while(opModeIsActive() && timer.milliseconds() < millis){
 
         }
     }
