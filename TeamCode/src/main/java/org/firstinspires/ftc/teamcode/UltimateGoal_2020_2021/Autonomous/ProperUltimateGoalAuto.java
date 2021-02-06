@@ -41,6 +41,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
     }
 
     public void goToA() {
+        moveInchesCenter(-20);
         moveInchesForward(18, true);
         releaseWobble();
         moveInchesForward(-6, true);
@@ -50,17 +51,18 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     public void goToB() {
         moveInchesForward(45, true);
-        turnToDesiredAngle(180);
-        moveInchesCenter(12);
-        releaseWobble();
-        moveInchesForward(12, true);
-        moveInchesCenter(-24);
+        //turnToDesiredAngle(180);
+        //moveInchesCenter(12);
+        releaseWobble(); // 15 points
+        moveInchesForward(12, true); //park on launch line, 5 points
+        //-moveInchesCenter(-24);
         turnToDesiredAngle(0);
         moveInchesForward(24, false);
         extendWobbleArm(false);
     }
 
     public void goToC() {
+        moveInchesCenter(-20);
         moveInchesForward(69, true);
         releaseWobble();
         moveInchesCenter(12);
@@ -128,7 +130,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         ringShot(3);
 
-        moveInchesCenter(-20);
+        //moveInchesCenter(-20);
 
         if (starterStackResult == 0) {
             waitForContinue();
