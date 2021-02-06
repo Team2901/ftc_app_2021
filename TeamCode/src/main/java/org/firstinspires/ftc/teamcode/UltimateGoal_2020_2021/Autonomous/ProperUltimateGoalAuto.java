@@ -28,6 +28,10 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         }
     }
 
+    /**
+     * If debugging is true, waits for the driver to press the a button.
+     * While a has not been pressed, dpad up sets the forwardMotorPower to 0.75 while dpad down sts the forwardMotorPower to 0.5
+     */
     public void waitForContinue() {
         if (debugging) {
             while (!gamepad1.a && opModeIsActive()) {
@@ -51,11 +55,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     public void goToB() {
         moveInchesForward(45, true);
-        //turnToDesiredAngle(180);
-        //moveInchesCenter(12);
         releaseWobble(); // 15 points
         moveInchesForward(12, true); //park on launch line, 5 points
-        //-moveInchesCenter(-24);
         turnToDesiredAngle(0);
         extendWobbleArm(false);
         moveInchesForward(-24, false);
@@ -98,6 +99,22 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         goToB();
     }
 
+    public void unknownBCode(){
+        moveInchesForward(-24, false);
+        waitForContinue();
+        robot.intakeMotor.setPower(.5);
+        robot.intakeMotor.setPower(-.5);
+        moveInchesForward(-15, false);
+        moveInchesForward(3, false);
+        robot.intakeMotor.setPower(0);
+        robot.intakeMotor.setPower(0);
+        waitForContinue();
+        moveInchesCenter(22);
+        moveInchesForward(24, true);
+        waitForContinue();
+        ringShot(1);
+        moveInchesForward(10, true);
+    }
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -114,45 +131,37 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         waitForStart();
         runtime.reset();
 
+        // Closes the wobble grabber
         grabWobble();
 
+        // Moves 12 inches to be in front of the starter stack
         moveInchesCenter(-TAKE_A_LOOKSIE);
 
+        // Reads the starter stack and returns stackID
         starterStackResult = starterStackSensor();
 
+        // Move back to starting position
         moveInchesCenter(TAKE_A_LOOKSIE);
 
+        // Starts extending wobble arm
         extendWobbleArm(true);
 
+        // Move forward by 60 inches
         moveInchesForward(60, true);
 
+        // Straighten up to face angle 0
         turnToDesiredAngle(0);
 
+        // Shoots 3 rings
         ringShot(3);
 
-        //moveInchesCenter(-20);
 
+        // Runs toward the different blocks depending on number of rings in starter stack
+        waitForContinue();
         if (starterStackResult == 0) {
-            waitForContinue();
             goToA();
-
         } else if (starterStackResult == 1) {
-            waitForContinue();
             goToB();
-            moveInchesForward(-24, false);
-            waitForContinue();
-            robot.intakeMotor.setPower(.5);
-            robot.intakeMotor.setPower(-.5);
-            moveInchesForward(-15, false);
-            moveInchesForward(3, false);
-            robot.intakeMotor.setPower(0);
-            robot.intakeMotor.setPower(0);
-            waitForContinue();
-            moveInchesCenter(22);
-            moveInchesForward(24, true);
-            waitForContinue();
-            ringShot(1);
-            moveInchesForward(10, true);
         } else if (starterStackResult == 2) {
             goToC();
         } else {

@@ -47,6 +47,10 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         }
     }
 
+    /**
+     * Scans that starter stack to see the number of elements in front
+     * @return 1 if there is one element, 2 if there are 4 elements, and 0 if there are none
+     */
     public int starterStackSensor() {
         int stackID = 0;
         double confidence = 0.0;
@@ -216,8 +220,11 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             double rampUpSpeed = Math.abs(distanceTraveled * startSlope) + minSpeed;
             double rampDownSpeed = Math.abs(distanceRemaining * endSlope) + minSpeed;
 
+            // The speed the motors are being set to which increases the farther away we are from
+            // our starting position (rampUp) and decreases the closer we are to the target position (rampDown).
             double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
 
+            // Corrects the path of the robot if correctingRun is true
             if (correctingRun) {
                 angleTuning = pidTune(startAngle, robot.getAngle());
             }
@@ -231,6 +238,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
             telemetry.update();
 
+            // Updates how far the motor has traveled
             distanceTraveled = Math.abs(robot.leftMotor.getCurrentPosition() / robot.forwardTicksPerInch);
         }
 
@@ -263,7 +271,12 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         return correction;
     }
 
-    //a single PID overflow so that we only have to change the value in one place
+    /**
+     * a single PID overflow so that we only have to change the value in one place
+     * @param startingAngle what the program wants the robot's angle is
+     * @param currentAngle the current angle the robot is actually facing
+     * @return correction which is proportional to the angle difference
+     */
     public double pidTuneOverflow(double startingAngle, double currentAngle) {
         double correction = (currentAngle - startingAngle) / 100;
         return correction;
