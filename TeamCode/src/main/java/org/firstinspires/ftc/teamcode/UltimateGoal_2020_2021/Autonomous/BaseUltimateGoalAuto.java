@@ -63,7 +63,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
                 if (stackID > 0){
                     break;
                 }
-                if(timer.seconds() > 5){
+                if(timer.seconds() > 1){
                     break;
                 }
                 List<Recognition> updatedRecognitions = robot.webCamera.tfod.getRecognitions();
