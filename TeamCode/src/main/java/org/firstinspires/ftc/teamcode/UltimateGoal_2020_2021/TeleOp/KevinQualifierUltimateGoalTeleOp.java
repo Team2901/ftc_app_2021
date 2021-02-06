@@ -306,10 +306,10 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         Double turnAngleAbsolute;
         if (gamepad1.left_bumper) {
             // Hold left bumper to turn to 0 degrees.
-            turnAngleAbsolute = 0.0 + shooterOffset;
+            turnAngleAbsolute = 0.0;
         } else if (gamepad1.right_bumper) {
             // Hold right bumper to turn to 180 degrees.
-            turnAngleAbsolute = 180.0 + shooterOffset;
+            turnAngleAbsolute = 180.0;
         } else if(gamepad1.left_trigger > 0.5){
                 turnAngleAbsolute = robot.webCamera.getRobotTurnAngle(robotLocation, false);
         } else {
@@ -318,7 +318,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         }
 
         if (turnAngleAbsolute != null) {
-
+            turnAngleAbsolute += shooterOffset;
             // Determine the speed that the motors should be set to.
             double speed = robot.getMotorTurnSpeed(turnAngleAbsolute, robotAngle);
 
