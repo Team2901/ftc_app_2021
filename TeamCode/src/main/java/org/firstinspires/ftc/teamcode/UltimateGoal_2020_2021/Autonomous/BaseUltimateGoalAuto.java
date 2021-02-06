@@ -15,6 +15,14 @@ import java.util.List;
 import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.ScrimmageUltimateGoalHardware.ELEMENT_SINGLE;
 import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.ScrimmageUltimateGoalHardware.ELEMENT_QUAD;
 
+/*
+ Strafe further
+ slow turns
+ Reset arm
+ Get speed
+ Separate forwards/center speeds
+ change the plan
+ */
 
 public class BaseUltimateGoalAuto extends LinearOpMode {
 
