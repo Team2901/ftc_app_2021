@@ -57,8 +57,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         moveInchesForward(12, true); //park on launch line, 5 points
         //-moveInchesCenter(-24);
         turnToDesiredAngle(0);
-        moveInchesForward(24, false);
         extendWobbleArm(false);
+        moveInchesForward(-24, false);
     }
 
     public void goToC() {
