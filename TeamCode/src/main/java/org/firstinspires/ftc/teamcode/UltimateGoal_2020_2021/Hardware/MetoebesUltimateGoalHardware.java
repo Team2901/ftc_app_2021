@@ -19,7 +19,7 @@ public class MetoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
     public static final double WHEEL_CIRCUMFERENCE_INCHES = 4 * Math.PI;
     public static final double FORWARD_TICKS_PER_INCH = FORWARD_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
     public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
-    public static final double FEET_PER_SECOND = REVOLUTIONS_PER_SECOND * WHEEL_CIRCUMFERENCE_INCHES;
+    public static final double FEET_PER_SECOND = (REVOLUTIONS_PER_SECOND * WHEEL_CIRCUMFERENCE_INCHES) / 12.0;
 
 
     public MetoebesUltimateGoalHardware() {
@@ -41,7 +41,12 @@ public class MetoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
         return RECOMMENDED_MAX_POWER;
     }
 
-    public double getSpeed(double desiredFeetPerSecond){
+    public double getForwardSpeed(double desiredFeetPerSecond){
+        //1 = FEET_PER_SECOND, x=desiredFeetPerSecond
+        double speed = desiredFeetPerSecond / FEET_PER_SECOND;
+        return speed;
+    }
+    public double getStrafeSpeed(double desiredFeetPerSecond){
         //1 = FEET_PER_SECOND, x=desiredFeetPerSecond
         double speed = desiredFeetPerSecond / FEET_PER_SECOND;
         return speed;

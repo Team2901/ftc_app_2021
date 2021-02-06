@@ -9,6 +9,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     private ElapsedTime runtime = new ElapsedTime();
     boolean debugging = false;
+    private static final double TAKE_A_LOOKSIE = 15;
 
     public ProperUltimateGoalAuto() {
         super(TeamColor.BLUE_TEAM);
@@ -43,6 +44,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         moveInchesForward(12, true);
         releaseWobble();
         moveInchesCenter(12);
+        extendWobbleArm(false);
     }
 
     public void goToB() {
@@ -54,6 +56,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         moveInchesCenter(-24);
         turnToDesiredAngle(0);
         moveInchesForward(24, false);
+        extendWobbleArm(false);
     }
 
     public void goToC() {
@@ -61,6 +64,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         releaseWobble();
         moveInchesCenter(12);
         moveInchesForward(-60, false);
+        extendWobbleArm(false);
     }
 
     public void afterA(){
@@ -109,15 +113,11 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         grabWobble();
 
-        moveInchesCenter(-12);
-
-        ElapsedTime timer = new ElapsedTime();
-        while (timer.seconds() < 1 && opModeIsActive()) {
-        }
+        moveInchesCenter(-TAKE_A_LOOKSIE);
 
         starterStackResult = starterStackSensor();
 
-        moveInchesCenter(12);
+        moveInchesCenter(TAKE_A_LOOKSIE);
 
         extendWobbleArm(true);
 

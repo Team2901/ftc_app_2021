@@ -1,14 +1,12 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
-import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.ScrimmageUltimateGoalHardware;
 
 import java.util.List;
 
@@ -16,11 +14,11 @@ import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.Scr
 import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.ScrimmageUltimateGoalHardware.ELEMENT_QUAD;
 
 /*
- Strafe further
- slow turns
- Reset arm
- Get speed
- Separate forwards/center speeds
+ Strafe further done
+ slow turns done
+ Reset arm done
+ Get speed done
+ Separate forwards/center speeds done
  change the plan
  */
 
@@ -103,7 +101,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public void releaseWobble() {
         robot.configureWobbleGrabber(false);
-        sleep(500);
+        safeWait(500);
+
     }
 
     public void turnToDesiredAngle(float desiredAngle) {
@@ -112,6 +111,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
         // Determine the speed that the motors should be set to.
         double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle);
+        speed = speed * robot.getForwardSpeed(2);
 
         // The robot should keep on turning until it reaches its desired angle.
         while (speed != 0 && opModeIsActive()) {
@@ -143,7 +143,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public void moveInchesCenter(double inches) {
         int direction = (TeamColor.RED_TEAM == this.teamColor) ? 1 : -1;
         int ticks = (int) (inches * robot.centerTicksPerInch * direction);
-        double cruisingSpeed = .75;
+        double cruisingSpeed = robot.getStrafeSpeed(2);
         double distanceTraveled = 0;
         double minSpeed = .02;
         double startSlope = 1.0 / 20.0;
@@ -188,7 +188,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         int ticks = (int) (inches * robot.forwardTicksPerInch);
         double startAngle = robot.getAngle();
         double angleTuning = 0;
-        double cruisingSpeed = .75;
+        double cruisingSpeed = robot.getForwardSpeed(2);
         double distanceTraveled = 0;
         double minSpeed = .02;
         double startSlope = 1.0 / 20.0;

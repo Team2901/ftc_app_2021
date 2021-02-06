@@ -218,8 +218,12 @@ public class BaseUltimateGoalHardware {
         }
     }
 
-    public double getSpeed(double desiredFeetPerSecond){
+    public double getForwardSpeed(double desiredFeetPerSecond){
         //1 = FEET_PER_SECOND, x=desiredFeetPerSecond
+        return 1.0;
+    }
+
+    public double getStrafeSpeed(double desiredFeetPerSecond){
         return 1.0;
     }
 }
