@@ -66,9 +66,9 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         moveInchesCenter(-20);
         moveInchesForward(69, true);
         releaseWobble();
+        extendWobbleArm(false);
         moveInchesCenter(12);
         moveInchesForward(-60, false);
-        extendWobbleArm(false);
     }
 
     public void afterA(){
