@@ -92,7 +92,7 @@ public class BaseUltimateGoalHardware {
 
         middleMotor = getMotor(hwMap,"middle_drive");
 
-        middleMotor.setDirection(DcMotor.Direction.REVERSE);
+        // middleMotor.setDirection(DcMotor.Direction.REVERSE);
         middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         middleMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         middleMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
