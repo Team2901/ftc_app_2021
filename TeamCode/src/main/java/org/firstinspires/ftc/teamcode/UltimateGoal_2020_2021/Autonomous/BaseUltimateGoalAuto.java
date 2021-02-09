@@ -315,9 +315,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public void ringShot(int num){
         telemetry.addData("Shooting Rings: ", num);
         for(int i = 0; i < num; i++) {
-            robot.kicker.setPosition(.25);
+            robot.kicker.setPosition(.425);
             safeWait(250);
-            robot.kicker.setPosition(.75);
+            robot.kicker.setPosition(.15);
             safeWait(750);
         }
     }
