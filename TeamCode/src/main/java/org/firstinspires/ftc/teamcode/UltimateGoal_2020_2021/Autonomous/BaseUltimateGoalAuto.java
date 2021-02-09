@@ -162,7 +162,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
         robot.middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        robot.middleMotor.setTargetPosition(robot.middleMotor.getCurrentPosition() + ticks);
+        int targetPosition = robot.middleMotor.getCurrentPosition() + ticks;
+
+        robot.middleMotor.setTargetPosition(targetPosition);
 
         robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
@@ -179,6 +181,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
             telemetry.addData("Target in Ticks", ticks);
+            telemetry.addData("Target Position", targetPosition);
             telemetry.update();
 
             distanceTraveled = Math.abs(robot.middleMotor.getCurrentPosition() / robot.centerTicksPerInch);
