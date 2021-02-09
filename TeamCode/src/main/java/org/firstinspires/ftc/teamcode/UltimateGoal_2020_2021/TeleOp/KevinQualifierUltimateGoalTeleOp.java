@@ -45,7 +45,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     double kickerPosition = 0.65;
     int shooterOffset = 5; //Offset launch angle
     int wobbleElbowMinPosition = 0;
-    int wobbleElboxMaxPosition = 13500;
+    int wobbleElboxMaxPosition = 5626;
     boolean cameraLoaded = true;
 
     ArrayList<String> logMessages = new ArrayList<>();
