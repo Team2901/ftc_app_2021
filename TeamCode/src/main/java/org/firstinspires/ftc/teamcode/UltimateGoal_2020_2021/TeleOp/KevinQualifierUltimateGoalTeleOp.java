@@ -356,10 +356,10 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
          */
         if (gamepad1.dpad_up && (robot.wobbleElbow.getCurrentPosition() <= wobbleElboxMaxPosition || wobbleOverride)) {
             // Hold dpad_up (g1) to extend the elbow (up to the max position or past if wobbleOverride is toggled on)
-            robot.wobbleElbow.setPower(0.5);
+            robot.wobbleElbow.setPower(1);
         } else if (gamepad1.dpad_down && (robot.wobbleElbow.getCurrentPosition() >= wobbleElbowMinPosition || wobbleOverride)) {
             // Hold dpad_down (g1) to retract the elbow (down to the min position or past if wobbleOverride is toggled on)
-            robot.wobbleElbow.setPower(-0.5);
+            robot.wobbleElbow.setPower(-1);
         } else {
             // Otherwise, dont move
             robot.wobbleElbow.setPower(0);
