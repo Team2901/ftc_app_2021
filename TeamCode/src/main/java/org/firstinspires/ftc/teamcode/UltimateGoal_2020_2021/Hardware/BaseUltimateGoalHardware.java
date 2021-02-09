@@ -119,6 +119,7 @@ public class BaseUltimateGoalHardware {
         wobbleElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wobbleElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wobbleElbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        wobbleElbow.setDirection(DcMotorSimple.Direction.REVERSE);
         wobbleGrabber = getServo(hwMap, "grabber");
         kicker = getServo(hwMap, "kicker");
     }
