@@ -45,7 +45,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     double kickerPosition = 0.625;
     int shooterOffset = 5; //Offset launch angle
     int wobbleElbowMinPosition = 0;
-    int wobbleElboxMaxPosition = 13500;
+    int wobbleElboxMaxPosition = 5626;
     boolean cameraLoaded = true;
 
     ArrayList<String> logMessages = new ArrayList<>();
@@ -326,7 +326,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             leftMotorPower = -speed * turnPowerRatio;
             rightMotorPower = speed * turnPowerRatio;
         } else if(gamepad1.right_stick_x > 0.1 || gamepad1.right_stick_x < -0.1) {
-            double speed = gamepad1.right_stick_x;
+            double speed = -gamepad1.right_stick_x;
 
             leftMotorPower = -speed * turnPowerRatio;
             rightMotorPower = speed * turnPowerRatio;
@@ -356,10 +356,10 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
          */
         if (gamepad1.dpad_up && (robot.wobbleElbow.getCurrentPosition() <= wobbleElboxMaxPosition || wobbleOverride)) {
             // Hold dpad_up (g1) to extend the elbow (up to the max position or past if wobbleOverride is toggled on)
-            robot.wobbleElbow.setPower(0.5);
+            robot.wobbleElbow.setPower(1);
         } else if (gamepad1.dpad_down && (robot.wobbleElbow.getCurrentPosition() >= wobbleElbowMinPosition || wobbleOverride)) {
             // Hold dpad_down (g1) to retract the elbow (down to the min position or past if wobbleOverride is toggled on)
-            robot.wobbleElbow.setPower(-0.5);
+            robot.wobbleElbow.setPower(-1);
         } else {
             // Otherwise, dont move
             robot.wobbleElbow.setPower(0);

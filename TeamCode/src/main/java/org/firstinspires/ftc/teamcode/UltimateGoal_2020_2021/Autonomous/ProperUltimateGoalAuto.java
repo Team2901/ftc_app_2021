@@ -10,6 +10,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
     private ElapsedTime runtime = new ElapsedTime();
     boolean debugging = false;
     private static final double TAKE_A_LOOKSIE = 15;
+    boolean shootRings = true;
 
     public ProperUltimateGoalAuto() {
         super(TeamColor.BLUE_TEAM);
@@ -134,6 +135,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         // Closes the wobble grabber
         grabWobble();
 
+        moveInchesForward(.5, false);
+
         // Moves 12 inches to be in front of the starter stack
         moveInchesCenter(-TAKE_A_LOOKSIE);
 
@@ -146,6 +149,9 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         // Starts extending wobble arm
         extendWobbleArm(true);
 
+        robot.shooterMotor.setPower(.8);
+        robot.shooterMotor2.setPower(.8);
+
         // Move forward by 60 inches
         moveInchesForward(60, true);
 
@@ -153,7 +159,12 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         turnToDesiredAngle(0);
 
         // Shoots 3 rings
-        ringShot(3);
+        if(shootRings){
+            ringShot(3);
+        }
+
+        robot.shooterMotor.setPower(0);
+        robot.shooterMotor2.setPower(0);
 
 
         // Runs toward the different blocks depending on number of rings in starter stack
