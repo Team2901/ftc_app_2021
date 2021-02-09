@@ -326,7 +326,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             leftMotorPower = -speed * turnPowerRatio;
             rightMotorPower = speed * turnPowerRatio;
         } else if(gamepad1.right_stick_x > 0.1 || gamepad1.right_stick_x < -0.1) {
-            double speed = gamepad1.right_stick_x;
+            double speed = -gamepad1.right_stick_x;
 
             leftMotorPower = -speed * turnPowerRatio;
             rightMotorPower = speed * turnPowerRatio;
