@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.configuration.ConfigurationUtility;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -44,6 +43,7 @@ public class BaseUltimateGoalHardware {
     public double centerTicksPerInch;
     public String hardwareClassName;
     public Servo kicker;
+    public Servo backupKicker;
 
     public BaseUltimateGoalHardware() {
     }
@@ -122,6 +122,7 @@ public class BaseUltimateGoalHardware {
         wobbleElbow.setDirection(DcMotorSimple.Direction.REVERSE);
         wobbleGrabber = getServo(hwMap, "grabber");
         kicker = getServo(hwMap, "kicker");
+        backupKicker = getServo(hwMap, "backup_kicker");
     }
 
     public String initWebCamera(HardwareMap hardwareMap){

@@ -42,7 +42,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     double shooterPowerRatio = 0.8;
     double intakePowerRatio = 0.9;
     boolean pauseShooterMode; //Stealth Mode
-    double kickerPosition = 0.625;
+    double kickerPosition = 0.65;
     int shooterOffset = 5; //Offset launch angle
     int wobbleElbowMinPosition = 0;
     int wobbleElboxMaxPosition = 5626;
@@ -195,6 +195,12 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         } else {
             // Else (timer has expired) retract the kicker
             robot.kicker.setPosition(.425);
+        }
+
+        if (gamepad1.back) {
+            robot.backupKicker.setPosition(0);
+        } else {
+            robot.backupKicker.setPosition(0);
         }
 
         /*
@@ -385,7 +391,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             timer.reset();
         }
 
-        if (impGamepad1.back.isInitialPress()) {
+        if (impGamepad2.back.isInitialPress()) {
             // Press back button (g1) to save the shooter logs to a file
             try {
                 int time = (int) (System.currentTimeMillis());
