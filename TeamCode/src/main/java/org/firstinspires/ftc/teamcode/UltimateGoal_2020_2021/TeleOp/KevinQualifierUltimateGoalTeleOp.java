@@ -391,7 +391,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             timer.reset();
         }
 
-        if (impGamepad1.back.isInitialPress()) {
+        if (impGamepad2.back.isInitialPress()) {
             // Press back button (g1) to save the shooter logs to a file
             try {
                 int time = (int) (System.currentTimeMillis());
