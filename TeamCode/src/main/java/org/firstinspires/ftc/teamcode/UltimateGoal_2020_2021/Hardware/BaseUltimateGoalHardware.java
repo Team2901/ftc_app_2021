@@ -122,7 +122,7 @@ public class BaseUltimateGoalHardware {
         wobbleElbow.setDirection(DcMotorSimple.Direction.REVERSE);
         wobbleGrabber = getServo(hwMap, "grabber");
         kicker = getServo(hwMap, "kicker");
-        backupKicker = getServo(hwMap, "backup kicker");
+        backupKicker = getServo(hwMap, "backup_kicker");
     }
 
     public String initWebCamera(HardwareMap hardwareMap){
