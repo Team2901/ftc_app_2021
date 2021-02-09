@@ -10,6 +10,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
     private ElapsedTime runtime = new ElapsedTime();
     boolean debugging = false;
     private static final double TAKE_A_LOOKSIE = 15;
+    boolean shootRings = true;
 
     public ProperUltimateGoalAuto() {
         super(TeamColor.BLUE_TEAM);
@@ -156,7 +157,9 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         turnToDesiredAngle(0);
 
         // Shoots 3 rings
-        ringShot(3);
+        if(shootRings){
+            ringShot(3);
+        }
 
         robot.shooterMotor.setPower(0);
         robot.shooterMotor2.setPower(0);
