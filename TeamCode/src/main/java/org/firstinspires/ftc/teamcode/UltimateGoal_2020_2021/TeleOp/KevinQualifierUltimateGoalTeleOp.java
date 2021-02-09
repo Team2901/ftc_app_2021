@@ -191,10 +191,16 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
 
         if (countDownTimer.hasRemainingTime()) {
             // If timer is running then extend the kicker
-            robot.kicker.setPosition(.3);
+            robot.kicker.setPosition(.15);
         } else {
             // Else (timer has expired) retract the kicker
-            robot.kicker.setPosition(.65);
+            robot.kicker.setPosition(.425);
+        }
+
+        if (gamepad1.back) {
+            robot.backupKicker.setPosition(0);
+        } else {
+            robot.backupKicker.setPosition(0);
         }
 
         /*
@@ -385,7 +391,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             timer.reset();
         }
 
-        if (impGamepad1.back.isInitialPress()) {
+        if (impGamepad2.back.isInitialPress()) {
             // Press back button (g1) to save the shooter logs to a file
             try {
                 int time = (int) (System.currentTimeMillis());
