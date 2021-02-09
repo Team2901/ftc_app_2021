@@ -191,10 +191,16 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
 
         if (countDownTimer.hasRemainingTime()) {
             // If timer is running then extend the kicker
-            robot.kicker.setPosition(.3);
+            robot.kicker.setPosition(.15);
         } else {
             // Else (timer has expired) retract the kicker
-            robot.kicker.setPosition(.65);
+            robot.kicker.setPosition(.425);
+        }
+
+        if (gamepad1.back) {
+            robot.backupKicker.setPosition(0);
+        } else {
+            robot.backupKicker.setPosition(0);
         }
 
         /*
