@@ -134,6 +134,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         // Closes the wobble grabber
         grabWobble();
 
+        moveInchesForward(.5, false);
+
         // Moves 12 inches to be in front of the starter stack
         moveInchesCenter(-TAKE_A_LOOKSIE);
 
