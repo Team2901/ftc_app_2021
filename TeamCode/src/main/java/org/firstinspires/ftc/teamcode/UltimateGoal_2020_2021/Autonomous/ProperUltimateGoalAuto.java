@@ -146,6 +146,9 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         // Starts extending wobble arm
         extendWobbleArm(true);
 
+        robot.shooterMotor.setPower(.8);
+        robot.shooterMotor2.setPower(.8);
+
         // Move forward by 60 inches
         moveInchesForward(60, true);
 
@@ -154,6 +157,9 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         // Shoots 3 rings
         ringShot(3);
+
+        robot.shooterMotor.setPower(0);
+        robot.shooterMotor2.setPower(0);
 
 
         // Runs toward the different blocks depending on number of rings in starter stack
