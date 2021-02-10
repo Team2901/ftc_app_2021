@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -25,17 +26,17 @@ public class BaseUltimateGoalHardware {
     public static final String ELEMENT_QUAD = "Quad";
     public static final String ELEMENT_SINGLE = "Single";
     // Instance Variables
-    public DcMotor leftMotor = null;
-    public DcMotor rightMotor = null;
+    public DcMotorEx leftMotor = null;
+    public DcMotorEx rightMotor = null;
     BNO055IMU imu;
     public BaseCamera webCamera = new BaseCamera();
     public double robotTurnRampDownAngle = 45;
     public double robotTurnStopAngle = 5;
     public List<String> failedHardware = new ArrayList<>();
-    public DcMotor middleMotor = null;
+    public DcMotorEx middleMotor = null;
     public DcMotor intakeMotor = null;
-    public DcMotor shooterMotor = null;
-    public DcMotor shooterMotor2 = null;
+    public DcMotorEx shooterMotor = null;
+    public DcMotorEx shooterMotor2 = null;
     public DcMotor transferMotor = null;
     public Servo wobbleGrabber;
     public DcMotor wobbleElbow;
@@ -60,8 +61,8 @@ public class BaseUltimateGoalHardware {
 
     public void init(HardwareMap hwMap) {
         // Define and Initialize Motors
-        leftMotor = getMotor(hwMap, "left_drive");
-        rightMotor = getMotor(hwMap, "right_drive");
+        leftMotor = getMotorEx(hwMap, "left_drive");
+        rightMotor = getMotorEx(hwMap, "right_drive");
 
         // Setting left motor to reverse, making the robot moveable now.
         leftMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -90,7 +91,7 @@ public class BaseUltimateGoalHardware {
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
 
-        middleMotor = getMotor(hwMap,"middle_drive");
+        middleMotor = getMotorEx(hwMap,"middle_drive");
 
         middleMotor.setDirection(DcMotor.Direction.REVERSE);
         middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -98,8 +99,8 @@ public class BaseUltimateGoalHardware {
         middleMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         intakeMotor = getMotor(hwMap,"intake_motor");
-        shooterMotor = getMotor(hwMap,"shooter_motor");
-        shooterMotor2 = getMotor(hwMap,"shooter_motor_2");
+        shooterMotor = getMotorEx(hwMap,"shooter_motor");
+        shooterMotor2 = getMotorEx(hwMap,"shooter_motor_2");
         transferMotor = getMotor(hwMap, "transfer_motor");
         wobbleElbow = getMotor(hwMap, "elbow_motor");
 
@@ -132,7 +133,7 @@ public class BaseUltimateGoalHardware {
     public String initPhoneCamera(HardwareMap hardwareMap){
         return webCamera.initBackCamera(hardwareMap);
     }
-    
+
     public String initTfod(){
         return webCamera.initTfod(.8, TFOD_MODEL_ASSET, ELEMENT_QUAD, ELEMENT_SINGLE);
     }
@@ -179,6 +180,15 @@ public class BaseUltimateGoalHardware {
         } catch (Exception e){
             failedHardware.add(name);
             return new MockDcMotor();
+        }
+    }
+
+    public DcMotorEx getMotorEx(HardwareMap hwMap, String name){
+        try {
+            return hwMap.get(DcMotorEx.class, name);
+        } catch (Exception e){
+            failedHardware.add(name);
+            return (DcMotorEx) new MockDcMotor();
         }
     }
 

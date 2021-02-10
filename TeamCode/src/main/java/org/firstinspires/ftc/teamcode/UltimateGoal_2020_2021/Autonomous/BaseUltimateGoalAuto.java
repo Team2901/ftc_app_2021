@@ -259,6 +259,73 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     }
 
+    // a^2 + b^2 = c^2
+    // total inches traveled = c
+    public void moveInchesDiagonal(double inchesForward, double inchesCenter, boolean correctingRun) {
+        int ticksForward = (int) (inchesForward * robot.forwardTicksPerInch);
+        int ticksCenter = (int) (inchesCenter * robot.centerTicksPerInch);
+        double startAngle = robot.getAngle();
+        double angleTuning = 0;
+        double cruisingSpeed = robot.getForwardSpeed(2);
+        double distanceTraveledForward = 0;
+        double distanceTraveledCenter = 0;
+        double minSpeed = .02;
+        double startSlope = 1.0 / 20.0;
+        double endSlope = 1.0 / 30.0;
+
+        robot.leftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.middleMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        robot.leftMotor.setTargetPosition(ticksForward);
+        robot.rightMotor.setTargetPosition(ticksForward);
+        robot.middleMotor.setTargetPosition(ticksCenter);
+
+        robot.leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.middleMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+        while (opModeIsActive() && (robot.leftMotor.isBusy() || robot.rightMotor.isBusy()
+                || robot.middleMotor.isBusy())) {
+            double distanceRemainingForward = Math.abs(inchesForward) - distanceTraveledForward;
+            double rampUpSpeedForward = Math.abs(distanceTraveledForward * startSlope) + minSpeed;
+            double rampDownSpeedForward = Math.abs(distanceRemainingForward * endSlope) + minSpeed;
+            double motorSpeedForward = Math.min(cruisingSpeed, Math.min(rampDownSpeedForward, rampUpSpeedForward));
+
+            double distanceRemainingCenter = Math.abs(inchesCenter) - distanceTraveledCenter;
+            double rampUpSpeedCenter = Math.abs(distanceTraveledCenter * startSlope) + minSpeed;
+            double rampDownSpeedCenter = Math.abs(distanceRemainingCenter * endSlope) + minSpeed;
+            double motorSpeedCenter = Math.min(cruisingSpeed, Math.min(rampDownSpeedCenter, rampUpSpeedCenter));
+
+            if (correctingRun) {
+                angleTuning = pidTune(startAngle, robot.getAngle());
+            }
+
+            robot.leftMotor.setPower(angleTuning + motorSpeedForward);
+            robot.rightMotor.setPower(-angleTuning + motorSpeedForward);
+            robot.middleMotor.setPower(motorSpeedCenter);
+
+            telemetry.addData("Adjusting:", angleTuning);
+            telemetry.addData("stackID", starterStackResult);
+            telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
+            telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
+            telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition());
+            telemetry.addData("Target in Ticks", ticksForward);
+            telemetry.addData("Motor Speed Forward", motorSpeedForward);
+            telemetry.addData("Motor Speed Center", motorSpeedCenter);
+            telemetry.update();
+
+            distanceTraveledForward = Math.abs(robot.leftMotor.getCurrentPosition() / robot.forwardTicksPerInch);
+        }
+
+        robot.leftMotor.setPower(0);
+        robot.rightMotor.setPower(0);
+
+        robot.leftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+    }
+
     //PID tuning to keep straight line driving on track
     public double pidTune(float startingAngle, float currentAngle) {
         double correction = pidTuneOverflow((double) startingAngle, (double) currentAngle);
