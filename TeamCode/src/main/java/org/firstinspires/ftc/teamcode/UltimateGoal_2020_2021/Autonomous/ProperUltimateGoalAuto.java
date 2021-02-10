@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierUltimateGoalHardware.SHOOTER_VELOCITY;
+
 @Autonomous(name = "Proper Autonomous")
 public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
@@ -149,8 +151,13 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         // Starts extending wobble arm
         extendWobbleArm(true);
 
+        /*
         robot.shooterMotor.setPower(.8);
         robot.shooterMotor2.setPower(.8);
+         */
+
+        robot.shooterMotor.setVelocity(SHOOTER_VELOCITY);
+        robot.shooterMotor2.setVelocity(SHOOTER_VELOCITY);
 
         // Move forward by 60 inches
         moveInchesForward(60, true);
@@ -163,8 +170,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             ringShot(3);
         }
 
-        robot.shooterMotor.setPower(0);
-        robot.shooterMotor2.setPower(0);
+        robot.shooterMotor.setVelocity(0);
+        robot.shooterMotor2.setVelocity(0);
 
 
         // Runs toward the different blocks depending on number of rings in starter stack

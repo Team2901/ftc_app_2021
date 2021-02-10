@@ -19,6 +19,7 @@ public class QualifierUltimateGoalHardware extends BaseUltimateGoalHardware {
     public static final double CENTER_REVOLUTIONS_PER_MINUTE = 117.0;
     public static final double CENTER_REVOLUTIONS_PER_SECOND = CENTER_REVOLUTIONS_PER_MINUTE / 60.0;
     public static final double CENTER_FEET_PER_SECOND = (CENTER_REVOLUTIONS_PER_SECOND * WHEEL_CIRCUMFERENCE_INCHES) / 12.0;
+    public static final double SHOOTER_VELOCITY = (4800 * 28) / 60;
 
     public QualifierUltimateGoalHardware() {
         super(FORWARD_TICKS_PER_INCH, CENTER_TICKS_PER_INCH);
