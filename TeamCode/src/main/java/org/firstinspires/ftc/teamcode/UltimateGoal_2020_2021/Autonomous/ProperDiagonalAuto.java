@@ -11,7 +11,7 @@ import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.Qua
 public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
     private ElapsedTime runtime = new ElapsedTime();
     boolean debugging = false;
-    private static final double TAKE_A_LOOKSIE = 15;
+    private static final double TAKE_A_LOOKSIE = 12;
     boolean shootRings = true;
 
     public ProperDiagonalAuto(TeamColor teamColor) {
@@ -48,7 +48,7 @@ public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
     }
 
     public void goToA() {
-        moveInchesDiagonal(12, -20, true);
+        moveInchesDiagonal(12, -16, true);
         releaseWobble();
         extendWobbleArm(false);
     }
@@ -62,7 +62,7 @@ public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
     }
 
     public void goToC() {
-        moveInchesDiagonal(60, -20, true);
+        moveInchesDiagonal(60, -16, true);
         releaseWobble();
         extendWobbleArm(false);
         moveInchesForward(-48, true);
