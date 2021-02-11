@@ -4,17 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierUltimateGoalHardware.SHOOTER_VELOCITY;
+@Autonomous(name = "Park to not run into wall")
+public class ParkOnly extends BaseUltimateGoalAuto {
 
-
-@Autonomous(name = "Experimental Autonomous")
-public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
     private ElapsedTime runtime = new ElapsedTime();
     boolean debugging = false;
-    private static final double TAKE_A_LOOKSIE = 12;
+    private static final double TAKE_A_LOOKSIE = 15;
     boolean shootRings = true;
 
-    public ProperDiagonalAuto(TeamColor teamColor) {
+    public ParkOnly() {
         super(TeamColor.BLUE_TEAM);
     }
 
@@ -48,24 +46,30 @@ public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
     }
 
     public void goToA() {
-        moveInchesDiagonal(12, -16, true);
+        moveInchesCenter(-20);
+        moveInchesForward(18, true);
         releaseWobble();
         extendWobbleArm(false);
+        moveInchesForward(-6, true);
+        moveInchesCenter(12);
     }
 
     public void goToB() {
-        moveInchesForward(36, true);
+        moveInchesForward(45, true);
         releaseWobble(); // 15 points
         //park on launch line, 5 points
+        turnToDesiredAngle(0);
         extendWobbleArm(false);
         moveInchesForward(-24, false);
     }
 
     public void goToC() {
-        moveInchesDiagonal(60, -16, true);
+        moveInchesCenter(-20);
+        moveInchesForward(69, true);
         releaseWobble();
         extendWobbleArm(false);
-        moveInchesForward(-48, true);
+        moveInchesCenter(12);
+        moveInchesForward(-60, false);
     }
 
     public void afterA(){
@@ -134,13 +138,13 @@ public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
         moveInchesForward(.5, false);
 
         // Moves 12 inches to be in front of the starter stack
-        moveInchesCenter(-TAKE_A_LOOKSIE);
+        //oveInchesCenter(-TAKE_A_LOOKSIE);
 
         // Reads the starter stack and returns stackID
         starterStackResult = starterStackSensor();
 
         // Move back to starting position
-        moveInchesCenter(TAKE_A_LOOKSIE);
+        //moveInchesCenter(TAKE_A_LOOKSIE);
 
         // Starts extending wobble arm
         extendWobbleArm(true);
@@ -150,11 +154,11 @@ public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
         robot.shooterMotor2.setPower(.8);
          */
 
-        robot.shooterMotor.setVelocity(SHOOTER_VELOCITY);
-        robot.shooterMotor2.setVelocity(SHOOTER_VELOCITY);
+        robot.shooterMotor.setPower(.8);
+        robot.shooterMotor2.setPower(.8);
 
         // Move forward by 60 inches
-        moveInchesForward(64, true);
+        moveInchesForward(60, true);
 
         // Straighten up to face angle 0
         turnToDesiredAngle(0);
@@ -164,11 +168,12 @@ public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
             ringShot(3);
         }
 
-        robot.shooterMotor.setVelocity(0);
-        robot.shooterMotor2.setVelocity(0);
+        robot.shooterMotor.setPower(0);
+        robot.shooterMotor2.setPower(0);
 
 
         // Runs toward the different blocks depending on number of rings in starter stack
+        /*
         waitForContinue();
         if (starterStackResult == 0) {
             goToA();
@@ -180,6 +185,10 @@ public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
             telemetry.addData("error", "How did this happen");
             telemetry.update();
         }
+
+         */
+
+        moveInchesForward(20, true);
 
 
         // run until the end of the match (driver presses STOP)
