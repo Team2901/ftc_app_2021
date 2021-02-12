@@ -16,6 +16,6 @@ public class MoveInchesTester extends BaseUltimateGoalAuto {
 
         waitForStart();
 
-        moveInchesForward(60, true);
+        moveInchesCenter(12);
     }
 }
