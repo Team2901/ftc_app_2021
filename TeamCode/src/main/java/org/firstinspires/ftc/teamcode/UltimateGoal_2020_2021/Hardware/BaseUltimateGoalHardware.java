@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotor;
+import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotorEx;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockServo;
 import org.firstinspires.ftc.teamcode.Utility.ConfigUtilities;
 
@@ -188,7 +189,7 @@ public class BaseUltimateGoalHardware {
             return hwMap.get(DcMotorEx.class, name);
         } catch (Exception e){
             failedHardware.add(name);
-            return (DcMotorEx) new MockDcMotor();
+            return new MockDcMotorEx();
         }
     }
 
