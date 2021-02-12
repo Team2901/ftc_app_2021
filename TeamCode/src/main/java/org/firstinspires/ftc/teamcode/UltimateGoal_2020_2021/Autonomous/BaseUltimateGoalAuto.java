@@ -152,6 +152,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         double minSpeed = .02;
         double startSlope = 1.0 / 10.0;
         double endSlope = 1.0 / 15.0;
+        double startAngle = robot.getAngle();
+        double angleTuning = 0;
 
         /*
         cruisingSpeed = 1;
@@ -177,6 +179,11 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             double motorSpeed = Math.min(cruisingSpeed, Math.min(rampDownSpeed, rampUpSpeed));
 
             robot.middleMotor.setPower(motorSpeed);
+
+            angleTuning = pidTune(startAngle, robot.getAngle());
+
+            robot.leftMotor.setPower(angleTuning);
+            robot.rightMotor.setPower(-angleTuning);
 
             telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Middle Position", robot.middleMotor.getCurrentPosition()); // moving towards neg
