@@ -29,7 +29,7 @@ import java.util.List;
  */
 
 @SuppressLint("DefaultLocale")
-@TeleOp(name = "Speed Adjustment", group = "2021_UltimateGoal")
+@TeleOp(name = "Speed Alteration", group = "2021_UltimateGoal")
 public class SpeedAlterationUlimateGoalTeleOp extends VuforiaUltimateGoalTest {
     public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
 
