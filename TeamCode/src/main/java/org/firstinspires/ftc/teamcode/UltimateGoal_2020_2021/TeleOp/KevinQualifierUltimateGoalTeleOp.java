@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.TeleOp;
 
-import android.annotation.SuppressLint;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -22,9 +20,8 @@ import java.util.ArrayList;
 
 import static org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities.MM_TO_INCHES;
 
-@SuppressLint("DefaultLocale")
 @TeleOp(name = "Kevin Qualifier UltimateGoal", group = "2021_UltimateGoal")
-public class KevinQualifierUltimateGoalTeleOp extends OpMode {
+public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
     // Relative to you
     public static final int ABSOLUTE_MODE = 0;
     // Relative to front of robot
