@@ -41,6 +41,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     double movePowerRatio = 1;
     double shooterPowerRatio = 0.8;
     double intakePowerRatio = 0.9;
+    double transferPowerRatio = 0.5;
     boolean pauseShooterMode; //Stealth Mode
     double kickerPosition = 0.65;
     int shooterOffset = 5; //Offset launch angle
@@ -158,17 +159,17 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         if (gamepad2.left_trigger > 0.5) {
             // Hold left trigger to move the intake/transfer inwards.
             robot.intakeMotor.setPower(intakePowerRatio);
-            robot.transferMotor.setPower(intakePowerRatio);
+            robot.transferMotor.setPower(transferPowerRatio);
         } else if (gamepad2.right_trigger > 0.5) {
             // Hold right trigger to move the intake/transfer outwards.
             robot.intakeMotor.setPower(-intakePowerRatio);
-            robot.transferMotor.setPower(-intakePowerRatio);
+            robot.transferMotor.setPower(-transferPowerRatio);
         } else {
             // Otherwise, look at the intake flag
             if (isIntakeOn) {
                 // if isIntakeOn is toggled on then move the intake/transfer inwards
                 robot.intakeMotor.setPower(intakePowerRatio);
-                robot.transferMotor.setPower(intakePowerRatio);
+                robot.transferMotor.setPower(transferPowerRatio);
             } else {
                 // else (isIntakeOn is toggled off) don't move
                 robot.intakeMotor.setPower(0);
@@ -257,6 +258,12 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         } else if (impGamepad2.dpad_right.isInitialPress() && intakePowerRatio > 0) {
             // Press dpad_right (g2) to decrease the ratio by 0.1 (down to a min of 0)
             intakePowerRatio -= .1;
+        }
+
+        if(impGamepad2.left_bumper.isInitialPress() && transferPowerRatio < 1){
+            transferPowerRatio += .1;
+        } else if (impGamepad2.right_bumper.isInitialPress() && transferPowerRatio > 0) {
+            transferPowerRatio -= .1;
         }
 
         double leftMotorPower = 0;
