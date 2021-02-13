@@ -26,6 +26,7 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
     public static final int ABSOLUTE_MODE = 0;
     // Relative to front of robot
     public static final int RELATIVE_MODE = 1;
+    final double SHOOTER_MAX_SPEED = (4800 * 28) / 60;
     public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     public int currentMode = RELATIVE_MODE;
     public boolean isIntakeOn = false;
@@ -371,11 +372,11 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
          * If pauseShooterMode is off, set the shooters at a power of shooterPowerRatio, else don't move them
          */
         if (!pauseShooterMode) {
-            robot.shooterMotor.setPower(shooterPowerRatio);
-            robot.shooterMotor2.setPower(shooterPowerRatio);
+            robot.shooterMotor.setVelocity(shooterPowerRatio * SHOOTER_MAX_SPEED);
+            robot.shooterMotor2.setVelocity(shooterPowerRatio * SHOOTER_MAX_SPEED);
         } else {
-            robot.shooterMotor.setPower(0);
-            robot.shooterMotor2.setPower(0);
+            robot.shooterMotor.setVelocity(0);
+            robot.shooterMotor2.setVelocity(0);
         }
 
         if (timer.milliseconds() >= 1) {

@@ -239,4 +239,9 @@ public class BaseUltimateGoalHardware {
     public double getStrafeSpeed(double desiredFeetPerSecond){
         return 1.0;
     }
+
+    public double getShooterVelocity(){
+        return (4800 * 28) / 60;
+    }
 }
+
