@@ -209,7 +209,7 @@ public class BaseUltimateGoalHardware {
     public void configureWobbleGrabber(boolean isClosed){
         // If true is passed as the parameter, the wobble grabber will close.
         if(isClosed){
-            wobbleGrabber.setPosition(.66);
+            wobbleGrabber.setPosition(.745);
         }
         // Otherwise, the wobble grabber will remain open.
         else{
@@ -239,4 +239,10 @@ public class BaseUltimateGoalHardware {
     public double getStrafeSpeed(double desiredFeetPerSecond){
         return 1.0;
     }
+
+    public double getShooterVelocity(){
+        // (rpm of motor * ticks/revolution) / seconds per minute
+        return (4800 * 28) / 60;
+    }
 }
+
