@@ -14,7 +14,7 @@ public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
     private static final double TAKE_A_LOOKSIE = 12;
     boolean shootRings = true;
 
-    public ProperDiagonalAuto(TeamColor teamColor) {
+    public ProperDiagonalAuto() {
         super(TeamColor.BLUE_TEAM);
     }
 
