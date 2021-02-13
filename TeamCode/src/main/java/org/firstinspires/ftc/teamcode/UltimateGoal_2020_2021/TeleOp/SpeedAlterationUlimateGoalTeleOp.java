@@ -85,9 +85,30 @@ public class SpeedAlterationUlimateGoalTeleOp extends VuforiaUltimateGoalTest {
         telemetry.addData("robot position", MatrixHelper.getInchesPositionString(robotLocation));
         telemetry.addData("robot angle", MatrixHelper.getAngleString(robotLocation));
 
-        // Gets the x, y, and z angles of the robot's location.
+        // Gets the x and y position of the robot.
         Float xPositionInches = MatrixHelper.getXPositionInches(robotLocation);
         Float yPositionInches = MatrixHelper.getYPositionInches(robotLocation);
+
+        telemetry.addData("X position", xPositionInches);
+        telemetry.addData("Y Position", yPositionInches);
+
+        // This is assuming that the tower goal image is at the origin.
+        double distanceToImage = Math.sqrt(Math.pow(xPositionInches, 2) + Math.pow(yPositionInches, 2));
+
+        // Alters shooter power speed based on the distance from the image.
+        if(distanceToImage >= 132){
+            robot.shooterMotor.setPower(1);
+        }else if(distanceToImage >= 108 && distanceToImage < 132){
+            robot.shooterMotor.setPower(0.9);
+        }else if(distanceToImage >= 84 && distanceToImage < 108){
+            robot.shooterMotor.setPower(0.8);
+        }else{
+            robot.shooterMotor.setPower(0.7);
+        }
+
+        telemetry.addData("Shooter power", robot.shooterMotor.getPower());
+
+        // Gets the z angle of the robot's location.
         Float zAngle = MatrixHelper.getZAngle(robotLocation);
 
         double angleDifference = 0;
