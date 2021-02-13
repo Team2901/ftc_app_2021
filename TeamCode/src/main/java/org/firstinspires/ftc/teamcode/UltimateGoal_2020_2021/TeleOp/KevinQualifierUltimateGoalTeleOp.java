@@ -110,7 +110,6 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
         float leftStickX = gamepad1.left_stick_x;
         float leftStickY = -1 * gamepad1.left_stick_y;
         double leftStickAngle = AngleUnit.DEGREES.fromRadians(Math.atan2(leftStickY, leftStickX));
-        double leftStickRadius = Math.hypot(leftStickX, leftStickY);
 
         float robotAngle = robot.getAngle();
 
@@ -265,7 +264,6 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
 
         double leftMotorPower = 0;
         double rightMotorPower = 0;
-        double middleMotorPower = 0;
 
         /*
          * Move robot around the field (leftMotorPower, rightMotorPower, middleMotorPower)
@@ -287,16 +285,14 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
         }
 
         // Calculate angle relative to the robot to move at
-        double moveAngleRelative = moveAngleAbsolute - robotAngle;
+
 
         // Calculate forwards/sideways components to move at
-        double xToMoveTo = Math.cos(Math.toRadians(moveAngleRelative));
-        double yToMoveTo = Math.sin(Math.toRadians(moveAngleRelative));
+
 
         // Calculate forwards/sideways powers to move at
-        leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
-        rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
-        middleMotorPower = leftStickRadius * yToMoveTo * movePowerRatio;
+        leftMotorPower = leftStickY * movePowerRatio + rightStickX * turnPowerRatio;
+        rightMotorPower = leftStickY * movePowerRatio - rightStickX * turnPowerRatio;
 
         /*
          * Turn the robot in place (leftMotorPower, rightMotorPower)
@@ -335,16 +331,10 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
             // Set the motors to their appropriate powers.
             leftMotorPower = -speed * turnPowerRatio;
             rightMotorPower = speed * turnPowerRatio;
-        } else if(gamepad1.right_stick_x > 0.1 || gamepad1.right_stick_x < -0.1) {
-            double speed = -gamepad1.right_stick_x;
-
-            leftMotorPower = -speed * turnPowerRatio;
-            rightMotorPower = speed * turnPowerRatio;
         }
 
         robot.leftMotor.setPower(leftMotorPower);
         robot.rightMotor.setPower(rightMotorPower);
-        robot.middleMotor.setPower(middleMotorPower);
 
         /*
          * Wobble Grabber servo - Hold the dpad right to open or dpad left (g1) to close the grabber
@@ -416,17 +406,12 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Left Stick Angle", leftStickAngle);
         telemetry.addData("Right Motor Power", rightMotorPower);
         telemetry.addData("Left Motor Power", leftMotorPower);
-        telemetry.addData("Middle Motor Power", middleMotorPower);
         telemetry.addData("Turn Power Ratio", turnPowerRatio);
         telemetry.addData("Move Power Ratio", movePowerRatio);
         telemetry.addData("Shooter Power Ratio", shooterPowerRatio);
         telemetry.addData("Shooter Motor Paused", pauseShooterMode);
         telemetry.addData("Intake Power", intakePowerRatio);
         telemetry.addData("Wobble Override", wobbleOverride);
-
-        telemetry.addData("x To Move To", xToMoveTo);
-        telemetry.addData("y To Move To", yToMoveTo);
-        telemetry.addData("Angle To Move To", moveAngleRelative);
 
         if (turnAngleAbsolute != null) {
             telemetry.addData("Angle difference", AngleUnit.normalizeDegrees(turnAngleAbsolute - robotAngle));
