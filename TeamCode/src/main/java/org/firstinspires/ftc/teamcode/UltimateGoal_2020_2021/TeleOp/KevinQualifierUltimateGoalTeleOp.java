@@ -36,7 +36,7 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
     CountDownTimer countDownTimer = new CountDownTimer(ElapsedTime.Resolution.MILLISECONDS);
     double turnPowerRatio = 1;
     double movePowerRatio = 1;
-    double shooterPowerRatio = 0.8;
+    double shooterPowerRatio = 0.5;
     double intakePowerRatio = 0.9;
     double transferPowerRatio = 1;
     boolean pauseShooterMode; //Stealth Mode
@@ -206,7 +206,7 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
          * Press dpad_up (g2) to increase the ratio by 0.1 (up to a max of 1)
          * Press dpad_down (g2) to decrease the ratio by 0.1 (down to a min of 0)
          */
-        if (impGamepad2.dpad_up.isInitialPress() && shooterPowerRatio < 1) {
+        if (impGamepad2.dpad_up.isInitialPress() && shooterPowerRatio < .6) {
             // Press dpad_up (g2) to increase the ratio by 0.1 (up to a max of 1)
             shooterPowerRatio += 0.1;
         } else if (impGamepad2.dpad_down.isInitialPress() && shooterPowerRatio > 0) {

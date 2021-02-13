@@ -209,7 +209,7 @@ public class BaseUltimateGoalHardware {
     public void configureWobbleGrabber(boolean isClosed){
         // If true is passed as the parameter, the wobble grabber will close.
         if(isClosed){
-            wobbleGrabber.setPosition(.66);
+            wobbleGrabber.setPosition(.745);
         }
         // Otherwise, the wobble grabber will remain open.
         else{
