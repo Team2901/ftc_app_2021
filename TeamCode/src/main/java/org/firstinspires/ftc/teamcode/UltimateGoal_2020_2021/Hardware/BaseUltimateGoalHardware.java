@@ -241,6 +241,7 @@ public class BaseUltimateGoalHardware {
     }
 
     public double getShooterVelocity(){
+        // (rpm of motor * ticks/revolution) / seconds per minute
         return (4800 * 28) / 60;
     }
 }
