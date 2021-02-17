@@ -14,6 +14,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.BaseCamera;
+import org.firstinspires.ftc.teamcode.Shared.Hardware.MockCRServo;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotor;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockDcMotorEx;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.MockServo;
@@ -125,7 +126,7 @@ public class BaseUltimateGoalHardware {
         wobbleElbow.setDirection(DcMotorSimple.Direction.REVERSE);
         wobbleGrabber = getServo(hwMap, "grabber");
         kicker = getServo(hwMap, "kicker");
-        backupKicker = hwMap.crservo.get("backup_kicker");
+        backupKicker = getCRServo(hwMap, "backup_kicker");
     }
 
     public String initWebCamera(HardwareMap hardwareMap){
@@ -200,6 +201,15 @@ public class BaseUltimateGoalHardware {
         } catch(Exception e){
             failedHardware.add(name);
             return new MockServo();
+        }
+    }
+
+    public CRServo getCRServo(HardwareMap hwMap, String name){
+        try{
+            return hwMap.crservo.get(name);
+        } catch(Exception e){
+            failedHardware.add(name);
+            return new MockCRServo();
         }
     }
 
