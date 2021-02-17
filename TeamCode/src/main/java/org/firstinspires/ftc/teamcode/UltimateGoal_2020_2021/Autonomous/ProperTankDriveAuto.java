@@ -12,36 +12,17 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
     public ProperTankDriveAuto(TeamColor teamColor) { super(TeamColor.BLUE_TEAM); }
 
-    private void moveInchesCenter(int inches){
-        float startAngle = robot.getAngle();
-        if(inches >= 0) {
-            turnToDesiredAngle(startAngle-90);
-        } else {
-            turnToDesiredAngle(startAngle+90);
+    public void extendWobbleArm(boolean extending) {
+        if (extending && opModeIsActive()) {
+            robot.wobbleElbow.setTargetPosition(5626);
+            robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.wobbleElbow.setPower(1);
         }
-        moveInchesForward(inches, true);
-        turnToDesiredAngle(startAngle);
-    }
-
-    public void goToA() {
-        moveInchesCenter(24);
-        moveInchesForward(9, true);
-        turnToDesiredAngle(180);
-        releaseWobble();
-    }
-    public void goToB() {
-        moveInchesCenter(24);
-        moveInchesForward(99, true);
-        releaseWobble();
-        moveInchesForward(90, false);
-        turnToDesiredAngle(180);
-    }
-    public void goToC() {
-        moveInchesCenter(24);
-        moveInchesForward(123, true);
-        turnToDesiredAngle(180);
-        releaseWobble();
-        moveInchesForward(115, true);
+        if (!extending && opModeIsActive()) {
+            robot.wobbleElbow.setTargetPosition(0);
+            robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.wobbleElbow.setPower(-1);
+        }
     }
 
     @Override
@@ -60,51 +41,31 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
         waitForStart();
         runtime.reset();
 
-        moveInchesForward(6, true);
 
-        moveInchesCenter(-12);
+        moveInchesForward(12, true);
+
+        turnToDesiredAngle(90);
 
         ElapsedTime timer = new ElapsedTime();
         while(timer.seconds() < 1){}
 
         starterStackResult = starterStackSensor();
 
-        moveInchesCenter(12);
+        turnToDesiredAngle(0);
 
-        moveInchesForward(54, true);
+        moveInchesForward(48, true);
 
         ringShot(3);
 
-        if (starterStackResult == 0) {
-            goToA();
-            moveInchesForward(48, true);
-            turnToDesiredAngle(-90);
-            grabWobble();
-            turnToDesiredAngle(0);
-            moveInchesForward(40, true);
-            moveInchesCenter(-30);
-            goToA();
-        } else if (starterStackResult == 1) {
-            goToB();
-            moveInchesCenter(12);
-            turnToDesiredAngle(0);
-            robot.intakeMotor.setPower(0.5);
-            moveInchesForward(-36, false);
-            robot.intakeMotor.setPower(0);
-            moveInchesCenter(12);
-            moveInchesForward(-12, false);
-            turnToDesiredAngle(-90);
-            grabWobble();
-            turnToDesiredAngle(0);
-            moveInchesForward(40, true);
-            moveInchesCenter(-30);
-            ringShot(1);
-            goToB();
-        } else if (starterStackResult == 2) {
-            goToC();
+        if (starterStackResult == 1) {
+            extendWobbleArm(true);
+            moveInchesForward(36, true);
+            releaseWobble();
+            extendWobbleArm(false);
+            moveInchesForward(24, false);
+
         } else {
-            telemetry.addData("error", "How did this happen");
-            telemetry.update();
+            moveInchesForward(6, false);
         }
 
 
