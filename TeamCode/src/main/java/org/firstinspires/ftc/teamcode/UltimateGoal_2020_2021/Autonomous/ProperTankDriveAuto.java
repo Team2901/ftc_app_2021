@@ -10,7 +10,7 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    public ProperTankDriveAuto(TeamColor teamColor) { super(TeamColor.BLUE_TEAM); }
+    public ProperTankDriveAuto() { super(TeamColor.BLUE_TEAM); }
 
     public void extendWobbleArm(boolean extending) {
         if (extending && opModeIsActive()) {
