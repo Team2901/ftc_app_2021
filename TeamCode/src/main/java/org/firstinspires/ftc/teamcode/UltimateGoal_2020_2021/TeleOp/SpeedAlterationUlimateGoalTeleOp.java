@@ -100,9 +100,9 @@ public class SpeedAlterationUlimateGoalTeleOp extends VuforiaUltimateGoalTest {
             // Alters shooter power speed based on the distance from the image.
             if(distanceToImage >= 132){
                 robot.shooterMotor.setPower(1);
-            }else if(distanceToImage >= 108 && distanceToImage < 132){
+            }else if(distanceToImage >= 108){
                 robot.shooterMotor.setPower(0.9);
-            }else if(distanceToImage >= 84 && distanceToImage < 108){
+            }else if(distanceToImage >= 84){
                 robot.shooterMotor.setPower(0.8);
             }else{
                 robot.shooterMotor.setPower(0.7);
