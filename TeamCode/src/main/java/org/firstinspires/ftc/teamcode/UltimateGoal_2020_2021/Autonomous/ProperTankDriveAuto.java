@@ -10,6 +10,8 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
     private ElapsedTime runtime = new ElapsedTime();
 
+    final double SHOOTER_MAX_SPEED = (4800 * 28) / 60;
+
     public ProperTankDriveAuto() { super(TeamColor.BLUE_TEAM); }
 
     public void extendWobbleArm(boolean extending) {
@@ -41,32 +43,21 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
         waitForStart();
         runtime.reset();
 
+        robot.shooterMotor.setVelocity(.4*SHOOTER_MAX_SPEED);
+        robot.shooterMotor.setVelocity(.4*SHOOTER_MAX_SPEED);
 
-        moveInchesForward(12, true);
-
-        turnToDesiredAngle(90);
-
-        ElapsedTime timer = new ElapsedTime();
-        while(timer.seconds() < 1){}
-
-        starterStackResult = starterStackSensor();
-
-        turnToDesiredAngle(0);
-
-        moveInchesForward(48, true);
+        moveInchesForward(60, true);
 
         ringShot(3);
 
-        if (starterStackResult == 1) {
-            extendWobbleArm(true);
-            moveInchesForward(36, true);
-            releaseWobble();
-            extendWobbleArm(false);
-            moveInchesForward(24, false);
+        robot.shooterMotor.setVelocity(0);
+        robot.shooterMotor2.setVelocity(0);
 
-        } else {
-            moveInchesForward(6, false);
-        }
+        extendWobbleArm(true);
+        moveInchesForward(36, true);
+        releaseWobble();
+        extendWobbleArm(false);
+        moveInchesForward(-24, false);
 
 
 
