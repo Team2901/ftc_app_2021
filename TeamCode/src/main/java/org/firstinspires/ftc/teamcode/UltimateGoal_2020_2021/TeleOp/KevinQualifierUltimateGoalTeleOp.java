@@ -174,7 +174,7 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
                 // else (isIntakeOn is toggled off) don't move
                 robot.intakeMotor.setPower(0);
                 robot.transferMotor.setPower(0);
-                robot.backupKicker.setPower(0.8);
+                robot.backupKicker.setPower(0);
             }
         }
 
