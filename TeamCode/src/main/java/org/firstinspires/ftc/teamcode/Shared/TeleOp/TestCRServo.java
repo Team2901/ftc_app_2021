@@ -21,7 +21,7 @@ public class TestCRServo extends OpMode {
         if(gamepad1.left_bumper){
             crServo.setPower(0.99);
         } else if(gamepad1.right_bumper){
-            crServo.setPower(1);
+            crServo.setPower(1.0);
         } else {
             crServo.setPower(-gamepad1.right_stick_y);
         }
