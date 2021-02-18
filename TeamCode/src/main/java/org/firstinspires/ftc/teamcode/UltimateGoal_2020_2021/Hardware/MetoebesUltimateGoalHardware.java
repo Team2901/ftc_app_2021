@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 
@@ -21,6 +22,12 @@ public class MetoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
     public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
     public static final double FEET_PER_SECOND = (REVOLUTIONS_PER_SECOND * WHEEL_CIRCUMFERENCE_INCHES) / 12.0;
 
+    public static final double SHOOTER_MAX_RPM = 6000.0; /* gobilda 5202 1:1 */
+    public static final double SHOOTER_TICKS_PER_REV = 28;
+    public static final double SHOOTER_TICKS_PER_MIN = SHOOTER_MAX_RPM * SHOOTER_TICKS_PER_REV;
+    public static final double MIN_PER_SEC = 1.0/60;
+    public static final double SHOOTER_TICKS_PER_SEC = SHOOTER_TICKS_PER_MIN * MIN_PER_SEC;
+    public static final double SHOOTER_VELOCITY = (.8 * SHOOTER_TICKS_PER_SEC);
 
     public MetoebesUltimateGoalHardware() {
         super(FORWARD_TICKS_PER_INCH, CENTER_TICKS_PER_INCH, 1);
@@ -35,6 +42,8 @@ public class MetoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
         rightMotor.setDirection(DcMotor.Direction.FORWARD);
 
         middleMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        wobbleElbow.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public double getRecommendedMaxMotorSpeed() {
@@ -51,4 +60,9 @@ public class MetoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
         double speed = desiredFeetPerSecond / FEET_PER_SECOND;
         return speed;
     }
+    public double getShooterVelocity(){
+
+        return SHOOTER_VELOCITY;
+    }
+
 }

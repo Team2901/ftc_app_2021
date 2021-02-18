@@ -12,7 +12,9 @@ public class TestDistanceSensor extends OpMode {
     DistanceSensor distanceSensor;
 
     @Override
-    public void init() { distanceSensor = hardwareMap.get(DistanceSensor.class, "sensor_distance"); }
+    public void init() {
+        distanceSensor = hardwareMap.get(DistanceSensor.class, "sensor_distance");
+    }
 
     @Override
     public void loop() {
