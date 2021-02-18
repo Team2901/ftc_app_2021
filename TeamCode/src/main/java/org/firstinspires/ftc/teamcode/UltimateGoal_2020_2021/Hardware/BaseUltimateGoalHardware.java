@@ -28,6 +28,8 @@ public class BaseUltimateGoalHardware {
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
     public static final String ELEMENT_QUAD = "Quad";
     public static final String ELEMENT_SINGLE = "Single";
+    public static final double KICKER_MIN  = 0.45;
+    public static final double KICKER_MAX = 0.15;
     // Instance Variables
     public DcMotorEx leftMotor = null;
     public DcMotorEx rightMotor = null;
