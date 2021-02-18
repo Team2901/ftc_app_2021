@@ -16,7 +16,7 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
     public void extendWobbleArm(boolean extending) {
         if (extending && opModeIsActive()) {
-            robot.wobbleElbow.setTargetPosition(5626);
+            robot.wobbleElbow.setTargetPosition(3750);
             robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.wobbleElbow.setPower(1);
         }
