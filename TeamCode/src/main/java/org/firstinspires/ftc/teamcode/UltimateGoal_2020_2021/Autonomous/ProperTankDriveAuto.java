@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name = "Tank Drive Proper Autonomous")
+@Autonomous(name = "Tank Drive Proper Autonomous V2")
 public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
     private ElapsedTime runtime = new ElapsedTime();
