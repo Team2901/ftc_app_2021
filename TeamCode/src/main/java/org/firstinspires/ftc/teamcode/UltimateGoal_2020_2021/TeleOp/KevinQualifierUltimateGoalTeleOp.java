@@ -198,10 +198,10 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
 
         if (countDownTimer.hasRemainingTime()) {
             // If timer is running then extend the kicker
-            robot.kicker.setPosition(.45);
+            robot.kicker.setPosition(robot.KICKER_MAX);
         } else {
             // Else (timer has expired) retract the kicker
-            robot.kicker.setPosition(.7);
+            robot.kicker.setPosition(robot.KICKER_MIN);
         }
 
         /*
@@ -358,10 +358,10 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
          * Hold dpad_down (g1) to retract the elbow (down to the min position or past if wobbleOverride is toggled on)
          * Otherwise, don't move
          */
-        if (gamepad1.dpad_up && (robot.wobbleElbow.getCurrentPosition() <= wobbleElbowMaxPosition || wobbleOverride)) {
+        if (gamepad1.dpad_down && (robot.wobbleElbow.getCurrentPosition() <= wobbleElbowMaxPosition || wobbleOverride)) {
             // Hold dpad_up (g1) to extend the elbow (up to the max position or past if wobbleOverride is toggled on)
             robot.wobbleElbow.setPower(1);
-        } else if (gamepad1.dpad_down && (robot.wobbleElbow.getCurrentPosition() >= wobbleElbowMinPosition || wobbleOverride)) {
+        } else if (gamepad1.dpad_up && (robot.wobbleElbow.getCurrentPosition() >= wobbleElbowMinPosition || wobbleOverride)) {
             // Hold dpad_down (g1) to retract the elbow (down to the min position or past if wobbleOverride is toggled on)
             robot.wobbleElbow.setPower(-1);
         } else {

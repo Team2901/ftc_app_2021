@@ -28,6 +28,8 @@ public class BaseUltimateGoalHardware {
     private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
     public static final String ELEMENT_QUAD = "Quad";
     public static final String ELEMENT_SINGLE = "Single";
+    public static final double KICKER_MIN  = 0.45;
+    public static final double KICKER_MAX = 0.15;
     // Instance Variables
     public DcMotorEx leftMotor = null;
     public DcMotorEx rightMotor = null;
@@ -123,7 +125,6 @@ public class BaseUltimateGoalHardware {
         wobbleElbow.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wobbleElbow.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wobbleElbow.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        wobbleElbow.setDirection(DcMotorSimple.Direction.REVERSE);
         wobbleGrabber = getServo(hwMap, "grabber");
         kicker = getServo(hwMap, "kicker");
         backupKicker = getCRServo(hwMap, "backup_kicker");
