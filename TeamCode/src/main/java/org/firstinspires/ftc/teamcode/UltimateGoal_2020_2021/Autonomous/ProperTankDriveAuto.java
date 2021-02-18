@@ -43,6 +43,8 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
         waitForStart();
         runtime.reset();
 
+        grabWobble();
+
         robot.shooterMotor.setVelocity(.5*SHOOTER_MAX_SPEED);
         robot.shooterMotor2.setVelocity(.5*SHOOTER_MAX_SPEED);
 
