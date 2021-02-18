@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 import static org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities.MM_TO_INCHES;
 
-@TeleOp(name = "Kevin Qualifier UltimateGoal V2", group = "2021_UltimateGoal")
+@TeleOp(name = "Kevin Qualifier UltimateGoal", group = "2021_UltimateGoal")
 public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
     // Relative to you
     public static final int ABSOLUTE_MODE = 0;
@@ -174,7 +174,7 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
                 // else (isIntakeOn is toggled off) don't move
                 robot.intakeMotor.setPower(0);
                 robot.transferMotor.setPower(0);
-                robot.backupKicker.setPower(0);
+                robot.backupKicker.setPower(1);
             }
         }
 
