@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.TeleOp;
 
-import android.annotation.SuppressLint;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -22,13 +20,13 @@ import java.util.ArrayList;
 
 import static org.firstinspires.ftc.teamcode.Utility.VuforiaUtilities.MM_TO_INCHES;
 
-@SuppressLint("DefaultLocale")
 @TeleOp(name = "Kevin Qualifier UltimateGoal", group = "2021_UltimateGoal")
-public class KevinQualifierUltimateGoalTeleOp extends OpMode {
+public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
     // Relative to you
     public static final int ABSOLUTE_MODE = 0;
     // Relative to front of robot
     public static final int RELATIVE_MODE = 1;
+    final double SHOOTER_MAX_SPEED = (4800 * 28) / 60;
     public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     public int currentMode = RELATIVE_MODE;
     public boolean isIntakeOn = false;
@@ -39,13 +37,14 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
     CountDownTimer countDownTimer = new CountDownTimer(ElapsedTime.Resolution.MILLISECONDS);
     double turnPowerRatio = 1;
     double movePowerRatio = 1;
-    double shooterPowerRatio = 0.8;
+    double shooterPowerRatio = 0.5;
     double intakePowerRatio = 0.9;
+    double transferPowerRatio = 1;
     boolean pauseShooterMode; //Stealth Mode
     double kickerPosition = 0.65;
     int shooterOffset = 5; //Offset launch angle
     int wobbleElbowMinPosition = 0;
-    int wobbleElboxMaxPosition = 5626;
+    int wobbleElbowMaxPosition = 5626;
     boolean cameraLoaded = true;
 
     ArrayList<String> logMessages = new ArrayList<>();
@@ -112,7 +111,6 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         float leftStickX = gamepad1.left_stick_x;
         float leftStickY = -1 * gamepad1.left_stick_y;
         double leftStickAngle = AngleUnit.DEGREES.fromRadians(Math.atan2(leftStickY, leftStickX));
-        double leftStickRadius = Math.hypot(leftStickX, leftStickY);
 
         float robotAngle = robot.getAngle();
 
@@ -158,21 +156,25 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         if (gamepad2.left_trigger > 0.5) {
             // Hold left trigger to move the intake/transfer inwards.
             robot.intakeMotor.setPower(intakePowerRatio);
-            robot.transferMotor.setPower(intakePowerRatio);
+            robot.transferMotor.setPower(transferPowerRatio);
+            robot.backupKicker.setPower(1);
         } else if (gamepad2.right_trigger > 0.5) {
             // Hold right trigger to move the intake/transfer outwards.
             robot.intakeMotor.setPower(-intakePowerRatio);
-            robot.transferMotor.setPower(-intakePowerRatio);
+            robot.transferMotor.setPower(-transferPowerRatio);
+            robot.backupKicker.setPower(-1);
         } else {
             // Otherwise, look at the intake flag
             if (isIntakeOn) {
                 // if isIntakeOn is toggled on then move the intake/transfer inwards
                 robot.intakeMotor.setPower(intakePowerRatio);
-                robot.transferMotor.setPower(intakePowerRatio);
+                robot.transferMotor.setPower(transferPowerRatio);
+                robot.backupKicker.setPower(1);
             } else {
                 // else (isIntakeOn is toggled off) don't move
                 robot.intakeMotor.setPower(0);
                 robot.transferMotor.setPower(0);
+                robot.backupKicker.setPower(0);
             }
         }
 
@@ -191,16 +193,10 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
 
         if (countDownTimer.hasRemainingTime()) {
             // If timer is running then extend the kicker
-            robot.kicker.setPosition(.15);
+            robot.kicker.setPosition(.45);
         } else {
             // Else (timer has expired) retract the kicker
-            robot.kicker.setPosition(.425);
-        }
-
-        if (gamepad1.back) {
-            robot.backupKicker.setPosition(0);
-        } else {
-            robot.backupKicker.setPosition(0);
+            robot.kicker.setPosition(.7);
         }
 
         /*
@@ -209,7 +205,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
          * Press dpad_up (g2) to increase the ratio by 0.1 (up to a max of 1)
          * Press dpad_down (g2) to decrease the ratio by 0.1 (down to a min of 0)
          */
-        if (impGamepad2.dpad_up.isInitialPress() && shooterPowerRatio < 1) {
+        if (impGamepad2.dpad_up.isInitialPress() && shooterPowerRatio < .6) {
             // Press dpad_up (g2) to increase the ratio by 0.1 (up to a max of 1)
             shooterPowerRatio += 0.1;
         } else if (impGamepad2.dpad_down.isInitialPress() && shooterPowerRatio > 0) {
@@ -259,9 +255,14 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             intakePowerRatio -= .1;
         }
 
+        if(impGamepad2.left_bumper.isInitialPress() && transferPowerRatio < 1){
+            transferPowerRatio += .1;
+        } else if (impGamepad2.right_bumper.isInitialPress() && transferPowerRatio > 0) {
+            transferPowerRatio -= .1;
+        }
+
         double leftMotorPower = 0;
         double rightMotorPower = 0;
-        double middleMotorPower = 0;
 
         /*
          * Move robot around the field (leftMotorPower, rightMotorPower, middleMotorPower)
@@ -283,16 +284,14 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         }
 
         // Calculate angle relative to the robot to move at
-        double moveAngleRelative = moveAngleAbsolute - robotAngle;
+
 
         // Calculate forwards/sideways components to move at
-        double xToMoveTo = Math.cos(Math.toRadians(moveAngleRelative));
-        double yToMoveTo = Math.sin(Math.toRadians(moveAngleRelative));
+
 
         // Calculate forwards/sideways powers to move at
-        leftMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
-        rightMotorPower = leftStickRadius * xToMoveTo * movePowerRatio;
-        middleMotorPower = leftStickRadius * yToMoveTo * movePowerRatio;
+        leftMotorPower = leftStickY * movePowerRatio + rightStickX * turnPowerRatio;
+        rightMotorPower = leftStickY * movePowerRatio - rightStickX * turnPowerRatio;
 
         /*
          * Turn the robot in place (leftMotorPower, rightMotorPower)
@@ -331,16 +330,10 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
             // Set the motors to their appropriate powers.
             leftMotorPower = -speed * turnPowerRatio;
             rightMotorPower = speed * turnPowerRatio;
-        } else if(gamepad1.right_stick_x > 0.1 || gamepad1.right_stick_x < -0.1) {
-            double speed = -gamepad1.right_stick_x;
-
-            leftMotorPower = -speed * turnPowerRatio;
-            rightMotorPower = speed * turnPowerRatio;
         }
 
         robot.leftMotor.setPower(leftMotorPower);
         robot.rightMotor.setPower(rightMotorPower);
-        robot.middleMotor.setPower(middleMotorPower);
 
         /*
          * Wobble Grabber servo - Hold the dpad right to open or dpad left (g1) to close the grabber
@@ -360,7 +353,7 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
          * Hold dpad_down (g1) to retract the elbow (down to the min position or past if wobbleOverride is toggled on)
          * Otherwise, don't move
          */
-        if (gamepad1.dpad_up && (robot.wobbleElbow.getCurrentPosition() <= wobbleElboxMaxPosition || wobbleOverride)) {
+        if (gamepad1.dpad_up && (robot.wobbleElbow.getCurrentPosition() <= wobbleElbowMaxPosition || wobbleOverride)) {
             // Hold dpad_up (g1) to extend the elbow (up to the max position or past if wobbleOverride is toggled on)
             robot.wobbleElbow.setPower(1);
         } else if (gamepad1.dpad_down && (robot.wobbleElbow.getCurrentPosition() >= wobbleElbowMinPosition || wobbleOverride)) {
@@ -377,11 +370,11 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
          * If pauseShooterMode is off, set the shooters at a power of shooterPowerRatio, else don't move them
          */
         if (!pauseShooterMode) {
-            robot.shooterMotor.setPower(shooterPowerRatio);
-            robot.shooterMotor2.setPower(shooterPowerRatio);
+            robot.shooterMotor.setVelocity(shooterPowerRatio * SHOOTER_MAX_SPEED);
+            robot.shooterMotor2.setVelocity(shooterPowerRatio * SHOOTER_MAX_SPEED);
         } else {
-            robot.shooterMotor.setPower(0);
-            robot.shooterMotor2.setPower(0);
+            robot.shooterMotor.setVelocity(0);
+            robot.shooterMotor2.setVelocity(0);
         }
 
         if (timer.milliseconds() >= 1) {
@@ -412,17 +405,12 @@ public class KevinQualifierUltimateGoalTeleOp extends OpMode {
         telemetry.addData("Left Stick Angle", leftStickAngle);
         telemetry.addData("Right Motor Power", rightMotorPower);
         telemetry.addData("Left Motor Power", leftMotorPower);
-        telemetry.addData("Middle Motor Power", middleMotorPower);
         telemetry.addData("Turn Power Ratio", turnPowerRatio);
         telemetry.addData("Move Power Ratio", movePowerRatio);
         telemetry.addData("Shooter Power Ratio", shooterPowerRatio);
         telemetry.addData("Shooter Motor Paused", pauseShooterMode);
         telemetry.addData("Intake Power", intakePowerRatio);
         telemetry.addData("Wobble Override", wobbleOverride);
-
-        telemetry.addData("x To Move To", xToMoveTo);
-        telemetry.addData("y To Move To", yToMoveTo);
-        telemetry.addData("Angle To Move To", moveAngleRelative);
 
         if (turnAngleAbsolute != null) {
             telemetry.addData("Angle difference", AngleUnit.normalizeDegrees(turnAngleAbsolute - robotAngle));

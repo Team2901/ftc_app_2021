@@ -4,17 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierUltimateGoalHardware.SHOOTER_VELOCITY;
-
-@Autonomous(name = "Proper Autonomous")
-public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
+@Autonomous(name = "Park to not run into wall")
+public class ParkOnly extends BaseUltimateGoalAuto {
 
     private ElapsedTime runtime = new ElapsedTime();
     boolean debugging = false;
     private static final double TAKE_A_LOOKSIE = 15;
     boolean shootRings = true;
 
-    public ProperUltimateGoalAuto() {
+    public ParkOnly() {
         super(TeamColor.BLUE_TEAM);
     }
 
@@ -140,13 +138,13 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         moveInchesForward(.5, false);
 
         // Moves 12 inches to be in front of the starter stack
-        moveInchesCenter(-TAKE_A_LOOKSIE);
+        //oveInchesCenter(-TAKE_A_LOOKSIE);
 
         // Reads the starter stack and returns stackID
         starterStackResult = starterStackSensor();
 
         // Move back to starting position
-        moveInchesCenter(TAKE_A_LOOKSIE);
+        //moveInchesCenter(TAKE_A_LOOKSIE);
 
         // Starts extending wobble arm
         extendWobbleArm(true);
@@ -175,6 +173,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
 
         // Runs toward the different blocks depending on number of rings in starter stack
+        /*
         waitForContinue();
         if (starterStackResult == 0) {
             goToA();
@@ -186,6 +185,10 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             telemetry.addData("error", "How did this happen");
             telemetry.update();
         }
+
+         */
+
+        moveInchesForward(20, true);
 
 
         // run until the end of the match (driver presses STOP)

@@ -6,15 +6,15 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierUltimateGoalHardware.SHOOTER_VELOCITY;
 
-@Autonomous(name = "Proper Autonomous")
-public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
+@Autonomous(name = "Experimental Autonomous")
+public class ProperDiagonalAuto extends BaseUltimateGoalAuto{
     private ElapsedTime runtime = new ElapsedTime();
     boolean debugging = false;
-    private static final double TAKE_A_LOOKSIE = 15;
+    private static final double TAKE_A_LOOKSIE = 12;
     boolean shootRings = true;
 
-    public ProperUltimateGoalAuto() {
+    public ProperDiagonalAuto() {
         super(TeamColor.BLUE_TEAM);
     }
 
@@ -48,30 +48,24 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
     }
 
     public void goToA() {
-        moveInchesCenter(-20);
-        moveInchesForward(18, true);
+        moveInchesDiagonal(12, -16, true);
         releaseWobble();
         extendWobbleArm(false);
-        moveInchesForward(-6, true);
-        moveInchesCenter(12);
     }
 
     public void goToB() {
-        moveInchesForward(45, true);
+        moveInchesForward(36, true);
         releaseWobble(); // 15 points
         //park on launch line, 5 points
-        turnToDesiredAngle(0);
         extendWobbleArm(false);
         moveInchesForward(-24, false);
     }
 
     public void goToC() {
-        moveInchesCenter(-20);
-        moveInchesForward(69, true);
+        moveInchesDiagonal(60, -16, true);
         releaseWobble();
         extendWobbleArm(false);
-        moveInchesCenter(12);
-        moveInchesForward(-60, false);
+        moveInchesForward(-48, true);
     }
 
     public void afterA(){
@@ -156,11 +150,11 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         robot.shooterMotor2.setPower(.8);
          */
 
-        robot.shooterMotor.setPower(.8);
-        robot.shooterMotor2.setPower(.8);
+        robot.shooterMotor.setVelocity(SHOOTER_VELOCITY);
+        robot.shooterMotor2.setVelocity(SHOOTER_VELOCITY);
 
         // Move forward by 60 inches
-        moveInchesForward(60, true);
+        moveInchesForward(64, true);
 
         // Straighten up to face angle 0
         turnToDesiredAngle(0);
@@ -170,8 +164,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             ringShot(3);
         }
 
-        robot.shooterMotor.setPower(0);
-        robot.shooterMotor2.setPower(0);
+        robot.shooterMotor.setVelocity(0);
+        robot.shooterMotor2.setVelocity(0);
 
 
         // Runs toward the different blocks depending on number of rings in starter stack
