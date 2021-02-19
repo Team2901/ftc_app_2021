@@ -45,8 +45,8 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
         grabWobble();
 
-        robot.shooterMotor.setVelocity(.35*SHOOTER_MAX_SPEED);
-        robot.shooterMotor2.setVelocity(.35*SHOOTER_MAX_SPEED);
+        robot.shooterMotor.setVelocity(.25*SHOOTER_MAX_SPEED);
+        robot.shooterMotor2.setVelocity(.25*SHOOTER_MAX_SPEED);
 
         moveInchesForward(60, true);
 
@@ -68,6 +68,7 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
         extendWobbleArm(true);
         moveInchesForward(32, true);
         releaseWobble();
+        safeWait(1000);
         turnToDesiredAngle(180);
         extendWobbleArm(false);
         moveInchesForward(24, false);
