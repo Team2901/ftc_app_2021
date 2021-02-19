@@ -211,7 +211,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         double distanceTraveled = 0;
         double minSpeed = .075;
         double startSlope = 1.0 / 10.0;
-        double endSlope = 1.0 / 16.0;
+        double endSlope = 1.0 / 25.0;
 
         /*
         cruisingSpeed = 1;
