@@ -136,7 +136,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             robotAngle = robot.getAngle();
 
             // Update speed variable.
-            speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle) * robot.getForwardSpeed(2);
+            speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle) * robot.getForwardSpeed(3);
         }
 
         // We don't want the robot to turn anymore; therefore, we set the motors' powers to 0.
