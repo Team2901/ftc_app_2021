@@ -36,7 +36,7 @@ public class BaseUltimateGoalHardware {
     BNO055IMU imu;
     public BaseCamera webCamera = new BaseCamera();
     public double robotTurnRampDownAngle = 45;
-    public double robotTurnStopAngle = 3;
+    public double robotTurnStopAngle = 1;
     public List<String> failedHardware = new ArrayList<>();
     public DcMotorEx middleMotor = null;
     public DcMotor intakeMotor = null;
