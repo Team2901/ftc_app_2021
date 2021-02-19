@@ -70,7 +70,7 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
         releaseWobble();
         turnToDesiredAngle(180);
         extendWobbleArm(false);
-        moveInchesForward(-24, false);
+        moveInchesForward(24, false);
 
 
 
