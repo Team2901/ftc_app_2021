@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name = "Tank Drive Proper Autonomous V5")
+@Autonomous(name = "Tank Drive Proper Autonomous V6")
 public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -45,8 +45,8 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
         grabWobble();
 
-        robot.shooterMotor.setVelocity(.4*SHOOTER_MAX_SPEED);
-        robot.shooterMotor2.setVelocity(.4*SHOOTER_MAX_SPEED);
+        robot.shooterMotor.setVelocity(.35*SHOOTER_MAX_SPEED);
+        robot.shooterMotor2.setVelocity(.35*SHOOTER_MAX_SPEED);
 
         moveInchesForward(60, true);
 
@@ -68,6 +68,7 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
         extendWobbleArm(true);
         moveInchesForward(32, true);
         releaseWobble();
+        turnToDesiredAngle(180);
         extendWobbleArm(false);
         moveInchesForward(-24, false);
 
