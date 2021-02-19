@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name = "Tank Drive Proper Autonomous V2")
+@Autonomous(name = "Tank Drive Proper Autonomous V3")
 public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
     private ElapsedTime runtime = new ElapsedTime();
@@ -16,7 +16,7 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
     public void extendWobbleArm(boolean extending) {
         if (extending && opModeIsActive()) {
-            robot.wobbleElbow.setTargetPosition(3750);
+            robot.wobbleElbow.setTargetPosition(3250);
             robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.wobbleElbow.setPower(1);
         }
@@ -42,6 +42,8 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
+
+        grabWobble();
 
         robot.shooterMotor.setVelocity(.5*SHOOTER_MAX_SPEED);
         robot.shooterMotor2.setVelocity(.5*SHOOTER_MAX_SPEED);
