@@ -7,7 +7,7 @@ public class QualifierUltimateGoalHardware extends BaseUltimateGoalHardware {
     public static final double FORWARD_TICKS_PER_MOTOR_REV = 383.6; //5202-0002-0014 Series Yellow Jacket Planetary Gear Motor
     //public static final double CENTER_TICKS_PER_MOTOR_REV = 1425.2; //5202-0002-0051
     public static final double CENTER_TICKS_PER_MOTOR_REV = 383.6;
-    public static final double FORWARD_DRIVE_GEAR_RATIO = 1;
+    public static final double FORWARD_DRIVE_GEAR_RATIO = 1;//1/1.5 if they do pulleys. 2 or 1/2 if they do gears unless its 1:1 gears
     public static final double CENTER_DRIVE_GEAR_RATIO = 1;
     public static final double FORWARD_TICKS_PER_DRIVE_REV = FORWARD_TICKS_PER_MOTOR_REV * FORWARD_DRIVE_GEAR_RATIO;
     public static final double CENTER_TICKS_PER_DRIVE_REV = CENTER_TICKS_PER_MOTOR_REV * CENTER_DRIVE_GEAR_RATIO;
