@@ -54,7 +54,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         moveInchesForward(6, true);
 
         nextStep("Start Stack Turn");
-        turnToDesiredAngle(30);
+        turnToDesiredAngle(20);
         nextStep("Done Stack Turn");
 
         nextStep("Read Starter Stack");
