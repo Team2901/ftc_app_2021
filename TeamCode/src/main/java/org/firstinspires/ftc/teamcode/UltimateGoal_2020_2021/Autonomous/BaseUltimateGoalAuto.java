@@ -242,8 +242,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         while (opModeIsActive() && (robot.leftMotor.isBusy() || robot.rightMotor.isBusy())) {
             double distanceRemaining = Math.abs(inches) - distanceTraveled;
             //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * cruisingSpeed + minSpeed;
-            double rampUpSpeed = Math.abs(distanceTraveled * startSlope) + minSpeed;
-            double rampDownSpeed = Math.abs(distanceRemaining * endSlope) + minSpeed;
+            double rampUpSpeed = Math.abs(distanceTraveled * startSlope);
+            double rampDownSpeed = Math.abs(distanceRemaining * endSlope);
 
             // The speed the motors are being set to which increases the farther away we are from
             // our starting position (rampUp) and decreases the closer we are to the target position (rampDown).
@@ -254,13 +254,19 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
                 angleTuning = pidTune(startAngle, robot.getAngle());
             }
 
-            robot.leftMotor.setPower(angleTuning + motorSpeed);
-            robot.rightMotor.setPower(-angleTuning + motorSpeed);
+            double leftPower = Math.max(angleTuning + motorSpeed, minSpeed);
+            double rightPower = Math.max(-angleTuning + motorSpeed, minSpeed);
+
+            robot.leftMotor.setPower(leftPower);
+            robot.rightMotor.setPower(rightPower);
 
             telemetry.addData("Adjusting:", angleTuning);
             telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
             telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
+            telemetry.addData("Left Motor Power", leftPower);
+            telemetry.addData("Right Motor Power", rightPower);
+            telemetry.addData("Target Ticks", ticks);
             telemetry.update();
 
             // Updates how far the motor has traveled
