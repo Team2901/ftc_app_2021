@@ -10,6 +10,7 @@ import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.Qua
 public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     private ElapsedTime runtime = new ElapsedTime();
+    final double SHOOTER_MAX_SPEED = (4800 * 28) / 60;
     boolean debugging = false;
     private static final double TAKE_A_LOOKSIE = 15;
     boolean shootRings = true;
@@ -128,58 +129,59 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         waitForStart();
         runtime.reset();
 
-        // Closes the wobble grabber
         grabWobble();
 
-        moveInchesForward(.5, false);
+        moveInchesForward(6, true);
 
-        // Moves 12 inches to be in front of the starter stack
-        moveInchesCenter(-TAKE_A_LOOKSIE);
+        turnToDesiredAngle(30);
 
-        // Reads the starter stack and returns stackID
+        safeWait(500);
+
         starterStackResult = starterStackSensor();
 
-        // Move back to starting position
-        moveInchesCenter(TAKE_A_LOOKSIE);
-
-        // Starts extending wobble arm
-        extendWobbleArm(true);
-
-        /*
-        robot.shooterMotor.setPower(.8);
-        robot.shooterMotor2.setPower(.8);
-         */
-
-        robot.shooterMotor.setPower(.8);
-        robot.shooterMotor2.setPower(.8);
-
-        // Move forward by 60 inches
-        moveInchesForward(64, true);
-
-        // Straighten up to face angle 0
         turnToDesiredAngle(0);
 
-        // Shoots 3 rings
-        if(shootRings){
-            ringShot(3);
-        }
+        robot.shooterMotor.setVelocity(.5*SHOOTER_MAX_SPEED);
+        robot.shooterMotor2.setVelocity(.5*SHOOTER_MAX_SPEED);
 
-        robot.shooterMotor.setPower(0);
-        robot.shooterMotor2.setPower(0);
+        moveInchesForward(54, true);
 
+        turnToDesiredAngle(10);
 
-        // Runs toward the different blocks depending on number of rings in starter stack
-        waitForContinue();
-        if (starterStackResult == 0) {
-            goToA();
-        } else if (starterStackResult == 1) {
-            goToB();
-        } else if (starterStackResult == 2) {
-            goToC();
+        ringShot(3);
+
+        //#GP #WINNING
+
+        robot.shooterMotor.setVelocity(0);
+        robot.shooterMotor2.setVelocity(0);
+
+        extendWobbleArm(true);
+
+        if(starterStackResult == 0) {
+            turnToDesiredAngle(45);
+            moveInchesForward(15.5, true);
+            turnToDesiredAngle(0);
+            releaseWobble();
+            extendWobbleArm(false);
+        } else if(starterStackResult == 1) {
+            turnToDesiredAngle(0);
+            moveInchesForward(32, true);
+            releaseWobble();
+            safeWait(500);
+            turnToDesiredAngle(180);
+            moveInchesForward(20, false);
+        } else if(starterStackResult == 2) {
+            moveInchesForward(61, true);
+            turnToDesiredAngle(0);
+            releaseWobble();
+            safeWait(500);
+            turnToDesiredAngle(180);
+            extendWobbleArm(false);
+            moveInchesForward(48, false);
         } else {
-            telemetry.addData("error", "How did this happen");
-            telemetry.update();
+            telemetry.addData("How is this not working", "something is very very wrong");
         }
+
 
 
         // run until the end of the match (driver presses STOP)

@@ -212,10 +212,10 @@ public class  KevinQualifierUltimateGoalTeleOp extends OpMode {
          */
         if (impGamepad2.dpad_up.isInitialPress() && shooterPowerRatio < .6) {
             // Press dpad_up (g2) to increase the ratio by 0.1 (up to a max of 1)
-            shooterPowerRatio += 0.1;
+            shooterPowerRatio += 0.025;
         } else if (impGamepad2.dpad_down.isInitialPress() && shooterPowerRatio > 0) {
             // Press dpad_down (g2) to decrease the ratio by 0.1 (down to a min of 0)
-            shooterPowerRatio -= 0.1;
+            shooterPowerRatio -= 0.025;
         }
 
         /*

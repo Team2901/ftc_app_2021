@@ -209,7 +209,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         double angleTuning = 0;
         double cruisingSpeed = robot.getForwardSpeed(2.5);
         double distanceTraveled = 0;
-        double minSpeed = .075;
+        double minSpeed = .02;
         double startSlope = 1.0 / 15.0;
         double endSlope = 1.0 / 30.0;
 
@@ -398,9 +398,9 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         telemetry.addData("Shooting Rings: ", num);
         for(int i = 0; i < num; i++) {
             robot.kicker.setPosition(robot.KICKER_MAX);
-            safeWait(1000);
-            robot.kicker.setPosition(robot.KICKER_MIN);
             safeWait(500);
+            robot.kicker.setPosition(robot.KICKER_MIN);
+            safeWait(250);
         }
     }
 }

@@ -50,6 +50,8 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
         moveInchesForward(60, true);
 
+        turnToDesiredAngle(0);
+
         ringShot(1);
 
         turnToDesiredAngle((float) -8.75);
