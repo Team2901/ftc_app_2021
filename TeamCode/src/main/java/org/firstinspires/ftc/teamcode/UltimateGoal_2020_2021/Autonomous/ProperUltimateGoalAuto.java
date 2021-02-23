@@ -20,7 +20,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     public void extendWobbleArm(boolean extending) {
         if (extending && opModeIsActive()) {
-            robot.wobbleElbow.setTargetPosition(3750);
+            robot.wobbleElbow.setTargetPosition(robot.elbowExtendedPosition);
             robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.wobbleElbow.setPower(1);
         }
