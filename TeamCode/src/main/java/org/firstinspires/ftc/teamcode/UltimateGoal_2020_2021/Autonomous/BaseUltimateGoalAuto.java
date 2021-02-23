@@ -427,12 +427,11 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public void nextStep(String stepName) {
         RobotLog.i("Next Step:" + stepName);
         if (debugging) {
+            telemetry.addData("Next Step", stepName);
+            telemetry.addData("Press A if you want it to keep going", "");
+            telemetry.update();
             while (!gamepad1.a && opModeIsActive()) {
-                if (gamepad1.dpad_up) {
-                    forwardMotorPower = .75;
-                } else if (gamepad1.dpad_down) {
-                    forwardMotorPower = .5;
-                }
+
             }
         }
     }
