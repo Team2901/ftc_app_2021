@@ -30,7 +30,7 @@ public class MetoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
     public static final double SHOOTER_VELOCITY = (.8 * SHOOTER_TICKS_PER_SEC);
 
     public MetoebesUltimateGoalHardware() {
-        super(FORWARD_TICKS_PER_INCH, CENTER_TICKS_PER_INCH, 1);
+        super(FORWARD_TICKS_PER_INCH, CENTER_TICKS_PER_INCH, 1, 0, 13684);
     }
 
     @Override
