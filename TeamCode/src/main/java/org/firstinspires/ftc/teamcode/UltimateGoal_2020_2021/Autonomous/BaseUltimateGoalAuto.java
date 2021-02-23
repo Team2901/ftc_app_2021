@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
@@ -29,6 +30,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
     public int starterStackResult = -1;
     public double forwardMotorPower = .75;
+    boolean debugging = false;
 
     public BaseUltimateGoalAuto(TeamColor teamColor) {
         super();
@@ -401,6 +403,23 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             safeWait(500);
             robot.kicker.setPosition(robot.KICKER_MIN);
             safeWait(250);
+        }
+    }
+
+    /**
+     * If debugging is true, waits for the driver to press the a button.
+     * While a has not been pressed, dpad up sets the forwardMotorPower to 0.75 while dpad down sts the forwardMotorPower to 0.5
+     */
+    public void nextStep(String stepName) {
+        RobotLog.i("Next Step:" + stepName);
+        if (debugging) {
+            while (!gamepad1.a && opModeIsActive()) {
+                if (gamepad1.dpad_up) {
+                    forwardMotorPower = .75;
+                } else if (gamepad1.dpad_down) {
+                    forwardMotorPower = .5;
+                }
+            }
         }
     }
 }
