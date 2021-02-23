@@ -21,7 +21,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     public void extendWobbleArm(boolean extending) {
         if (extending && opModeIsActive()) {
-            robot.wobbleElbow.setTargetPosition(5626);
+            robot.wobbleElbow.setTargetPosition(3750);
             robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.wobbleElbow.setPower(1);
         }
@@ -141,6 +141,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         turnToDesiredAngle(0);
 
+        safeWait(250);
+
         robot.shooterMotor.setVelocity(.5*SHOOTER_MAX_SPEED);
         robot.shooterMotor2.setVelocity(.5*SHOOTER_MAX_SPEED);
 
@@ -154,6 +156,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         robot.shooterMotor.setVelocity(0);
         robot.shooterMotor2.setVelocity(0);
+
+        safeWait(250);
 
         extendWobbleArm(true);
 
