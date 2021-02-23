@@ -53,9 +53,9 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesForward(6, true);
 
+        nextStep("Start Stack Turn");
         turnToDesiredAngle(30);
-
-        safeWait(500);
+        nextStep("Done Stack Turn");
 
         nextStep("Read Starter Stack");
 
@@ -64,11 +64,12 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         nextStep("Starter Stack Result = " + starterStackResult);
 
         turnToDesiredAngle(0);
+        nextStep("Done Straighten Turn");
 
         safeWait(250);
 
-        robot.shooterMotor.setVelocity(.5*SHOOTER_MAX_SPEED);
-        robot.shooterMotor2.setVelocity(.5*SHOOTER_MAX_SPEED);
+        robot.shooterMotor.setVelocity(.5 * SHOOTER_MAX_SPEED);
+        robot.shooterMotor2.setVelocity(.5 * SHOOTER_MAX_SPEED);
 
         nextStep("Move to Shooting Position");
 
@@ -89,7 +90,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         extendWobbleArm(true);
 
-        if(starterStackResult == 0) {
+        if (starterStackResult == 0) {
             nextStep("Move to dropzone A");
             //Destination A
             turnToDesiredAngle(45);
@@ -99,7 +100,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             releaseWobble();
             safeWait(500);
             extendWobbleArm(false);
-        } else if(starterStackResult == 1) {
+        } else if (starterStackResult == 1) {
             nextStep("Move to dropzone B");
             //Destination B
             turnToDesiredAngle(0);
@@ -111,7 +112,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             nextStep("Move to park position");
             turnToDesiredAngle(180);
             moveInchesForward(20, false);
-        } else if(starterStackResult == 2) {
+        } else if (starterStackResult == 2) {
             nextStep("Move to dropzone C");
             //Destination C
             moveInchesForward(61, true);
