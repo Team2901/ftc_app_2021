@@ -30,6 +30,8 @@ public class BaseUltimateGoalHardware {
     public static final String ELEMENT_SINGLE = "Single";
     public static final double KICKER_MIN  = 0.45;
     public static final double KICKER_MAX = 0.15;
+    public int elbowRetractedPosition = 0;
+    public int elbowExtendedPosition = 3750;
     // Instance Variables
     public DcMotorEx leftMotor = null;
     public DcMotorEx rightMotor = null;
@@ -62,6 +64,14 @@ public class BaseUltimateGoalHardware {
         this.forwardTicksPerInch = forwardTicksPerInch;
         this.centerTicksPerInch = centerTicksPerInch;
         this.robotTurnStopAngle = turningDeadzone;
+    }
+
+    public BaseUltimateGoalHardware(double forwardTicksPerInch, double centerTicksPerInch, double turningDeadzone, int elbowRetractedPosition, int elbowExtendedPosition) {
+        this.forwardTicksPerInch = forwardTicksPerInch;
+        this.centerTicksPerInch = centerTicksPerInch;
+        this.robotTurnStopAngle = turningDeadzone;
+        this.elbowRetractedPosition = elbowRetractedPosition;
+        this.elbowExtendedPosition = elbowExtendedPosition;
     }
 
     public void init(HardwareMap hwMap) {
