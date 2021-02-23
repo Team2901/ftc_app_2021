@@ -133,7 +133,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesForward(6, true);
 
-        turnToDesiredAngle(30);
+        turnToDesiredAngle(20);
 
         safeWait(500);
 

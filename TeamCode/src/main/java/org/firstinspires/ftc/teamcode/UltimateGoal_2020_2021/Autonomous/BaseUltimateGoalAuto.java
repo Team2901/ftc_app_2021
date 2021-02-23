@@ -115,7 +115,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
         // Determine the speed that the motors should be set to.
         double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle);
-        speed = speed * robot.getForwardSpeed(2.5);
+        speed = speed * robot.getForwardSpeed(3);
 
         // The robot should keep on turning until it reaches its desired angle.
         while (speed != 0 && opModeIsActive()) {
@@ -136,7 +136,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             robotAngle = robot.getAngle();
 
             // Update speed variable.
-            speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle) * robot.getForwardSpeed(2.5);
+            speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle) * robot.getForwardSpeed(3);
         }
 
         // We don't want the robot to turn anymore; therefore, we set the motors' powers to 0.
