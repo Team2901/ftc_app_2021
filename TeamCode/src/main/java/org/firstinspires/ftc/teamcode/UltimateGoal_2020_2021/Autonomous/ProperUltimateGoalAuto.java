@@ -150,7 +150,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         ringShot(3);
 
-        //#GP #WINNING
+        //#GP #WINNING #QUACKTASTIC DUCKUMENTARY
 
         robot.shooterMotor.setVelocity(0);
         robot.shooterMotor2.setVelocity(0);
@@ -158,25 +158,30 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         extendWobbleArm(true);
 
         if(starterStackResult == 0) {
+            //Destination A
             turnToDesiredAngle(45);
             moveInchesForward(15.5, true);
             turnToDesiredAngle(0);
             releaseWobble();
+            safeWait(500);
             extendWobbleArm(false);
         } else if(starterStackResult == 1) {
+            //Destination B
             turnToDesiredAngle(0);
             moveInchesForward(32, true);
             releaseWobble();
             safeWait(500);
+            extendWobbleArm(false);
             turnToDesiredAngle(180);
             moveInchesForward(20, false);
         } else if(starterStackResult == 2) {
+            //Destination C
             moveInchesForward(61, true);
             turnToDesiredAngle(0);
             releaseWobble();
             safeWait(500);
-            turnToDesiredAngle(180);
             extendWobbleArm(false);
+            turnToDesiredAngle(180);
             moveInchesForward(48, false);
         } else {
             telemetry.addData("How is this not working", "something is very very wrong");
