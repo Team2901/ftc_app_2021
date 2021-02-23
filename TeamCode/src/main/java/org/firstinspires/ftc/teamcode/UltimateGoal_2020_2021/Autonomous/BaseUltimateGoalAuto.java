@@ -121,6 +121,14 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
         // The robot should keep on turning until it reaches its desired angle.
         while (speed != 0 && opModeIsActive()) {
+
+            if (speed > 0){
+                speed = Math.max(.02, speed);
+            }
+            else {
+                speed = Math.min(-.02, speed);
+            }
+
             // Set the motors to their appropriate powers.
             robot.leftMotor.setPower(-speed);
             robot.rightMotor.setPower(speed);
