@@ -3,15 +3,14 @@ package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
-
-import static org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.QualifierUltimateGoalHardware.SHOOTER_VELOCITY;
+import com.qualcomm.robotcore.util.RobotLog;
 
 @Autonomous(name = "Proper Autonomous")
 public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     private ElapsedTime runtime = new ElapsedTime();
     final double SHOOTER_MAX_SPEED = (4800 * 28) / 60;
-    boolean debugging = false;
+
     private static final double TAKE_A_LOOKSIE = 15;
     boolean shootRings = true;
 
@@ -32,87 +31,6 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         }
     }
 
-    /**
-     * If debugging is true, waits for the driver to press the a button.
-     * While a has not been pressed, dpad up sets the forwardMotorPower to 0.75 while dpad down sts the forwardMotorPower to 0.5
-     */
-    public void waitForContinue() {
-        if (debugging) {
-            while (!gamepad1.a && opModeIsActive()) {
-                if (gamepad1.dpad_up) {
-                    forwardMotorPower = .75;
-                } else if (gamepad1.dpad_down) {
-                    forwardMotorPower = .5;
-                }
-            }
-        }
-    }
-
-    public void goToA() {
-        moveInchesDiagonal(12, -20, true);
-        releaseWobble();
-        extendWobbleArm(false);
-    }
-
-    public void goToB() {
-        moveInchesForward(36, true);
-        releaseWobble(); // 15 points
-        //park on launch line, 5 points
-        extendWobbleArm(false);
-        moveInchesForward(-24, false);
-    }
-
-    public void goToC() {
-        moveInchesDiagonal(60, -20, true);
-        releaseWobble();
-        extendWobbleArm(false);
-        moveInchesForward(-48, true);
-    }
-
-    public void afterA(){
-        waitForContinue();
-        moveInchesForward(-42, false);
-        turnToDesiredAngle(90);
-        waitForContinue();
-        moveInchesCenter(-6);
-        grabWobble();
-        turnToDesiredAngle(0);
-        waitForContinue();
-        moveInchesForward(48, true);
-        waitForContinue();
-        goToA();
-    }
-
-    public void afterB(){
-        moveInchesCenter(-34);
-        waitForContinue();
-        moveInchesForward(-42, false);
-        turnToDesiredAngle(90);
-        moveInchesCenter(-6);
-        grabWobble();
-        waitForContinue();
-        turnToDesiredAngle(0);
-        moveInchesForward(48, true);
-        waitForContinue();
-        goToB();
-    }
-
-    public void unknownBCode(){
-        moveInchesForward(-24, false);
-        waitForContinue();
-        robot.intakeMotor.setPower(.5);
-        robot.intakeMotor.setPower(-.5);
-        moveInchesForward(-15, false);
-        moveInchesForward(3, false);
-        robot.intakeMotor.setPower(0);
-        robot.intakeMotor.setPower(0);
-        waitForContinue();
-        moveInchesCenter(22);
-        moveInchesForward(24, true);
-        waitForContinue();
-        ringShot(1);
-        moveInchesForward(10, true);
-    }
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
@@ -129,6 +47,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         waitForStart();
         runtime.reset();
 
+        nextStep("Moving to Starter Stack Acquisition Position");
+
         grabWobble();
 
         moveInchesForward(6, true);
@@ -137,7 +57,11 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         safeWait(500);
 
+        nextStep("Read Starter Stack");
+
         starterStackResult = starterStackSensor();
+
+        nextStep("Starter Stack Result = " + starterStackResult);
 
         turnToDesiredAngle(0);
 
@@ -146,9 +70,13 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         robot.shooterMotor.setVelocity(.5*SHOOTER_MAX_SPEED);
         robot.shooterMotor2.setVelocity(.5*SHOOTER_MAX_SPEED);
 
+        nextStep("Move to Shooting Position");
+
         moveInchesForward(54, true);
 
         turnToDesiredAngle(10);
+
+        nextStep("Shoot the rings");
 
         ringShot(3);
 
@@ -162,36 +90,44 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         extendWobbleArm(true);
 
         if(starterStackResult == 0) {
+            nextStep("Move to dropzone A");
             //Destination A
             turnToDesiredAngle(45);
             moveInchesForward(15.5, true);
             turnToDesiredAngle(0);
+            nextStep("Drop Wobble");
             releaseWobble();
             safeWait(500);
             extendWobbleArm(false);
         } else if(starterStackResult == 1) {
+            nextStep("Move to dropzone B");
             //Destination B
             turnToDesiredAngle(0);
             moveInchesForward(32, true);
+            nextStep("Drop Wobble");
             releaseWobble();
             safeWait(500);
             extendWobbleArm(false);
+            nextStep("Move to park position");
             turnToDesiredAngle(180);
             moveInchesForward(20, false);
         } else if(starterStackResult == 2) {
+            nextStep("Move to dropzone C");
             //Destination C
             moveInchesForward(61, true);
             turnToDesiredAngle(0);
+            nextStep("Drop Wobble");
             releaseWobble();
             safeWait(500);
             extendWobbleArm(false);
+            nextStep("Move to park position");
             turnToDesiredAngle(180);
             moveInchesForward(48, false);
         } else {
             telemetry.addData("How is this not working", "something is very very wrong");
         }
 
-
+        nextStep("Done");
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
