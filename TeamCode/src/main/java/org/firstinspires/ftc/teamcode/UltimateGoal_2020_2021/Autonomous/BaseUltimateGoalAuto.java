@@ -110,11 +110,15 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     }
 
     public void turnToDesiredAngle(float desiredAngle) {
+        turnToDesiredAngle(desiredAngle, false);
+    }
+
+    public void turnToDesiredAngle(float desiredAngle, boolean preciseTurn) {
         // Robot's current angle
         float robotAngle = robot.getAngle();
 
         // Determine the speed that the motors should be set to.
-        double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle);
+        double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle, preciseTurn);
         speed = speed * robot.getForwardSpeed(3);
 
         // The robot should keep on turning until it reaches its desired angle.
@@ -144,7 +148,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             robotAngle = robot.getAngle();
 
             // Update speed variable.
-            speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle) * robot.getForwardSpeed(3);
+            speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle, preciseTurn) * robot.getForwardSpeed(3);
         }
 
         // We don't want the robot to turn anymore; therefore, we set the motors' powers to 0.
