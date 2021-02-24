@@ -107,8 +107,6 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public void releaseWobble() {
         robot.configureWobbleGrabber(false);
-        safeWait(500);
-
     }
 
     public void turnToDesiredAngle(float desiredAngle) {
