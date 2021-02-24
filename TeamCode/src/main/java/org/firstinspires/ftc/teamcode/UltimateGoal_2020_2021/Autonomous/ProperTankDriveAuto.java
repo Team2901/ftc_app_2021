@@ -54,11 +54,11 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
         ringShot(1);
 
-        turnToDesiredAngle((float) -8.75, true);
+        turnToDesiredAngle((float) -8.75);
 
         ringShot(1);
 
-        turnToDesiredAngle((float)-12.75, true);
+        turnToDesiredAngle((float)-12.75);
 
         ringShot(1);
 
