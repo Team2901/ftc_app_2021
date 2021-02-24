@@ -16,7 +16,7 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
     public void extendWobbleArm(boolean extending) {
         if (extending && opModeIsActive()) {
-            robot.wobbleElbow.setTargetPosition(3750);
+            robot.wobbleElbow.setTargetPosition(robot.elbowExtendedPosition);
             robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.wobbleElbow.setPower(1);
         }
@@ -54,11 +54,11 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
         ringShot(1);
 
-        turnToDesiredAngle((float) -8.75);
+        turnToDesiredAngle((float) -8.75, true);
 
         ringShot(1);
 
-        turnToDesiredAngle((float)-12.75);
+        turnToDesiredAngle((float)-12.75, true);
 
         ringShot(1);
 

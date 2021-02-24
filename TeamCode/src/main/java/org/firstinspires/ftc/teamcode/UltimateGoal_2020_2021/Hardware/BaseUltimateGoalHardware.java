@@ -38,7 +38,7 @@ public class BaseUltimateGoalHardware {
     BNO055IMU imu;
     public BaseCamera webCamera = new BaseCamera();
     public double robotTurnRampDownAngle = 45;
-    public double robotTurnStopAngle = 1;
+    public double robotTurnStopAngle = 5;
     public List<String> failedHardware = new ArrayList<>();
     public DcMotorEx middleMotor = null;
     public DcMotor intakeMotor = null;
@@ -166,10 +166,14 @@ public class BaseUltimateGoalHardware {
      * @param robotAngle the robot's current angle
      * @return
      */
-    public double getMotorTurnSpeed(double desiredAngle, double robotAngle){
+    public double getMotorTurnSpeed(double desiredAngle, double robotAngle, boolean precise){
         // Calculate the angle difference between our desired angle and the actual angle of
         // the robot.
         double angleDifference = AngleUnit.normalizeDegrees(desiredAngle - robotAngle);
+
+        if(precise){
+            robotTurnStopAngle = 1;
+        }
 
         // Declare the speed variable for later use.
         double speed;

@@ -107,17 +107,19 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
     public void releaseWobble() {
         robot.configureWobbleGrabber(false);
-        safeWait(500);
-
     }
 
     public void turnToDesiredAngle(float desiredAngle) {
+        turnToDesiredAngle(desiredAngle, false);
+    }
+
+    public void turnToDesiredAngle(float desiredAngle, boolean preciseTurn) {
         // Robot's current angle
         float robotAngle = robot.getAngle();
 
         // Determine the speed that the motors should be set to.
-        double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle);
-        speed = speed * robot.getForwardSpeed(2.5);
+        double speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle, preciseTurn);
+        speed = speed * robot.getForwardSpeed(3);
 
         // The robot should keep on turning until it reaches its desired angle.
         while (speed != 0 && opModeIsActive()) {
@@ -146,7 +148,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             robotAngle = robot.getAngle();
 
             // Update speed variable.
-            speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle) * robot.getForwardSpeed(2.5);
+            speed = robot.getMotorTurnSpeed(desiredAngle, robotAngle, preciseTurn) * robot.getForwardSpeed(3);
         }
 
         // We don't want the robot to turn anymore; therefore, we set the motors' powers to 0.
@@ -217,7 +219,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         int ticks = (int) (inches * robot.forwardTicksPerInch);
         double startAngle = robot.getAngle();
         double angleTuning = 0;
-        double cruisingSpeed = robot.getForwardSpeed(2.5);
+        double cruisingSpeed = 1;
         double distanceTraveled = 0;
         double minSpeed = .02;
         double startSlope = 1.0 / 15.0;
@@ -242,8 +244,8 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         while (opModeIsActive() && (robot.leftMotor.isBusy() || robot.rightMotor.isBusy())) {
             double distanceRemaining = Math.abs(inches) - distanceTraveled;
             //double sinRampSpeed = Math.sin(distanceTraveled/inches * Math.PI) * cruisingSpeed + minSpeed;
-            double rampUpSpeed = Math.abs(distanceTraveled * startSlope) + minSpeed;
-            double rampDownSpeed = Math.abs(distanceRemaining * endSlope) + minSpeed;
+            double rampUpSpeed = Math.abs(distanceTraveled * startSlope);
+            double rampDownSpeed = Math.abs(distanceRemaining * endSlope);
 
             // The speed the motors are being set to which increases the farther away we are from
             // our starting position (rampUp) and decreases the closer we are to the target position (rampDown).
@@ -254,13 +256,19 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
                 angleTuning = pidTune(startAngle, robot.getAngle());
             }
 
-            robot.leftMotor.setPower(angleTuning + motorSpeed);
-            robot.rightMotor.setPower(-angleTuning + motorSpeed);
+            double leftPower = Math.max(angleTuning + motorSpeed, minSpeed);
+            double rightPower = Math.max(-angleTuning + motorSpeed, minSpeed);
+
+            robot.leftMotor.setPower(leftPower);
+            robot.rightMotor.setPower(rightPower);
 
             telemetry.addData("Adjusting:", angleTuning);
             telemetry.addData("stackID", starterStackResult);
             telemetry.addData("Current Left Position", robot.leftMotor.getCurrentPosition());
             telemetry.addData("Current Right Position", robot.rightMotor.getCurrentPosition());
+            telemetry.addData("Left Motor Power", leftPower);
+            telemetry.addData("Right Motor Power", rightPower);
+            telemetry.addData("Target Ticks", ticks);
             telemetry.update();
 
             // Updates how far the motor has traveled
@@ -421,12 +429,11 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
     public void nextStep(String stepName) {
         RobotLog.i("Next Step:" + stepName);
         if (debugging) {
+            telemetry.addData("Next Step", stepName);
+            telemetry.addData("Press A if you want it to keep going", "");
+            telemetry.update();
             while (!gamepad1.a && opModeIsActive()) {
-                if (gamepad1.dpad_up) {
-                    forwardMotorPower = .75;
-                } else if (gamepad1.dpad_down) {
-                    forwardMotorPower = .5;
-                }
+
             }
         }
     }
