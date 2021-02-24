@@ -217,7 +217,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         int ticks = (int) (inches * robot.forwardTicksPerInch);
         double startAngle = robot.getAngle();
         double angleTuning = 0;
-        double cruisingSpeed = robot.getForwardSpeed(2.5);
+        double cruisingSpeed = 1;
         double distanceTraveled = 0;
         double minSpeed = .02;
         double startSlope = 1.0 / 15.0;
