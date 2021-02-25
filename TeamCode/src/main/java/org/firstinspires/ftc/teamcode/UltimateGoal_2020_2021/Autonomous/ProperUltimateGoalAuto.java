@@ -66,7 +66,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         turnToDesiredAngle(0);
         nextStep("Done Straighten Turn");
 
-        safeWait(250);
+        safeWait(200);
 
         robot.shooterMotor.setVelocity(.5 * SHOOTER_MAX_SPEED);
         robot.shooterMotor2.setVelocity(.5 * SHOOTER_MAX_SPEED);
@@ -75,7 +75,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesForward(54, true);
 
-        turnToDesiredAngle(10);
+        turnToDesiredAngle(13);
 
         nextStep("Shoot the rings");
 
@@ -86,7 +86,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         robot.shooterMotor.setVelocity(0);
         robot.shooterMotor2.setVelocity(0);
 
-        safeWait(250);
+        safeWait(200);
 
         extendWobbleArm(true);
 
@@ -103,7 +103,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         } else if (starterStackResult == 1) {
             nextStep("Move to dropzone B");
             //Destination B
-            turnToDesiredAngle(0);
+            turnToDesiredAngle(-10);
             moveInchesForward(32, true);
             nextStep("Drop Wobble");
             releaseWobble();
