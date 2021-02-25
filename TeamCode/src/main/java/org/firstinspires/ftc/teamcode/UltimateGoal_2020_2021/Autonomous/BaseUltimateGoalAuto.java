@@ -86,7 +86,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
                         if (stackID != 2 && recognition.getLabel().equals(ELEMENT_SINGLE) && recognition.getConfidence() > 0.8) {
                             stackID = 1;
                             confidence = recognition.getConfidence();
-                        } else if (recognition.getLabel().equals(ELEMENT_QUAD) && recognition.getConfidence() > 0.8) {
+                        } else if (recognition.getLabel().equals(ELEMENT_QUAD) && recognition.getConfidence() > 0.7) {
                             stackID = 2;
                             confidence = recognition.getConfidence();
                         }
