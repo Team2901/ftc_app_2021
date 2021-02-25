@@ -217,7 +217,7 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
         double angleTuning = 0;
         double cruisingSpeed = 1;
         double distanceTraveled = 0;
-        double minSpeed = .02;
+        double minSpeed = .05;
         double startSlope = 1.0 / 15.0;
         double endSlope = 1.0 / 30.0;
 
@@ -269,6 +269,14 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
 
             // Updates how far the motor has traveled
             distanceTraveled = Math.abs(robot.leftMotor.getCurrentPosition() / robot.forwardTicksPerInch);
+
+            if(distanceTraveled >= inches && inches > 0){
+                break;
+            }
+
+            if(distanceTraveled <= inches && inches < 0){
+                break;
+            }
         }
 
         robot.leftMotor.setPower(0);
