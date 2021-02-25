@@ -75,7 +75,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
         moveInchesForward(54, true);
 
-        turnToDesiredAngle(13);
+        turnToDesiredAngle(15);
 
         nextStep("Shoot the rings");
 
