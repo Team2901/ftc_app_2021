@@ -98,7 +98,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             turnToDesiredAngle(0);
             nextStep("Drop Wobble");
             releaseWobble();
-            safeWait(500);
+            safeWait(1000);
             extendWobbleArm(false);
         } else if (starterStackResult == 1) {
             nextStep("Move to dropzone B");
@@ -107,7 +107,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             moveInchesForward(32, true);
             nextStep("Drop Wobble");
             releaseWobble();
-            safeWait(500);
+            safeWait(1000);
             extendWobbleArm(false);
             nextStep("Move to park position");
             turnToDesiredAngle(180);
@@ -119,7 +119,7 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
             turnToDesiredAngle(0);
             nextStep("Drop Wobble");
             releaseWobble();
-            safeWait(500);
+            safeWait(1000);
             extendWobbleArm(false);
             nextStep("Move to park position");
             turnToDesiredAngle(180);
