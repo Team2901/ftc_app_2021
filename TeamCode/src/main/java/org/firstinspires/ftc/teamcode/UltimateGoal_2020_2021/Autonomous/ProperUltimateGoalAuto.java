@@ -93,8 +93,8 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         if (starterStackResult == 0) {
             nextStep("Move to dropzone A");
             //Destination A
-            turnToDesiredAngle(45);
-            moveInchesForward(19, true);
+            turnToDesiredAngle(50);
+            moveInchesForward(20, true);
             turnToDesiredAngle(0);
             nextStep("Drop Wobble");
             releaseWobble();
