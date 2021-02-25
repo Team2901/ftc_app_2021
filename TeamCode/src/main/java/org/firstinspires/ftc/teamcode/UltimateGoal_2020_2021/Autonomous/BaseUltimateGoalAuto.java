@@ -270,7 +270,11 @@ public class BaseUltimateGoalAuto extends LinearOpMode {
             // Updates how far the motor has traveled
             distanceTraveled = Math.abs(robot.leftMotor.getCurrentPosition() / robot.forwardTicksPerInch);
 
-            if((distanceTraveled >= inches && inches > 0) && (distanceTraveled <= inches && inches < 0)){
+            if(distanceTraveled >= inches && inches > 0){
+                break;
+            }
+
+            if(distanceTraveled <= inches && inches < 0){
                 break;
             }
         }
