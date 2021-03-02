@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 public class GrantHardware extends BaseUltimateGoalHardware {
 
     public GrantHardware(){
-        super(0, 0, 1);
+        super(0, 0, 5);
     }
 
     @Override

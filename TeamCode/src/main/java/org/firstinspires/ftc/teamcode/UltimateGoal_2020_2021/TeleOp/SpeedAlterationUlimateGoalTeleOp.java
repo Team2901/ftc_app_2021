@@ -7,13 +7,10 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 import org.firstinspires.ftc.teamcode.Utility.FileUtilities;
@@ -23,9 +20,17 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * Initialize the vuforia camera
+ * Use auto aim
+ * Find the x and y distance to image
+ * Use pythagorean theorem to find distance to image
+ * Adjust speed according
+ */
+
 @SuppressLint("DefaultLocale")
-@TeleOp(name = "Vuforia UltimateGoal Test", group = "2021_UltimateGoal")
-public class VuforiaUltimateGoalTest extends OpMode {
+@TeleOp(name = "Speed Alteration", group = "2021_UltimateGoal")
+public class SpeedAlterationUlimateGoalTeleOp extends VuforiaUltimateGoalTest {
     public BaseUltimateGoalHardware robot = BaseUltimateGoalHardware.create();
 
     public static final float MM_TO_INCHES = 0.0393701f;
@@ -69,9 +74,6 @@ public class VuforiaUltimateGoalTest extends OpMode {
 
     @Override
     public void loop() {
-
-        improvedGamepad.update();
-
         double leftMotorPower = 0;
         double rightMotorPower = 0;
 
@@ -83,8 +85,34 @@ public class VuforiaUltimateGoalTest extends OpMode {
         telemetry.addData("robot position", MatrixHelper.getInchesPositionString(robotLocation));
         telemetry.addData("robot angle", MatrixHelper.getAngleString(robotLocation));
 
+        // Gets the x and y position of the robot.
+        Float xPositionInches = MatrixHelper.getXPositionInches(robotLocation);
+        Float yPositionInches = MatrixHelper.getYPositionInches(robotLocation);
 
+        if(xPositionInches != null && yPositionInches != null) {
+            // Uses pythagorean theorem to find the distance to the image.
+            double distanceToImage = Math.sqrt(Math.pow(xPositionInches, 2) + Math.pow(yPositionInches, 2));
+
+            telemetry.addData("X position", xPositionInches);
+            telemetry.addData("Y Position", yPositionInches);
+            telemetry.addData("Distance to Image", distanceToImage);
+
+            // Alters shooter power speed based on the distance from the image.
+            if(distanceToImage >= 132){
+                robot.shooterMotor.setPower(1);
+            }else if(distanceToImage >= 108){
+                robot.shooterMotor.setPower(0.9);
+            }else if(distanceToImage >= 84){
+                robot.shooterMotor.setPower(0.8);
+            }else{
+                robot.shooterMotor.setPower(0.7);
+            }
+            telemetry.addData("Shooter power", robot.shooterMotor.getPower());
+        }
+
+        // Gets the z angle of the robot's location.
         Float zAngle = MatrixHelper.getZAngle(robotLocation);
+
         double angleDifference = 0;
         double velocity = 0;
 
@@ -165,6 +193,5 @@ public class VuforiaUltimateGoalTest extends OpMode {
         }
 
         telemetry.update();
-
     }
 }

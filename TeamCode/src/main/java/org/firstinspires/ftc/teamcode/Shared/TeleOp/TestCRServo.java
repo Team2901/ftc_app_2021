@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 
-@Disabled
+
 @TeleOp(name = "CRServo Test", group = "Shared Test")
 public class TestCRServo extends OpMode {
 
@@ -13,12 +13,18 @@ public class TestCRServo extends OpMode {
 
     @Override
     public void init() {
-        crServo = hardwareMap.crservo.get("crServo");
+        crServo = hardwareMap.crservo.get("backup_kicker");
     }
 
     @Override
     public void loop() {
-        crServo.setPower(-gamepad1.right_stick_y);
+        if(gamepad1.left_bumper){
+            crServo.setPower(0.99);
+        } else if(gamepad1.right_bumper){
+            crServo.setPower(1.0);
+        } else {
+            crServo.setPower(-gamepad1.right_stick_y);
+        }
 
         telemetry.addData("Joystick", gamepad1.right_stick_y);
         telemetry.addData("crServo", crServo.getPower());

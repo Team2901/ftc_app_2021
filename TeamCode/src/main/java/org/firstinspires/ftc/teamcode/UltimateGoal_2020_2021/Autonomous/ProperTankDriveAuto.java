@@ -5,43 +5,26 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@Autonomous(name = "Tank Drive Proper Autonomous")
+@Autonomous(name = "Tank Drive Proper Autonomous V7")
 public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
 
     private ElapsedTime runtime = new ElapsedTime();
 
-    public ProperTankDriveAuto(TeamColor teamColor) { super(TeamColor.BLUE_TEAM); }
+    final double SHOOTER_MAX_SPEED = (4800 * 28) / 60;
 
-    private void moveInchesCenter(int inches){
-        float startAngle = robot.getAngle();
-        if(inches >= 0) {
-            turnToDesiredAngle(startAngle-90);
-        } else {
-            turnToDesiredAngle(startAngle+90);
+    public ProperTankDriveAuto() { super(TeamColor.BLUE_TEAM); }
+
+    public void extendWobbleArm(boolean extending) {
+        if (extending && opModeIsActive()) {
+            robot.wobbleElbow.setTargetPosition(robot.elbowExtendedPosition);
+            robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.wobbleElbow.setPower(1);
         }
-        moveInchesForward(inches, true);
-        turnToDesiredAngle(startAngle);
-    }
-
-    public void goToA() {
-        moveInchesCenter(24);
-        moveInchesForward(9, true);
-        turnToDesiredAngle(180);
-        releaseWobble();
-    }
-    public void goToB() {
-        moveInchesCenter(24);
-        moveInchesForward(99, true);
-        releaseWobble();
-        moveInchesForward(90, false);
-        turnToDesiredAngle(180);
-    }
-    public void goToC() {
-        moveInchesCenter(24);
-        moveInchesForward(123, true);
-        turnToDesiredAngle(180);
-        releaseWobble();
-        moveInchesForward(115, true);
+        if (!extending && opModeIsActive()) {
+            robot.wobbleElbow.setTargetPosition(0);
+            robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            robot.wobbleElbow.setPower(-1);
+        }
     }
 
     @Override
@@ -60,52 +43,37 @@ public class ProperTankDriveAuto extends BaseUltimateGoalAuto{
         waitForStart();
         runtime.reset();
 
-        moveInchesForward(6, true);
+        grabWobble();
 
-        moveInchesCenter(-12);
+        robot.shooterMotor.setVelocity(.425*SHOOTER_MAX_SPEED);
+        robot.shooterMotor2.setVelocity(.425*SHOOTER_MAX_SPEED);
 
-        ElapsedTime timer = new ElapsedTime();
-        while(timer.seconds() < 1){}
+        moveInchesForward(60, true);
 
-        starterStackResult = starterStackSensor();
+        turnToDesiredAngle(0);
 
-        moveInchesCenter(12);
+        ringShot(1);
 
-        moveInchesForward(54, true);
+        turnToDesiredAngle((float) -8.75);
 
-        ringShot(3);
+        ringShot(1);
 
-        if (starterStackResult == 0) {
-            goToA();
-            moveInchesForward(48, true);
-            turnToDesiredAngle(-90);
-            grabWobble();
-            turnToDesiredAngle(0);
-            moveInchesForward(40, true);
-            moveInchesCenter(-30);
-            goToA();
-        } else if (starterStackResult == 1) {
-            goToB();
-            moveInchesCenter(12);
-            turnToDesiredAngle(0);
-            robot.intakeMotor.setPower(0.5);
-            moveInchesForward(-36, false);
-            robot.intakeMotor.setPower(0);
-            moveInchesCenter(12);
-            moveInchesForward(-12, false);
-            turnToDesiredAngle(-90);
-            grabWobble();
-            turnToDesiredAngle(0);
-            moveInchesForward(40, true);
-            moveInchesCenter(-30);
-            ringShot(1);
-            goToB();
-        } else if (starterStackResult == 2) {
-            goToC();
-        } else {
-            telemetry.addData("error", "How did this happen");
-            telemetry.update();
-        }
+        turnToDesiredAngle((float)-12.75);
+
+        ringShot(1);
+
+        turnToDesiredAngle(1);
+
+        robot.shooterMotor.setVelocity(0);
+        robot.shooterMotor2.setVelocity(0);
+
+        extendWobbleArm(true);
+        moveInchesForward(32, true);
+        releaseWobble();
+        safeWait(1000);
+        turnToDesiredAngle(180);
+        extendWobbleArm(false);
+        moveInchesForward(20, false);
 
 
 

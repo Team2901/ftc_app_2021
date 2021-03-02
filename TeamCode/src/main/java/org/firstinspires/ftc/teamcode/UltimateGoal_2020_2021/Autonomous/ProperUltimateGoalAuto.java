@@ -3,58 +3,32 @@ package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.util.RobotLog;
 
 @Autonomous(name = "Proper Autonomous")
 public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
 
     private ElapsedTime runtime = new ElapsedTime();
+    final double SHOOTER_MAX_SPEED = (4800 * 28) / 60;
+
+    private static final double TAKE_A_LOOKSIE = 15;
+    boolean shootRings = true;
 
     public ProperUltimateGoalAuto() {
         super(TeamColor.BLUE_TEAM);
     }
 
     public void extendWobbleArm(boolean extending) {
-        if(extending && opModeIsActive()) {
-            robot.wobbleElbow.setTargetPosition(13500);
+        if (extending && opModeIsActive()) {
+            robot.wobbleElbow.setTargetPosition(robot.elbowExtendedPosition);
             robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.wobbleElbow.setPower(1);
         }
-        if(!extending && opModeIsActive()){
+        if (!extending && opModeIsActive()) {
             robot.wobbleElbow.setTargetPosition(0);
             robot.wobbleElbow.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             robot.wobbleElbow.setPower(-1);
         }
-    }
-
-    public void waitForContinue(){
-        while(!gamepad1.a && opModeIsActive()) {
-            if(gamepad1.dpad_up){
-                forwardMotorPower = .75;
-            } else if(gamepad1.dpad_down) {
-                forwardMotorPower = .5;
-            }
-        }
-    }
-
-    public void goToA() {
-        moveInchesForward(9, true);
-        releaseWobble();
-        moveInchesCenter(12);
-    }
-    public void goToB() {
-        moveInchesForward(45, true);
-        turnToDesiredAngle(180);
-        releaseWobble();
-        moveInchesForward(12, true);
-        moveInchesCenter(-12);
-        turnToDesiredAngle(0);
-        moveInchesForward(24, false);
-    }
-    public void goToC() {
-        moveInchesForward(69, true);
-        releaseWobble();
-        moveInchesCenter(12);
-        moveInchesForward(-60, false);
     }
 
     @Override
@@ -73,76 +47,88 @@ public class ProperUltimateGoalAuto extends BaseUltimateGoalAuto {
         waitForStart();
         runtime.reset();
 
+        nextStep("Moving to Starter Stack Acquisition Position");
+
         grabWobble();
 
-        moveInchesCenter(-12);
+        moveInchesForward(6, true);
 
-        ElapsedTime timer = new ElapsedTime();
-        while(timer.seconds() < 1 && opModeIsActive()){}
+        nextStep("Start Stack Turn");
+        turnToDesiredAngle(20);
+        nextStep("Done Stack Turn");
+
+        nextStep("Read Starter Stack");
 
         starterStackResult = starterStackSensor();
 
-        moveInchesCenter(12);
-
-        extendWobbleArm(true);
-
-        moveInchesForward(60, true);
+        nextStep("Starter Stack Result = " + starterStackResult);
 
         turnToDesiredAngle(0);
+        nextStep("Done Straighten Turn");
+
+        safeWait(200);
+
+        robot.shooterMotor.setVelocity(.5 * SHOOTER_MAX_SPEED);
+        robot.shooterMotor2.setVelocity(.5 * SHOOTER_MAX_SPEED);
+
+        nextStep("Move to Shooting Position");
+
+        moveInchesForward(54, true);
+
+        turnToDesiredAngle(15);
+
+        nextStep("Shoot the rings");
 
         ringShot(3);
 
-        moveInchesCenter(-20);
+        //#GP #WINNING #QUACKTASTIC DUCKUMENTARY
+
+        robot.shooterMotor.setVelocity(0);
+        robot.shooterMotor2.setVelocity(0);
+
+        safeWait(200);
+
+        extendWobbleArm(true);
 
         if (starterStackResult == 0) {
-            waitForContinue();
-            goToA();
-            waitForContinue();
-            moveInchesForward(-42, false);
-            turnToDesiredAngle(90);
-            waitForContinue();
-            moveInchesCenter(-6);
-            grabWobble();
+            nextStep("Move to dropzone A");
+            //Destination A
+            turnToDesiredAngle(50);
+            moveInchesForward(19, true);
             turnToDesiredAngle(0);
-            waitForContinue();
-            moveInchesForward(48, true);
-            waitForContinue();
-            goToA();
+            nextStep("Drop Wobble");
+            releaseWobble();
+            safeWait(1000);
+            extendWobbleArm(false);
         } else if (starterStackResult == 1) {
-            waitForContinue();
-            goToB();
-            moveInchesForward(-24, false);
-            waitForContinue();
-            robot.intakeMotor.setPower(.5);
-            robot.intakeMotor.setPower(-.5);
-            moveInchesForward(-15, false);
-            moveInchesForward(3, false);
-            robot.intakeMotor.setPower(0);
-            robot.intakeMotor.setPower(0);
-            waitForContinue();
-            moveInchesCenter(22);
-            moveInchesForward(24, true);
-            waitForContinue();
-            ringShot(1);
-            moveInchesCenter(-34);
-            waitForContinue();
-            moveInchesForward(-42, false);
-            turnToDesiredAngle(90);
-            moveInchesCenter(-6);
-            grabWobble();
-            waitForContinue();
-            turnToDesiredAngle(0);
-            moveInchesForward(48, true);
-            waitForContinue();
-            goToB();
+            nextStep("Move to dropzone B");
+            //Destination B
+            turnToDesiredAngle(-7);
+            moveInchesForward(32, true);
+            nextStep("Drop Wobble");
+            releaseWobble();
+            safeWait(1000);
+            extendWobbleArm(false);
+            nextStep("Move to park position");
+            turnToDesiredAngle(180);
+            moveInchesForward(20, false);
         } else if (starterStackResult == 2) {
-            goToC();
+            nextStep("Move to dropzone C");
+            //Destination C
+            moveInchesForward(61, true);
+            turnToDesiredAngle(2);
+            nextStep("Drop Wobble");
+            releaseWobble();
+            safeWait(1000);
+            extendWobbleArm(false);
+            nextStep("Move to park position");
+            turnToDesiredAngle(180);
+            moveInchesForward(48, false);
         } else {
-            telemetry.addData("error", "How did this happen");
-            telemetry.update();
+            telemetry.addData("How is this not working", "something is very very wrong");
         }
 
-
+        nextStep("Done");
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {

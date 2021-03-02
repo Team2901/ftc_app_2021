@@ -183,7 +183,7 @@ public class MatrixHelper {
     }
 
     /**
-     * Gets the Y angle (in degrees) for the given Matrix, else null if the matrix is null
+     * Gets the Z angle (in degrees) for the given Matrix, else null if the matrix is null
      *
      * @param openGLMatrix Matrix to get angle from
      * @return Y angle (in degrees)

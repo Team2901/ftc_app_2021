@@ -107,8 +107,8 @@ public class BaseCamera {
             tfodParameters.minResultConfidence = (float) minimumConfidence;
             tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
             tfod.loadModelFromAsset(assetName, labels);
-            tfod.setZoom(2, 1.7);
-            tfod.setClippingMargins(0, 200, 200, 0);
+            //tfod.setZoom(2, 1.7);
+            tfod.setClippingMargins(0, 200, 0, 0);
         }
 
         return errorMessage;
@@ -133,6 +133,11 @@ public class BaseCamera {
     }
 
     public void ultimateGoalSetupTrackables(OpenGLMatrix webcamLocation){
+        // Checks to see if the trackables are available before we start.
+        if(vuforiaTrackables == null){
+            return;
+        }
+
         // Saves blue tower trackable.
         VuforiaTrackable vuforiaBlueTower = vuforiaTrackables.get(0);
 
@@ -165,6 +170,11 @@ public class BaseCamera {
     }
 
     public OpenGLMatrix getRobotLocation(){
+        // If they are no trackables, then we return null.
+        if(vuforiaTrackables == null){
+            return null;
+        }
+
         // Check if trackers are visible.
         for(int i = 0; i < vuforiaTrackables.size(); i++) {
             // Store current element in variable.

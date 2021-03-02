@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -24,11 +25,17 @@ public class MetoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
     public static final double WHEEL_CIRCUMFERENCE_INCHES = 4 * Math.PI;
     public static final double FORWARD_TICKS_PER_INCH = FORWARD_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
     public static final double CENTER_TICKS_PER_INCH = CENTER_TICKS_PER_DRIVE_REV / WHEEL_CIRCUMFERENCE_INCHES;
-    public static final double FEET_PER_SECOND = REVOLUTIONS_PER_SECOND * WHEEL_CIRCUMFERENCE_INCHES;
+    public static final double FEET_PER_SECOND = (REVOLUTIONS_PER_SECOND * WHEEL_CIRCUMFERENCE_INCHES) / 12.0;
 
+    public static final double SHOOTER_MAX_RPM = 6000.0; /* gobilda 5202 1:1 */
+    public static final double SHOOTER_TICKS_PER_REV = 28;
+    public static final double SHOOTER_TICKS_PER_MIN = SHOOTER_MAX_RPM * SHOOTER_TICKS_PER_REV;
+    public static final double MIN_PER_SEC = 1.0/60;
+    public static final double SHOOTER_TICKS_PER_SEC = SHOOTER_TICKS_PER_MIN * MIN_PER_SEC;
+    public static final double SHOOTER_VELOCITY = (.8 * SHOOTER_TICKS_PER_SEC);
 
     public MetoebesUltimateGoalHardware() {
-        super(FORWARD_TICKS_PER_INCH, CENTER_TICKS_PER_INCH, 1);
+        super(FORWARD_TICKS_PER_INCH, CENTER_TICKS_PER_INCH, 1, 0, 13684);
     }
 
     @Override
@@ -40,17 +47,29 @@ public class MetoebesUltimateGoalHardware extends BaseUltimateGoalHardware {
         rightMotor.setDirection(DcMotor.Direction.FORWARD);
 
         middleMotor.setDirection(DcMotor.Direction.REVERSE);
+
+        wobbleElbow.setDirection(DcMotorSimple.Direction.FORWARD);
     }
 
     public double getRecommendedMaxMotorSpeed() {
         return RECOMMENDED_MAX_POWER;
     }
 
-    public double getSpeed(double desiredFeetPerSecond){
+    public double getForwardSpeed(double desiredFeetPerSecond){
         //1 = FEET_PER_SECOND, x=desiredFeetPerSecond
         double speed = desiredFeetPerSecond / FEET_PER_SECOND;
         return speed;
     }
+    public double getStrafeSpeed(double desiredFeetPerSecond){
+        //1 = FEET_PER_SECOND, x=desiredFeetPerSecond
+        double speed = desiredFeetPerSecond / FEET_PER_SECOND;
+        return speed;
+    }
+    public double getShooterVelocity(){
+
+        return SHOOTER_VELOCITY;
+    }
+
 
     public float getAngle() {
 
