@@ -4,6 +4,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.AnalogInput;
+
 
 /**
  * Created by Kearneyg20428 on 2/7/2017.
@@ -22,6 +24,7 @@ public class ClawbotHardware {
     public DcMotor armMotor = null;
     public Servo claw = null;
     private HardwareMap hwMap = null;
+    AnalogInput potentiometer;
 
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
@@ -45,6 +48,9 @@ public class ClawbotHardware {
         claw = hwMap.servo.get("left_hand");
 
         claw.setPosition(0);
+
+        //Set up the potentiometer
+        potentiometer = hwMap.analogInput.get("potentiometer");
     }
 
     public void waitForTick(long periodMs) {
