@@ -24,7 +24,9 @@ public class ClawbotHardware {
     public DcMotor armMotor = null;
     public Servo claw = null;
     private HardwareMap hwMap = null;
-    AnalogInput potentiometer;
+    public AnalogInput potentiometer;
+    public static final double MIN_ARM_VOLTAGE = 1;
+    public static final double MAX_ARM_VOLTAGE = 4;
 
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map

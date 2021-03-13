@@ -37,6 +37,12 @@ public class DDRClawbotTeleOp extends OpMode {
         double gmRightPower;
         double gmArmPower;
 
+        /*if(robot.potentiometer.getVoltage() < ClawbotHardware.MIN_ARM_VOLTAGE){
+            robot.armMotor.setPower(0.3);
+        } else if(robot.potentiometer.getVoltage() > ClawbotHardware.MAX_ARM_VOLTAGE){
+            robot.armMotor.setPower(-0.3);
+        }*/
+
         // Moves robot forward using the left joystick
         if(this.gamepad2.left_stick_y > 0.5){
             gmLeftPower = 1;
