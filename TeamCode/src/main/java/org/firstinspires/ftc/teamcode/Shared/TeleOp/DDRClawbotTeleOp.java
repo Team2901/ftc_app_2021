@@ -11,7 +11,7 @@ import org.firstinspires.ftc.teamcode.Shared.Hardware.ClawbotHardware;
  * Created by Kearneyg20428 on 2/7/2017.
  */
 @Disabled
-@TeleOp(name = "Clawbot", group = "Shared")
+@TeleOp(name = "DDR Clawbot", group = "Shared")
 public class DDRClawbotTeleOp extends OpMode {
 
     final double CLAW_SPEED = 0.05;
@@ -28,50 +28,79 @@ public class DDRClawbotTeleOp extends OpMode {
 
     @Override
     public void loop() {
-        double leftPower;
-        double rightPower;
-        double armPower;
+        double participantLeftPower;
+        double participantRightPower;
+        double participantArmPower;
+
+        // gm = game master
+        double gmLeftPower;
+        double gmRightPower;
+        double gmArmPower;
+
+        // Moves robot forward using the left joystick
+        if(this.gamepad2.left_stick_y > 0.5){
+            gmLeftPower = 1;
+            gmRightPower = 1;
+        }
+
+        // Moves the robot backward using the left joystick
+        if(gamepad2.left_stick_y < -0.5){
+            gmLeftPower = -1;
+            gmRightPower = -1;
+        }
+
+        // Turns the robot counterclockwise using the left bumper.
+        if(gamepad2.left_bumper){
+            gmLeftPower = -1;
+            gmRightPower = 1;
+        }
+
+        // Turns the robot clockwise using the right bumper.
+        if(gamepad2.right_bumper){
+            gmLeftPower = 1;
+            gmRightPower = -1;
+        }
 
         //Topleft + Up = arc counterclockwise
         //Left power = 0.75, Right power = 1
         if(this.gamepad1.left_bumper && this.gamepad1.dpad_up){
-            leftPower = 0.75;
-            rightPower = 1;
+            participantLeftPower = 0.75;
+            participantRightPower = 1;
 
         } //Topright + Up = arc clockwise
         //Left power = 1, Right power = 0.75
         else if(this.gamepad1.right_bumper && this.gamepad1.dpad_up){
-            leftPower = 1;
-            rightPower = 0.75;
+            participantLeftPower = 1;
+            participantRightPower = 0.75;
 
         } //Topleft = counterclockwise
         //Left power = -0.75, Right power = 0.75
         else if(this.gamepad1.left_bumper){
-            leftPower = -0.75;
-            rightPower = 0.75;
+            participantLeftPower = -0.75;
+            participantRightPower = 0.75;
 
         } //Topright = clockwise
         //Left power = 0.75, Right power = -0.75
         else if(this.gamepad1.right_bumper){
-            leftPower = 0.75;
-            rightPower = -0.75;
+            participantLeftPower = 0.75;
+            participantRightPower = -0.75;
         } //Up = straight
         //Left and right motors same power 0.75
         else if(this.gamepad1.dpad_up){
-            leftPower = 0.75;
-            rightPower = 0.75;
+            participantLeftPower = 0.75;
+            participantRightPower = 0.75;
         } else {
-            leftPower = 0;
-            rightPower = 0;
+            participantLeftPower = 0;
+            participantRightPower = 0;
         }
 
         //Dpad left moves the arm down, dpad right moves the arm up, else, it stays in place
         if(this.gamepad1.dpad_left) {
-            armPower = ClawbotHardware.ARM_DOWN_POWER;
+            participantArmPower = ClawbotHardware.ARM_DOWN_POWER;
         } else if(this.gamepad1.dpad_right){
-            armPower = ClawbotHardware.ARM_UP_POWER;
+            participantArmPower = ClawbotHardware.ARM_UP_POWER;
         } else {
-            armPower = 0;
+            participantArmPower = 0;
         }
 
         //Checks to see if it is the initial press of dpad down
@@ -91,8 +120,8 @@ public class DDRClawbotTeleOp extends OpMode {
         isLastClawPressed = this.gamepad1.dpad_down;
 
         //Sets power to motors
-        power(leftPower, rightPower);
-        robot.armMotor.setPower(armPower);
+        power(participantLeftPower, participantRightPower);
+        robot.armMotor.setPower(participantArmPower);
     }
 
     public void power(double left, double right) {
