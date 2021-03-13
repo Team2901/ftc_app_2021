@@ -33,32 +33,39 @@ public class DDRClawbotTeleOp extends OpMode {
         double participantArmPower;
 
         // gm = game master
-        double gmLeftPower;
-        double gmRightPower;
-        double gmArmPower;
+        double gmLeftPower = 0;
+        double gmRightPower = 0;
+        double gmArmPower = 0;
 
         // Moves robot forward using the left joystick
         if(this.gamepad2.left_stick_y > 0.5){
-            gmLeftPower = 1;
-            gmRightPower = 1;
+            gmLeftPower += 1;
+            gmRightPower += 1;
         }
 
         // Moves the robot backward using the left joystick
         if(gamepad2.left_stick_y < -0.5){
-            gmLeftPower = -1;
-            gmRightPower = -1;
+            gmLeftPower += -1;
+            gmRightPower += -1;
         }
 
         // Turns the robot counterclockwise using the left bumper.
         if(gamepad2.left_bumper){
-            gmLeftPower = -1;
-            gmRightPower = 1;
+            gmLeftPower += -0.5;
+            gmRightPower += 0.5;
         }
 
         // Turns the robot clockwise using the right bumper.
         if(gamepad2.right_bumper){
-            gmLeftPower = 1;
-            gmRightPower = -1;
+            gmLeftPower += 0.5;
+            gmRightPower += -0.5;
+        }
+
+        double maxPower = Math.max(Math.abs(gmLeftPower), Math.abs(gmRightPower));
+
+        if(maxPower > 1){
+            gmRightPower /= maxPower;
+            gmLeftPower /= maxPower;
         }
 
         //Topleft + Up = arc counterclockwise
