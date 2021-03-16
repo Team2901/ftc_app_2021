@@ -87,6 +87,15 @@ public class DDRClawbotTeleOp extends OpMode {
             gmLeftPower /= maxPower;
         }
 
+        // DDR pad left moves the arm down, DDR pad right moves the arm up, else, it stays in place.
+        if(this.gamepad1.b) {
+            gmArmPower = ClawbotHardware.ARM_DOWN_POWER;
+        } else if(this.gamepad1.y){
+            gmArmPower = ClawbotHardware.ARM_UP_POWER;
+        } else {
+            gmArmPower = 0;
+        }
+
         //Topleft + Up = arc counterclockwise
         //Left power = 0.75, Right power = 1
         if(this.gamepad1.left_bumper && this.gamepad1.left_stick_button){
