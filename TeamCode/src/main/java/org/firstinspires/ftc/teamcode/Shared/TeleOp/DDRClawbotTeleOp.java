@@ -3,8 +3,10 @@ package org.firstinspires.ftc.teamcode.Shared.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.ClawbotHardware;
 
 /**
@@ -19,15 +21,25 @@ public class DDRClawbotTeleOp extends OpMode {
     double clawOffset = 0.0;
     boolean isLastClawPressed = false;
     boolean isClawOpen = false;
+    boolean override = false;
+    ImprovedGamepad impGamepad1;
+    ImprovedGamepad impGamepad2;
+    ElapsedTime timer = new ElapsedTime();
 
     @Override
     public void init() {
         robot.init(hardwareMap);
         robot.claw.setPosition(ClawbotHardware.MID_SERVO);
+
+        impGamepad1 = new ImprovedGamepad(this.gamepad1, this.timer, "GP1");
+        impGamepad2 = new ImprovedGamepad(this.gamepad2, this.timer, "GP2");
     }
 
     @Override
     public void loop() {
+        impGamepad1.update();
+        impGamepad2.update();
+
         double participantLeftPower;
         double participantRightPower;
         double participantArmPower;
@@ -133,9 +145,24 @@ public class DDRClawbotTeleOp extends OpMode {
         //Updates isLastClawPressed to current state of dpad down
         isLastClawPressed = this.gamepad1.right_stick_button;
 
-        //Sets power to motors
-        power(participantLeftPower, participantRightPower);
-        robot.armMotor.setPower(participantArmPower);
+
+        final boolean participantInput = gamepad1.left_bumper || gamepad1.right_bumper ||
+                gamepad1.left_stick_button || gamepad1.right_stick_button || gamepad1.y || gamepad1.b;
+
+        if(impGamepad1.a.isInitialPress()){
+            override = !override;
+        }
+
+        // If the user is pressing a button and the override is turned off then
+        // the participant can use the robot.  Otherwise, the game master has complete control.
+        if(participantInput && !override) {
+            // Sets power to motors
+            power(participantLeftPower, participantRightPower);
+            robot.armMotor.setPower(participantArmPower);
+        }else{
+            power(gmLeftPower, gmRightPower);
+            robot.armMotor.setPower(gmArmPower);
+        }
     }
 
     public void power(double left, double right) {
