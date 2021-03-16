@@ -69,6 +69,7 @@ public class DDRClawbotTeleOp extends OpMode {
 
         double maxPower = Math.max(Math.abs(gmLeftPower), Math.abs(gmRightPower));
 
+        // Adjusts speeds for the arcs.
         if(maxPower > 1){
             gmRightPower /= maxPower;
             gmLeftPower /= maxPower;
@@ -76,30 +77,30 @@ public class DDRClawbotTeleOp extends OpMode {
 
         //Topleft + Up = arc counterclockwise
         //Left power = 0.75, Right power = 1
-        if(this.gamepad1.left_bumper && this.gamepad1.dpad_up){
+        if(this.gamepad1.left_bumper && this.gamepad1.left_stick_button){
             participantLeftPower = 0.75;
             participantRightPower = 1;
 
-        } //Topright + Up = arc clockwise
+        } //Top right + Up = arc clockwise
         //Left power = 1, Right power = 0.75
-        else if(this.gamepad1.right_bumper && this.gamepad1.dpad_up){
+        else if(this.gamepad1.right_bumper && this.gamepad1.left_stick_button){
             participantLeftPower = 1;
             participantRightPower = 0.75;
 
-        } //Topleft = counterclockwise
+        } //Top left = counterclockwise
         //Left power = -0.75, Right power = 0.75
         else if(this.gamepad1.left_bumper){
             participantLeftPower = -0.75;
             participantRightPower = 0.75;
 
-        } //Topright = clockwise
+        } //Top right = clockwise
         //Left power = 0.75, Right power = -0.75
         else if(this.gamepad1.right_bumper){
             participantLeftPower = 0.75;
             participantRightPower = -0.75;
         } //Up = straight
         //Left and right motors same power 0.75
-        else if(this.gamepad1.dpad_up){
+        else if(this.gamepad1.left_stick_button){
             participantLeftPower = 0.75;
             participantRightPower = 0.75;
         } else {
@@ -107,17 +108,17 @@ public class DDRClawbotTeleOp extends OpMode {
             participantRightPower = 0;
         }
 
-        //Dpad left moves the arm down, dpad right moves the arm up, else, it stays in place
-        if(this.gamepad1.dpad_left) {
+        // DDR pad left moves the arm down, DDR pad right moves the arm up, else, it stays in place.
+        if(this.gamepad1.b) {
             participantArmPower = ClawbotHardware.ARM_DOWN_POWER;
-        } else if(this.gamepad1.dpad_right){
+        } else if(this.gamepad1.y){
             participantArmPower = ClawbotHardware.ARM_UP_POWER;
         } else {
             participantArmPower = 0;
         }
 
-        //Checks to see if it is the initial press of dpad down
-        if(this.gamepad1.dpad_down){
+        // Checks to see if it is the initial press of DDR pad down
+        if(this.gamepad1.right_stick_button){
             if(!isLastClawPressed){
                 isClawOpen = !isClawOpen;
             }
@@ -130,7 +131,7 @@ public class DDRClawbotTeleOp extends OpMode {
             robot.claw.setPosition(ClawbotHardware.MID_SERVO - ClawbotHardware.MAX_SAFE_CLAW_OFFSET);
         }
         //Updates isLastClawPressed to current state of dpad down
-        isLastClawPressed = this.gamepad1.dpad_down;
+        isLastClawPressed = this.gamepad1.right_stick_button;
 
         //Sets power to motors
         power(participantLeftPower, participantRightPower);
