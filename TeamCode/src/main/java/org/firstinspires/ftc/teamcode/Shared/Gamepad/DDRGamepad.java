@@ -26,6 +26,9 @@ public class DDRGamepad {
     // Right stick button
     public BooleanButton rightArrow;
 
+    // Start button
+    public BooleanButton startButton;
+
     public DDRGamepad(final Gamepad hardwareGamepad, final ElapsedTime timer, final String name) {
 
         this.hardwareGamepad = hardwareGamepad;
@@ -38,6 +41,7 @@ public class DDRGamepad {
         this.topRightArrow = new BooleanButton(String.format("%s_top_right_arrow", this.name));
         this.upArrow = new BooleanButton(String.format("%s_up_arrow", this.name));
         this.rightArrow = new BooleanButton(String.format("%s_right_arrow", this.name));
+        this.startButton = new BooleanButton(String.format("%s_start_button", this.name));
     }
 
     public void update() {
@@ -50,9 +54,10 @@ public class DDRGamepad {
         topRightArrow.update(hardwareGamepad.right_bumper, time);
         upArrow.update(hardwareGamepad.left_stick_button, time);
         rightArrow.update(hardwareGamepad.right_stick_button, time);
+        startButton.update(hardwareGamepad.start, time);
     }
 
     public boolean areButtonsActive(){
-        return leftArrow.pressed || downArrow.pressed || topLeftArrow.pressed || topRightArrow.pressed || upArrow.pressed || rightArrow.pressed;
+        return leftArrow.pressed || (downArrow.pressed && !startButton.pressed) || topLeftArrow.pressed || topRightArrow.pressed || upArrow.pressed || rightArrow.pressed;
     }
 }

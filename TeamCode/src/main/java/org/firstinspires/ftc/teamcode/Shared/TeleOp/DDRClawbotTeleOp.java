@@ -59,7 +59,7 @@ public class DDRClawbotTeleOp extends OpMode {
 
         //TODO have a discussion about using leftstickX for turning
 
-        if(gameMasterGP.a.isInitialPress()){
+        if(gameMasterGP.a.isInitialPress() && !gameMasterGP.start.getValue()){
             override = !override;
         }
 
@@ -132,7 +132,7 @@ public class DDRClawbotTeleOp extends OpMode {
         }
 
         // Checks to see if it is the initial press of DDR pad down
-        if(this.participantGP.downArrow.isInitialPress() && !override){
+        if(this.participantGP.downArrow.isInitialPress() && !override && !this.participantGP.startButton.getValue()){
             isClawOpen = !isClawOpen;
         } else if(this.gameMasterGP.y.isInitialPress()) {
             isClawOpen = !isClawOpen;
