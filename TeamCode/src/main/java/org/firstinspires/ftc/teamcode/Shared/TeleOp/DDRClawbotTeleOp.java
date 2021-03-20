@@ -156,6 +156,10 @@ public class DDRClawbotTeleOp extends OpMode {
             power(gmLeftPower, gmRightPower);
             robot.armMotor.setPower(gmArmPower);
         }
+        telemetry.addData("Override", override);
+        telemetry.addData("Participant Input", participantInput);
+        telemetry.addData("Potentiometer", robot.potentiometer.getVoltage());
+        telemetry.update();
     }
 
     public void power(double left, double right) {
