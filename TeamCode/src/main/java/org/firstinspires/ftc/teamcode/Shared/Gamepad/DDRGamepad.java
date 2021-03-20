@@ -51,4 +51,8 @@ public class DDRGamepad {
         upArrow.update(hardwareGamepad.left_stick_button, time);
         rightArrow.update(hardwareGamepad.right_stick_button, time);
     }
+
+    public boolean areButtonsActive(){
+        return leftArrow.pressed || downArrow.pressed || topLeftArrow.pressed || topRightArrow.pressed || upArrow.pressed || rightArrow.pressed;
+    }
 }
