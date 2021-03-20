@@ -2,11 +2,13 @@ package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.TeleOp;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.AnalogInput;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
+import org.firstinspires.ftc.teamcode.Shared.Hardware.MockCRServo;
 import org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.Hardware.BaseUltimateGoalHardware;
 
 import java.util.ArrayList;
@@ -20,6 +22,7 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
 
     DcMotor motorUnderTest;
     Servo servoUnderTest;
+    AnalogInput potentiometerUnderTest;
 
     // List of all of the motor names.
     String[] motorNames = {"left_drive", "right_drive", "middle_drive", "intake_motor", "transfer_motor", "shooter_motor", "shooter_motor_2", "elbow_motor"};
@@ -27,12 +30,16 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
     // List of all of the servo names.
     String[] servoNames = {"grabber", "kicker", "backup kicker"};
 
+    //List of all potentiometer names.
+    String[] potentiometerNames = {null, null, null, null, null, null, null, "potentiometer"};
+
     int motorIndex;
 
     int servoIndex;
 
     ArrayList<DcMotor> motorArrayList = new ArrayList<>();
     ArrayList<Servo> servoArrayList = new ArrayList<>();
+    ArrayList<AnalogInput> potentiometerArrayList = new ArrayList<>();
 
     @Override
     public void init() {
@@ -58,6 +65,22 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
             servoArrayList.add(servo);
             telemetry.addData("Servo" + i, servoArrayList.get(i));
 
+        }
+
+        for(int i = 0; i < potentiometerNames.length; i++){
+            String potentiometerName = potentiometerNames[i];
+            AnalogInput potentiometer = null;
+            try{
+                potentiometer = hardwareMap.analogInput.get(potentiometerName);
+            } catch(Exception e){
+                if(potentiometerName != null){
+                    robot.failedHardware.add(potentiometerName);
+                }
+            }
+            potentiometerArrayList.add(i, potentiometer);
+            if(potentiometerName != null){
+                telemetry.addData("Potentiometer" + i, potentiometerArrayList.get(i));
+            }
         }
 
         telemetry.addData("Failed Hardware", robot.failedHardware.size());
@@ -86,6 +109,8 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
         // Identifying our desired motor to test.
         motorUnderTest = motorArrayList.get(motorIndex);
 
+        potentiometerUnderTest = potentiometerArrayList.get(motorIndex);
+
         // Use dpad right and dpad left button to either increment or decrement the servoIndex when
         // necessary.
         if (this.impGamepad.dpad_right.isInitialPress()) {
@@ -102,7 +127,6 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
 
         // Identifying our desired servo to test.
         servoUnderTest = servoArrayList.get(servoIndex);
-
 
         if (motorUnderTest != null) {
             // Setting buffer zone for left stick to 0.25.
@@ -127,6 +151,11 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
             telemetry.addData("Current position", motorUnderTest.getCurrentPosition());
             telemetry.addData("Power", motorUnderTest.getPower());
             telemetry.addData("Motor name", motorNames[motorIndex]);
+            telemetry.addData("Potentiometer", potentiometerNames[motorIndex]);
+            if(potentiometerUnderTest != null){
+                telemetry.addData("Potentiometer Voltage", potentiometerUnderTest.getVoltage());
+                telemetry.addData("Potentiometer Max Voltage", potentiometerUnderTest.getMaxVoltage());
+            }
         }
 
         telemetry.addData("D Pad Up/Down", "Increment/decrement motors");
