@@ -12,7 +12,7 @@ import org.firstinspires.ftc.teamcode.Shared.Hardware.ClawbotHardware;
 /**
  * Created by Kearneyg20428 on 2/7/2017.
  */
-@Disabled
+
 @TeleOp(name = "DDR Clawbot", group = "Shared")
 public class DDRClawbotTeleOp extends OpMode {
 
@@ -58,6 +58,10 @@ public class DDRClawbotTeleOp extends OpMode {
         // Moves robot forward using the left joystick
 
         //TODO have a discussion about using leftstickX for turning
+
+        if(gameMasterGP.a.isInitialPress()){
+            override = !override;
+        }
 
         gmRightPower = gameMasterGP.left_stick_y.getValue();
         gmLeftPower = gameMasterGP.left_stick_y.getValue();
@@ -128,7 +132,9 @@ public class DDRClawbotTeleOp extends OpMode {
         }
 
         // Checks to see if it is the initial press of DDR pad down
-        if(this.participantGP.downArrow.isInitialPress()){
+        if(this.participantGP.downArrow.isInitialPress() && !override){
+            isClawOpen = !isClawOpen;
+        } else if(this.gameMasterGP.y.isInitialPress()) {
             isClawOpen = !isClawOpen;
         }
 
@@ -142,9 +148,7 @@ public class DDRClawbotTeleOp extends OpMode {
 
         final boolean participantInput = participantGP.areButtonsActive();
 
-        if(gameMasterGP.a.isInitialPress()){
-            override = !override;
-        }
+
 
         // If the user is pressing a button and the override is turned off then
         // the participant can use the robot.  Otherwise, the game master has complete control.
