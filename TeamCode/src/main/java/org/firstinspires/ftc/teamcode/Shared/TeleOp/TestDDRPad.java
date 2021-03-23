@@ -67,6 +67,10 @@ public class TestDDRPad extends OpMode {
             telemetry.addLine("Start button");
         }
 
+        if(dancePad.a.getValue()){
+            telemetry.addLine("a button");
+        }
+
         telemetry.update();
     }
 }
