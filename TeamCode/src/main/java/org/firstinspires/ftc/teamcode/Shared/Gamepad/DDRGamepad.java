@@ -29,6 +29,9 @@ public class DDRGamepad {
     // Start button
     public BooleanButton startButton;
 
+    // Using a to start robot
+    public BooleanButton a;
+
     public DDRGamepad(final Gamepad hardwareGamepad, final ElapsedTime timer, final String name) {
 
         this.hardwareGamepad = hardwareGamepad;
@@ -42,6 +45,7 @@ public class DDRGamepad {
         this.upArrow = new BooleanButton(String.format("%s_up_arrow", this.name));
         this.rightArrow = new BooleanButton(String.format("%s_right_arrow", this.name));
         this.startButton = new BooleanButton(String.format("%s_start_button", this.name));
+        this.a = new BooleanButton(String.format("%s_a_button", this.name));
     }
 
     public void update() {
@@ -55,6 +59,7 @@ public class DDRGamepad {
         upArrow.update(hardwareGamepad.left_stick_button, time);
         rightArrow.update(hardwareGamepad.right_stick_button, time);
         startButton.update(hardwareGamepad.start, time);
+        a.update(hardwareGamepad.a, time);
     }
 
     public boolean areButtonsActive(){
