@@ -3,7 +3,9 @@ package org.firstinspires.ftc.teamcode.UltimateGoal_2020_2021.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -20,7 +22,7 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
     ImprovedGamepad impGamepad;
     ElapsedTime timer = new ElapsedTime();
 
-    DcMotor motorUnderTest;
+    DcMotorSimple motorUnderTest;
     Servo servoUnderTest;
     AnalogInput potentiometerUnderTest;
 
@@ -28,16 +30,19 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
     String[] motorNames = {"left_drive", "right_drive", "middle_drive", "intake_motor", "transfer_motor", "shooter_motor", "shooter_motor_2", "elbow_motor"};
 
     // List of all of the servo names.
-    String[] servoNames = {"grabber", "kicker", "backup kicker"};
+    String[] servoNames = {"grabber", "kicker"};
 
     //List of all potentiometer names.
-    String[] potentiometerNames = {null, null, null, null, null, null, null, "potentiometer"};
+    String[] potentiometerNames = {null, null, null, null, null, null, null, "potentiometer", null};
+
+    // List of all continuous rotation servo names.
+    String[] crServoNames = {"backup_kicker"};
 
     int motorIndex;
 
     int servoIndex;
 
-    ArrayList<DcMotor> motorArrayList = new ArrayList<>();
+    ArrayList<DcMotorSimple> motorArrayList = new ArrayList<>();
     ArrayList<Servo> servoArrayList = new ArrayList<>();
     ArrayList<AnalogInput> potentiometerArrayList = new ArrayList<>();
 
@@ -81,6 +86,13 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
             if(potentiometerName != null){
                 telemetry.addData("Potentiometer" + i, potentiometerArrayList.get(i));
             }
+        }
+
+        for(int i = 0; i < crServoNames.length; i++){
+            String crServoName = crServoNames[i];
+            CRServo crServo = robot.getCRServo(hardwareMap, crServoName);
+            motorArrayList.add(crServo);
+            telemetry.addData("Motor" + motorNames.length + i, crServoName);
         }
 
         telemetry.addData("Failed Hardware", robot.failedHardware.size());
@@ -141,16 +153,24 @@ public class ProgrammingUltimateGoalHardwareTestTeleOp extends OpMode {
 
             // Resets encoder count for motor if a is pressed on the gamepad.
             if (this.impGamepad.a.isPressed()) {
-                motorUnderTest.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-                motorUnderTest.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                if(motorUnderTest instanceof DcMotor) {
+                    ((DcMotor) motorUnderTest).setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                    ((DcMotor) motorUnderTest).setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+                }
             }
 
             // Prints out information about the appropriate buttons and the motor we are testing.
             telemetry.addData("Left X Stick", "Set Power");
             telemetry.addData("A", "Resetting encoders");
-            telemetry.addData("Current position", motorUnderTest.getCurrentPosition());
+            if(motorUnderTest instanceof DcMotor) {
+                telemetry.addData("Current position", ((DcMotor) motorUnderTest).getCurrentPosition());
+            }
             telemetry.addData("Power", motorUnderTest.getPower());
-            telemetry.addData("Motor name", motorNames[motorIndex]);
+            try{
+                telemetry.addData("Motor name", hardwareMap.getNamesOf(motorUnderTest).toArray()[0]);
+            } catch (NullPointerException e){
+                telemetry.addLine("Motor name unknown");
+            }
             telemetry.addData("Potentiometer", potentiometerNames[motorIndex]);
             if(potentiometerUnderTest != null){
                 telemetry.addData("Potentiometer Voltage", potentiometerUnderTest.getVoltage());
