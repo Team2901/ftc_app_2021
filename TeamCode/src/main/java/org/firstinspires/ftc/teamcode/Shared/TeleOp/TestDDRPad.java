@@ -56,11 +56,11 @@ public class TestDDRPad extends OpMode {
         }
 
         if(dancePad.topLeftArrow.getValue()){
-            telemetry.addLine("Top left arrow");
+            telemetry.addLine("X");
         }
 
         if(dancePad.topRightArrow.getValue()){
-            telemetry.addLine("Top right arrow");
+            telemetry.addLine("O");
         }
 
         if(dancePad.startButton.getValue()){
