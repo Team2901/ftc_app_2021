@@ -89,27 +89,31 @@ public class DDRClawbotTeleOp extends OpMode {
         // DDR pad left moves the arm down, DDR pad right moves the arm up, else, it stays in place.
         gmArmPower = gameMasterGP.right_stick_y.getValue() * .5;
 
-        //Topleft + Up = arc counterclockwise
+        if(this.participantGP.rightArrow.getValue() && this.participantGP.leftArrow.getValue()){
+            participantLeftPower = -0.75;
+            participantRightPower = -0.75;
+
+        }//Topleft + Up = arc counterclockwise
         //Left power = 0.75, Right power = 1
-        if(this.participantGP.topLeftArrow.getValue() && this.participantGP.upArrow.getValue()){
+        else if(this.participantGP.leftArrow.getValue() && this.participantGP.upArrow.getValue()){
             participantLeftPower = 0.75;
             participantRightPower = 1;
 
         } //Top right + Up = arc clockwise
         //Left power = 1, Right power = 0.75
-        else if(this.participantGP.topRightArrow.getValue() && this.participantGP.upArrow.getValue()){
+        else if(this.participantGP.rightArrow.getValue() && this.participantGP.upArrow.getValue()){
             participantLeftPower = 1;
             participantRightPower = 0.75;
 
         } //Top left = counterclockwise
         //Left power = -0.75, Right power = 0.75
-        else if(this.participantGP.topLeftArrow.getValue()){
+        else if(this.participantGP.leftArrow.getValue()){
             participantLeftPower = -0.75;
             participantRightPower = 0.75;
 
         } //Top right = clockwise
         //Left power = 0.75, Right power = -0.75
-        else if(this.participantGP.topRightArrow.getValue()){
+        else if(this.participantGP.rightArrow.getValue()){
             participantLeftPower = 0.75;
             participantRightPower = -0.75;
         } //Up = straight
@@ -123,9 +127,9 @@ public class DDRClawbotTeleOp extends OpMode {
         }
 
         // DDR pad left moves the arm down, DDR pad right moves the arm up, else, it stays in place.
-        if(this.participantGP.leftArrow.getValue()) {
+        if(this.participantGP.topLeftArrow.getValue()) {
             participantArmPower = ClawbotHardware.ARM_DOWN_POWER;
-        } else if(this.participantGP.rightArrow.getValue()){
+        } else if(this.participantGP.topRightArrow.getValue()){
             participantArmPower = ClawbotHardware.ARM_UP_POWER;
         } else {
             participantArmPower = 0;
