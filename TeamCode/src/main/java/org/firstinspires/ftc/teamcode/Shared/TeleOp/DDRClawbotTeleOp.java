@@ -22,6 +22,8 @@ public class DDRClawbotTeleOp extends OpMode {
     boolean isLastClawPressed = false;
     boolean isClawOpen = false;
     boolean override = false;
+    int difficultyMode = 1;
+    String[] difficultyNames = {"Beginner", "Intermediate", "Lawsuit"};
     DDRGamepad participantGP;
     ImprovedGamepad gameMasterGP;
     ElapsedTime timer = new ElapsedTime();
@@ -57,6 +59,14 @@ public class DDRClawbotTeleOp extends OpMode {
 
         // Moves robot forward using the left joystick
 
+        if(gameMasterGP.left_bumper.isInitialPress() && difficultyMode > 0){
+            difficultyMode--;
+        }
+
+        if(gameMasterGP.right_bumper.isInitialPress() && difficultyMode < 2){
+            difficultyMode++;
+        }
+
         if(gameMasterGP.a.isInitialPress() && !gameMasterGP.start.getValue()){
             override = !override;
         }
@@ -80,11 +90,15 @@ public class DDRClawbotTeleOp extends OpMode {
         // DDR pad left moves the arm down, DDR pad right moves the arm up, else, it stays in place.
         gmArmPower = gameMasterGP.right_stick_y.getValue() * .5;
 
-        if(this.participantGP.rightArrow.getValue() && this.participantGP.leftArrow.getValue()){
+        if(this.participantGP.rightArrow.getValue() && this.participantGP.leftArrow.getValue() && difficultyMode > 0){
             participantLeftPower = -0.75;
             participantRightPower = -0.75;
 
-        }//Topleft + Up = arc counterclockwise
+        } else if(this.participantGP.rightArrow.getValue() && this.participantGP.leftArrow.getValue() && difficultyMode == 0) {
+            participantLeftPower = 0;
+            participantRightPower = 0;
+        }
+        //Topleft + Up = arc counterclockwise
         //Left power = 0.75, Right power = 1
         else if(this.participantGP.leftArrow.getValue() && this.participantGP.upArrow.getValue()){
             participantLeftPower = 0.75;
@@ -148,6 +162,13 @@ public class DDRClawbotTeleOp extends OpMode {
         // If the user is pressing a button and the override is turned off then
         // the participant can use the robot.  Otherwise, the game master has complete control.
         if(participantInput && !override) {
+            if(difficultyMode == 0){
+                participantLeftPower /= 3;
+                participantRightPower /= 3;
+            } else if(difficultyMode == 1){
+                participantLeftPower *= 2.0/3;
+                participantRightPower *= 2.0/3;
+            }
             // Sets power to motors
             power(participantLeftPower, participantRightPower);
             robot.armMotor.setPower(participantArmPower);
@@ -156,6 +177,7 @@ public class DDRClawbotTeleOp extends OpMode {
             robot.armMotor.setPower(gmArmPower);
         }
         telemetry.addData("Override", override);
+        telemetry.addData("Mode", difficultyNames[difficultyMode]);
         telemetry.addData("Participant Input", participantInput);
         telemetry.addData("Potentiometer", robot.potentiometer.getVoltage());
         telemetry.update();
