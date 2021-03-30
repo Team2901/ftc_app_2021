@@ -57,8 +57,6 @@ public class DDRClawbotTeleOp extends OpMode {
 
         // Moves robot forward using the left joystick
 
-        //TODO have a discussion about using leftstickX for turning
-
         if(gameMasterGP.a.isInitialPress() && !gameMasterGP.start.getValue()){
             override = !override;
         }
@@ -66,17 +64,10 @@ public class DDRClawbotTeleOp extends OpMode {
         gmRightPower = gameMasterGP.left_stick_y.getValue();
         gmLeftPower = gameMasterGP.left_stick_y.getValue();
 
-        // Turns the robot counterclockwise using the left bumper.
-        if(gameMasterGP.left_bumper.getValue()){
-            gmLeftPower += -0.5;
-            gmRightPower += 0.5;
-        }
+        // Turns the robot using the left joystick
 
-        // Turns the robot clockwise using the right bumper.
-        if(gameMasterGP.right_bumper.getValue()){
-            gmLeftPower += 0.5;
-            gmRightPower += -0.5;
-        }
+        gmRightPower -= gameMasterGP.left_stick_x.getValue();
+        gmLeftPower += gameMasterGP.left_stick_x.getValue();
 
         double maxPower = Math.max(Math.abs(gmLeftPower), Math.abs(gmRightPower));
 
