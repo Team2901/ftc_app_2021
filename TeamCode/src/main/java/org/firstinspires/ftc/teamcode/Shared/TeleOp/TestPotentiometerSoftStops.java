@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.Shared.Hardware.ClawbotHardware;
 
-@Disabled
 @TeleOp(name = "Potentiometer Soft Stops Tester", group = "Shared Test")
 public class TestPotentiometerSoftStops extends OpMode {
 
