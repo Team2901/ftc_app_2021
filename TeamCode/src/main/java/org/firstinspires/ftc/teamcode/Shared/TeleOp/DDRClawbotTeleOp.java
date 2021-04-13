@@ -55,6 +55,8 @@ public class DDRClawbotTeleOp extends OpMode {
             robot.armMotor.setPower(-0.3);
         }*/
 
+        //comment to prove a point
+
         // Moves robot forward using the left joystick
 
         if(gameMasterGP.a.isInitialPress() && !gameMasterGP.start.getValue()){
