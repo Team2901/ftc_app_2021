@@ -134,9 +134,9 @@ public class DDRClawbotTeleOp extends OpMode {
         }
 
         // DDR pad left moves the arm down, DDR pad right moves the arm up, else, it stays in place.
-        if(this.participantGP.topLeftArrow.getValue()) {
+        if(this.participantGP.topLeftArrow.getValue() && robot.potentiometer.getVoltage() > ClawbotHardware.MIN_ARM_VOLTAGE) {
             participantArmPower = ClawbotHardware.ARM_DOWN_POWER;
-        } else if(this.participantGP.topRightArrow.getValue()){
+        } else if(this.participantGP.topRightArrow.getValue() && robot.potentiometer.getVoltage() < ClawbotHardware.MAX_ARM_VOLTAGE){
             participantArmPower = ClawbotHardware.ARM_UP_POWER;
         } else {
             participantArmPower = 0;
