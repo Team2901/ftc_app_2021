@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Shared.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -27,6 +26,7 @@ public class DDRClawbotTeleOp extends OpMode {
     DDRGamepad participantGP;
     ImprovedGamepad gameMasterGP;
     ElapsedTime timer = new ElapsedTime();
+    int konamiCodeProgress = 0;
 
     @Override
     public void init() {
@@ -60,6 +60,10 @@ public class DDRClawbotTeleOp extends OpMode {
         //another different comment to prove a point
 
         // Moves robot forward using the left joystick
+
+        if (isKonamiCodeComplete()){
+            danceRoutine(true);
+        }
 
         if(gameMasterGP.left_bumper.isInitialPress() && difficultyMode > 0){
             difficultyMode--;
@@ -213,5 +217,46 @@ public class DDRClawbotTeleOp extends OpMode {
             }
             power(0,0);
         }
+    }
+
+    public boolean isKonamiCodeComplete(){
+        if ((konamiCodeProgress == 0) && (this.participantGP.upArrow.isInitialPress())){
+            konamiCodeProgress = 1;
+        }
+        else if ((konamiCodeProgress == 1) && (this.participantGP.upArrow.isInitialPress())){
+            konamiCodeProgress = 2;
+        }
+        else if ((konamiCodeProgress == 2) && (this.participantGP.downArrow.isInitialPress())){
+            konamiCodeProgress = 3;
+        }
+        else if ((konamiCodeProgress == 3) && (this.participantGP.downArrow.isInitialPress())){
+            konamiCodeProgress = 4;
+        }
+        else if ((konamiCodeProgress == 4) && (this.participantGP.leftArrow.isInitialPress())){
+            konamiCodeProgress = 5;
+        }
+        else if ((konamiCodeProgress == 5) && (this.participantGP.rightArrow.isInitialPress())){
+            konamiCodeProgress = 6;
+        }
+        else if ((konamiCodeProgress == 6) && (this.participantGP.leftArrow.isInitialPress())){
+            konamiCodeProgress = 7;
+        }
+        else if ((konamiCodeProgress == 7) && (this.participantGP.rightArrow.isInitialPress())){
+            konamiCodeProgress = 8;
+        }
+        else if ((konamiCodeProgress == 8) && (this.participantGP.topLeftArrow.isInitialPress())){
+            konamiCodeProgress = 9;
+        }
+        else if ((konamiCodeProgress == 9) && (this.participantGP.topRightArrow.isInitialPress())){
+            konamiCodeProgress = 10;
+        }
+        else if ((konamiCodeProgress == 10) && (this.participantGP.leftArrow.isInitialPress()) && (this.participantGP.rightArrow.isInitialPress())){
+            konamiCodeProgress = 11;
+            return true;
+        }
+        else
+            konamiCodeProgress = 0;
+
+        return (konamiCodeProgress == 11);
     }
 }
