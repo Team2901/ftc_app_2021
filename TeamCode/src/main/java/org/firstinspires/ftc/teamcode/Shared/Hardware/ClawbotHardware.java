@@ -1,10 +1,14 @@
 package org.firstinspires.ftc.teamcode.Shared.Hardware;
 
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.AnalogInput;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -27,6 +31,7 @@ public class ClawbotHardware {
     public AnalogInput potentiometer;
     public static final double MIN_ARM_VOLTAGE = .485;
     public static final double MAX_ARM_VOLTAGE = 2.75;
+    public List<String> failedHardware = new ArrayList<>();
 
     public void init(HardwareMap ahwMap) {
         // Save reference to Hardware map
@@ -52,7 +57,7 @@ public class ClawbotHardware {
         claw.setPosition(0);
 
         //Set up the potentiometer
-        potentiometer = hwMap.analogInput.get("potentiometer");
+        potentiometer = getAnalogInput(hwMap, "potentiometer");
     }
 
     public void waitForTick(long periodMs) {
@@ -71,6 +76,15 @@ public class ClawbotHardware {
         // Reset the cycle clock for the next pass.
         period.reset();
 
+    }
+
+    public AnalogInput getAnalogInput(HardwareMap hwMap, String name){
+        try{
+            return hwMap.analogInput.get(name);
+        } catch(Exception e){
+            failedHardware.add(name);
+            return new MockAnalogInput();
+        }
     }
 
 }

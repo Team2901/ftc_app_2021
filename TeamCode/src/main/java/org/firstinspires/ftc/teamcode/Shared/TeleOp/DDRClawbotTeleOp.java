@@ -181,7 +181,8 @@ public class DDRClawbotTeleOp extends OpMode {
         telemetry.addData("Override", override);
         telemetry.addData("Mode", difficultyNames[difficultyMode]);
         telemetry.addData("Participant Input", participantInput);
-        telemetry.addData("Potentiometer", robot.potentiometer.getVoltage());
+        //telemetry.addData("Potentiometer", robot.potentiometer.getVoltage());
+        telemetryDDRGraphic();
         telemetry.update();
     }
 
@@ -213,5 +214,44 @@ public class DDRClawbotTeleOp extends OpMode {
             }
             power(0,0);
         }
+    }
+
+    public void telemetryDDRGraphic(){
+        String lineOne = "";
+        if(participantGP.topLeftArrow.getValue()){
+            lineOne += "x|";
+        } else {
+            lineOne += " |";
+        }
+        if(participantGP.upArrow.getValue()){
+            lineOne += "^|";
+        } else {
+            lineOne += " |";
+        }
+        if (participantGP.topRightArrow.getValue()) {
+            lineOne += "o";
+        }
+
+        String lineTwo = "";
+        if(participantGP.leftArrow.getValue()){
+            lineTwo += "<| |";
+        } else {
+            lineTwo += " | |";
+        }
+        if(participantGP.rightArrow.getValue()){
+            lineTwo += ">";
+        }
+
+        String lineThree;
+        if(participantGP.downArrow.getValue()) {
+            lineThree = " |*| ";
+        } else {
+            lineThree = " | | ";
+        }
+        telemetry.addLine(lineOne);
+        telemetry.addLine("_|_|_");
+        telemetry.addLine(lineTwo);
+        telemetry.addLine("_|_|_");
+        telemetry.addLine(lineThree);
     }
 }
