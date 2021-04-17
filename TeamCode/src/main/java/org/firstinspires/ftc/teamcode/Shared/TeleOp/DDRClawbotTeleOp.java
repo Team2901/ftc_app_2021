@@ -248,6 +248,7 @@ public class DDRClawbotTeleOp extends OpMode {
         } else {
             lineThree = "  |  |  ";
         }
+
         telemetry.addLine(lineOne);
         telemetry.addLine(lineTwo);
         telemetry.addLine(lineThree);
