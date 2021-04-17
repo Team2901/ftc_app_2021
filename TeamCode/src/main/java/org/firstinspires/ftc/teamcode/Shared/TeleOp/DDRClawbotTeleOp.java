@@ -221,12 +221,12 @@ public class DDRClawbotTeleOp extends OpMode {
         if(participantGP.topLeftArrow.getValue()){
             lineOne += "x|";
         } else {
-            lineOne += " |";
+            lineOne += "  |";
         }
         if(participantGP.upArrow.getValue()){
             lineOne += "^|";
         } else {
-            lineOne += " |";
+            lineOne += "  |";
         }
         if (participantGP.topRightArrow.getValue()) {
             lineOne += "o";
@@ -234,9 +234,9 @@ public class DDRClawbotTeleOp extends OpMode {
 
         String lineTwo = "";
         if(participantGP.leftArrow.getValue()){
-            lineTwo += "<| |";
+            lineTwo += "<|  |";
         } else {
-            lineTwo += " | |";
+            lineTwo += "  |  |";
         }
         if(participantGP.rightArrow.getValue()){
             lineTwo += ">";
@@ -244,14 +244,12 @@ public class DDRClawbotTeleOp extends OpMode {
 
         String lineThree;
         if(participantGP.downArrow.getValue()) {
-            lineThree = " |*| ";
+            lineThree = "  |*|  ";
         } else {
-            lineThree = " | | ";
+            lineThree = "  |  |  ";
         }
         telemetry.addLine(lineOne);
-        telemetry.addLine("_|_|_");
         telemetry.addLine(lineTwo);
-        telemetry.addLine("_|_|_");
         telemetry.addLine(lineThree);
     }
 }
