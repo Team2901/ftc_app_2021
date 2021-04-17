@@ -184,6 +184,8 @@ public class DDRClawbotTeleOp extends OpMode {
         //telemetry.addData("Potentiometer", robot.potentiometer.getVoltage());
         telemetryDDRGraphic();
         telemetry.update();
+
+        danceRoutine(gameMasterGP.b.getValue());
     }
 
     public void power(double left, double right) {
@@ -191,7 +193,7 @@ public class DDRClawbotTeleOp extends OpMode {
         robot.rightMotor.setPower(right);
     }
 
-    public void danceRoutine(boolean active) throws InterruptedException {
+    public void danceRoutine(boolean active){
         if(active){
             power(-.25, .25);
             while(robot.potentiometer.getVoltage() < robot.MAX_ARM_VOLTAGE) {
@@ -199,15 +201,15 @@ public class DDRClawbotTeleOp extends OpMode {
                 robot.armMotor.setPower(ClawbotHardware.ARM_UP_POWER);
             }
             robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
-            wait(250);
-            robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
-            wait(250);
-            robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
-            wait(250);
-            robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
-            wait(250);
 
-            while(robot.potentiometer.getVoltage() < robot.MIN_ARM_VOLTAGE) {
+            robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
+
+            robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
+
+            robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
+
+
+            while(robot.potentiometer.getVoltage() < 1.5) {
                 //move claw all of the way down
                 robot.armMotor.setPower(ClawbotHardware.ARM_DOWN_POWER);
             }
