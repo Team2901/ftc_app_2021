@@ -194,29 +194,66 @@ public class DDRClawbotTeleOp extends OpMode {
         robot.rightMotor.setPower(right);
     }
 
-    public void danceRoutine(boolean active){
-        boolean undefined = false;
+    public void danceRoutine(boolean active) throws InterruptedException {
         if(active){
             power(-.25, .25);
-            while(undefined) {
+            while(robot.potentiometer.getVoltage() < robot.MAX_ARM_VOLTAGE) {
                 //move claw all of the way up
                 robot.armMotor.setPower(ClawbotHardware.ARM_UP_POWER);
             }
-            robot.claw.setPosition(ClawbotHardware.MID_SERVO - ClawbotHardware.MAX_SAFE_CLAW_OFFSET);
-            //wait here
-            robot.claw.setPosition(ClawbotHardware.MID_SERVO - ClawbotHardware.MIN_SAFE_CLAW_OFFSET);
-            //wait here
-            robot.claw.setPosition(ClawbotHardware.MID_SERVO - ClawbotHardware.MAX_SAFE_CLAW_OFFSET);
-            //wait here
-            robot.claw.setPosition(ClawbotHardware.MID_SERVO - ClawbotHardware.MIN_SAFE_CLAW_OFFSET);
-            //wait here
+            robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
+            wait(250);
+            robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
+            wait(250);
+            robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
+            wait(250);
+            robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
+            wait(250);
 
-            while(undefined) {
+            while(robot.potentiometer.getVoltage() < robot.MIN_ARM_VOLTAGE) {
                 //move claw all of the way down
                 robot.armMotor.setPower(ClawbotHardware.ARM_DOWN_POWER);
             }
             power(0,0);
         }
+    }
+
+    public void telemetryDDRGraphic(){
+        String lineOne = "";
+        if(participantGP.topLeftArrow.getValue()){
+            lineOne += "x|";
+        } else {
+            lineOne += "  |";
+        }
+        if(participantGP.upArrow.getValue()){
+            lineOne += "^|";
+        } else {
+            lineOne += "  |";
+        }
+        if (participantGP.topRightArrow.getValue()) {
+            lineOne += "o";
+        }
+
+        String lineTwo = "";
+        if(participantGP.leftArrow.getValue()){
+            lineTwo += "<|  |";
+        } else {
+            lineTwo += "  |  |";
+        }
+        if(participantGP.rightArrow.getValue()){
+            lineTwo += ">";
+        }
+
+        String lineThree;
+        if(participantGP.downArrow.getValue()) {
+            lineThree = "  |*|  ";
+        } else {
+            lineThree = "  |  |  ";
+        }
+
+        telemetry.addLine(lineOne);
+        telemetry.addLine(lineTwo);
+        telemetry.addLine(lineThree);
     }
 
     public boolean isKonamiCodeComplete(){
