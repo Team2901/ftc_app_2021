@@ -182,6 +182,8 @@ public class DDRClawbotTeleOp extends OpMode {
             power(gmLeftPower, gmRightPower);
             robot.armMotor.setPower(gmArmPower);
         }
+
+        telemetryDDRGraphic();
         telemetry.addData("Override", override);
         telemetry.addData("Mode", difficultyNames[difficultyMode]);
         telemetry.addData("Participant Input", participantInput);
@@ -192,25 +194,28 @@ public class DDRClawbotTeleOp extends OpMode {
     }
 
     public void power(double left, double right) {
-        robot.leftMotor.setPower(left);
-        robot.rightMotor.setPower(right);
+        robot.leftMotor.setPower(-left);
+        robot.rightMotor.setPower(-right);
     }
 
     public void danceRoutine(boolean active){
         if(active){
+            timer.startTime();
             power(-.25, .25);
             while(robot.potentiometer.getVoltage() < robot.MAX_ARM_VOLTAGE) {
                 //move claw all of the way up
                 robot.armMotor.setPower(ClawbotHardware.ARM_UP_POWER);
             }
-            robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
-
-            robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
+            double startTime = timer.milliseconds();
 
             robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
-
+            while(timer.milliseconds() < startTime + 250){}
             robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
-
+            while(timer.milliseconds() < startTime + 500){}
+            robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
+            while(timer.milliseconds() < startTime + 750){}
+            robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
+            while(timer.milliseconds() < startTime + 1000){}
 
             while(robot.potentiometer.getVoltage() < 1.5) {
                 //move claw all of the way down

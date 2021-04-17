@@ -43,6 +43,7 @@ public class ClawbotHardware {
         armMotor = hwMap.dcMotor.get("left_arm");
         leftMotor.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightMotor.setDirection(DcMotor.Direction.FORWARD);
+        armMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         leftMotor.setPower(0);
         rightMotor.setPower(0);
