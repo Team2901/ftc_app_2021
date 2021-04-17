@@ -61,9 +61,9 @@ public class DDRClawbotTeleOp extends OpMode {
 
         // Moves robot forward using the left joystick
 
-        if (isKonamiCodeComplete()){
-            danceRoutine(true);
-        }
+        danceRoutine(isKonamiCodeComplete());
+
+
 
         if(gameMasterGP.left_bumper.isInitialPress() && difficultyMode > 0){
             difficultyMode--;
