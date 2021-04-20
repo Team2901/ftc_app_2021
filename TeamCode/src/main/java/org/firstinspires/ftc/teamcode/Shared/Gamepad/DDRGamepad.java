@@ -65,4 +65,7 @@ public class DDRGamepad {
     public boolean areButtonsActive(){
         return leftArrow.pressed || (downArrow.pressed && !startButton.pressed) || topLeftArrow.pressed || topRightArrow.pressed || upArrow.pressed || rightArrow.pressed;
     }
+    public boolean areButtonsInitialPress(){
+        return leftArrow.isInitialPress() || (downArrow.isInitialPress() && !startButton.pressed) || topLeftArrow.isInitialPress() || topRightArrow.isInitialPress() || upArrow.isInitialPress() || rightArrow.isInitialPress();
+    }
 }

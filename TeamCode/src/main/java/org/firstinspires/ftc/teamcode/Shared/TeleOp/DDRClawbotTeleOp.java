@@ -263,38 +263,43 @@ public class DDRClawbotTeleOp extends OpMode {
     }
 
     public boolean isKonamiCodeComplete(){
-        if ((konamiCodeProgress == 0) && (this.participantGP.upArrow.isInitialPress())){
-            konamiCodeProgress = 1;
+        if (!participantGP.areButtonsInitialPress()){
+            //If no buttons are being pressed, dont check anything
+            return false;
         }
-        else if ((konamiCodeProgress == 1) && (this.participantGP.upArrow.isInitialPress())){
-            konamiCodeProgress = 2;
+        if (konamiCodeProgress == 0){
+            konamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 1 : 0;
         }
-        else if ((konamiCodeProgress == 2) && (this.participantGP.downArrow.isInitialPress())){
-            konamiCodeProgress = 3;
+        else if (konamiCodeProgress == 1){
+            konamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 2 : 0;
         }
-        else if ((konamiCodeProgress == 3) && (this.participantGP.downArrow.isInitialPress())){
-            konamiCodeProgress = 4;
+        else if (konamiCodeProgress == 2){
+            konamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 3 : 0;
         }
-        else if ((konamiCodeProgress == 4) && (this.participantGP.leftArrow.isInitialPress())){
-            konamiCodeProgress = 5;
+        else if (konamiCodeProgress == 3){
+            konamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 4 : 0;
         }
-        else if ((konamiCodeProgress == 5) && (this.participantGP.rightArrow.isInitialPress())){
-            konamiCodeProgress = 6;
+        else if (konamiCodeProgress == 4){
+            konamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 5 : 0;
         }
-        else if ((konamiCodeProgress == 6) && (this.participantGP.leftArrow.isInitialPress())){
-            konamiCodeProgress = 7;
+        else if (konamiCodeProgress == 5){
+            konamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 6 : 0;
         }
-        else if ((konamiCodeProgress == 7) && (this.participantGP.rightArrow.isInitialPress())){
-            konamiCodeProgress = 8;
+        else if (konamiCodeProgress == 6){
+            konamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 7 : 0;
         }
-        else if ((konamiCodeProgress == 8) && (this.participantGP.topLeftArrow.isInitialPress())){
-            konamiCodeProgress = 9;
+        else if (konamiCodeProgress == 7){
+            konamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 8 : 0;
         }
-        else if ((konamiCodeProgress == 9) && (this.participantGP.topRightArrow.isInitialPress())){
-            konamiCodeProgress = 10;
+        else if (konamiCodeProgress == 8){
+            konamiCodeProgress = this.participantGP.topLeftArrow.isInitialPress() ? 9 : 0;
         }
-        else if ((konamiCodeProgress == 10) && (this.participantGP.leftArrow.isInitialPress()) && (this.participantGP.rightArrow.isInitialPress())){
-            konamiCodeProgress = 11;
+        else if (konamiCodeProgress == 9){
+            konamiCodeProgress = this.participantGP.topRightArrow.isInitialPress() ? 10 : 0;
+        }
+        else if (konamiCodeProgress == 10){
+            konamiCodeProgress = (this.participantGP.leftArrow.isInitialPress()) &&
+                    (this.participantGP.rightArrow.isInitialPress()) ? 11 : 0;
             return true;
         }else if(konamiCodeProgress == 11){
             konamiCodeProgress = 0;
