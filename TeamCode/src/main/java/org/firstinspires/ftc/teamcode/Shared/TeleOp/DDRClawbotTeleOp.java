@@ -63,8 +63,6 @@ public class DDRClawbotTeleOp extends OpMode {
 
         danceRoutine(isKonamiCodeComplete());
 
-
-
         if(gameMasterGP.left_bumper.isInitialPress() && difficultyMode > 0){
             difficultyMode--;
         }
@@ -188,6 +186,7 @@ public class DDRClawbotTeleOp extends OpMode {
         telemetry.addData("Mode", difficultyNames[difficultyMode]);
         telemetry.addData("Participant Input", participantInput);
         telemetry.addData("Potentiometer", robot.potentiometer.getVoltage());
+        telemetry.addData("Konami Code Progress", konamiCodeProgress);
         telemetry.update();
 
         danceRoutine(gameMasterGP.b.getValue());
@@ -202,10 +201,10 @@ public class DDRClawbotTeleOp extends OpMode {
         if(active){
             timer.startTime();
             power(-.25, .25);
-            while(robot.potentiometer.getVoltage() < robot.MAX_ARM_VOLTAGE) {
+            /*while(robot.potentiometer.getVoltage() < robot.MAX_ARM_VOLTAGE) {
                 //move claw all of the way up
                 robot.armMotor.setPower(ClawbotHardware.ARM_UP_POWER);
-            }
+            }*/
             double startTime = timer.milliseconds();
 
             robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
@@ -217,10 +216,10 @@ public class DDRClawbotTeleOp extends OpMode {
             robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
             while(timer.milliseconds() < startTime + 1000){}
 
-            while(robot.potentiometer.getVoltage() < 1.5) {
+            /*while(robot.potentiometer.getVoltage() < 1.5) {
                 //move claw all of the way down
                 robot.armMotor.setPower(ClawbotHardware.ARM_DOWN_POWER);
-            }
+            }*/
             power(0,0);
         }
     }
@@ -297,10 +296,10 @@ public class DDRClawbotTeleOp extends OpMode {
         else if ((konamiCodeProgress == 10) && (this.participantGP.leftArrow.isInitialPress()) && (this.participantGP.rightArrow.isInitialPress())){
             konamiCodeProgress = 11;
             return true;
-        }
-        else
+        }else if(konamiCodeProgress == 11){
             konamiCodeProgress = 0;
+        }
 
-        return (konamiCodeProgress == 11);
+        return false;
     }
 }
