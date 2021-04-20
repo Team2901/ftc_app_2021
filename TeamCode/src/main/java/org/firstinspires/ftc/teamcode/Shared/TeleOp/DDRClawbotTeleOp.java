@@ -201,10 +201,10 @@ public class DDRClawbotTeleOp extends OpMode {
         if(active){
             timer.startTime();
             power(-.25, .25);
-            /*while(robot.potentiometer.getVoltage() < robot.MAX_ARM_VOLTAGE) {
+            while(robot.potentiometer.getVoltage() > robot.DANCE_ARM_UP_VOLTAGE) {
                 //move claw all of the way up
                 robot.armMotor.setPower(ClawbotHardware.ARM_UP_POWER);
-            }*/
+            }
             double startTime = timer.milliseconds();
 
             robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
@@ -216,10 +216,10 @@ public class DDRClawbotTeleOp extends OpMode {
             robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
             while(timer.milliseconds() < startTime + 1000){}
 
-            /*while(robot.potentiometer.getVoltage() < 1.5) {
+            while(robot.potentiometer.getVoltage() < robot.DANCE_ARM_DOWN_VOLTAGE) {
                 //move claw all of the way down
                 robot.armMotor.setPower(ClawbotHardware.ARM_DOWN_POWER);
-            }*/
+            }
             power(0,0);
         }
     }
