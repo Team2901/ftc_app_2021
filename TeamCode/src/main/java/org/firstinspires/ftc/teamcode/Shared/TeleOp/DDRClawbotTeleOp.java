@@ -189,6 +189,7 @@ public class DDRClawbotTeleOp extends OpMode {
 
         telemetryDDRGraphic();
         telemetry.addData("Override", override);
+        telemetry.addData("Is Active", isActive);
         telemetry.addData("Mode", difficultyNames[difficultyMode]);
         telemetry.addData("Participant Input", participantInput);
         telemetry.addData("Potentiometer", robot.potentiometer.getVoltage());
