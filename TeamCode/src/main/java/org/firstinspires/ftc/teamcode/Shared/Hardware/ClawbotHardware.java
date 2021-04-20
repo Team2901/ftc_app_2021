@@ -29,8 +29,8 @@ public class ClawbotHardware {
     public Servo claw = null;
     private HardwareMap hwMap = null;
     public AnalogInput potentiometer;
-    public static final double MIN_ARM_VOLTAGE = .485;
-    public static final double MAX_ARM_VOLTAGE = 2.75;
+    public static final double ARM_DOWN_VOLTAGE = 3.3;
+    public static final double ARM_UP_VOLTAGE = 1.35;
     public List<String> failedHardware = new ArrayList<>();
 
     public void init(HardwareMap ahwMap) {

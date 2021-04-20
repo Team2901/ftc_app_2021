@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.Shared.TeleOp;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.AnalogInput;
@@ -13,7 +12,7 @@ public class TestPotentiometerSoftStops extends OpMode {
 
     AnalogInput potentiometer;
     double maxOgVoltage;
-    double floorMin = 1;
+    double floorMin = 3;
     DcMotor arm;
 
     @Override
@@ -31,12 +30,12 @@ public class TestPotentiometerSoftStops extends OpMode {
          * 3 voltage = min voltage, max voltage, and min off the floor voltage
          */
         double armPower = 0;
-        if(gamepad1.a && potentiometer.getVoltage() < floorMin){
+        if(gamepad1.a && potentiometer.getVoltage() > floorMin){
             armPower = 0.3;
         }
-        if(gamepad1.left_stick_y > 0.5 && potentiometer.getVoltage() < ClawbotHardware.MAX_ARM_VOLTAGE){
+        if(gamepad1.left_stick_y > 0.5 && potentiometer.getVoltage() > ClawbotHardware.ARM_UP_VOLTAGE){
             armPower = gamepad1.left_stick_y;
-        } else if(gamepad1.left_stick_y < -0.5 && potentiometer.getVoltage() > ClawbotHardware.MIN_ARM_VOLTAGE){
+        } else if(gamepad1.left_stick_y < -0.5 && potentiometer.getVoltage() < ClawbotHardware.ARM_DOWN_VOLTAGE){
             armPower = gamepad1.left_stick_y;
         }
         arm.setPower(armPower);
