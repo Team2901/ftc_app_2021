@@ -27,6 +27,7 @@ public class DDRClawbotTeleOp extends OpMode {
     ImprovedGamepad gameMasterGP;
     ElapsedTime timer = new ElapsedTime();
     int konamiCodeProgress = 0;
+    boolean isActive = false;
 
     @Override
     public void init() {
@@ -61,7 +62,7 @@ public class DDRClawbotTeleOp extends OpMode {
 
         // Moves robot forward using the left joystick
         if(isKonamiCodeComplete()) {
-            danceRoutine(true);
+            danceRoutine(isActive);
         }
 
         if(gameMasterGP.left_bumper.isInitialPress() && difficultyMode > 0){
@@ -74,6 +75,10 @@ public class DDRClawbotTeleOp extends OpMode {
 
         if(gameMasterGP.a.isInitialPress() && !gameMasterGP.start.getValue()){
             override = !override;
+        }
+
+        if(gameMasterGP.x.isInitialPress()){
+            isActive = !isActive;
         }
 
         gmRightPower = gameMasterGP.left_stick_y.getValue();
