@@ -298,13 +298,16 @@ public class DDRClawbotTeleOp extends OpMode {
             konamiCodeProgress = this.participantGP.topRightArrow.isInitialPress() ? 10 : 0;
         }
         else if (konamiCodeProgress == 10){
-            konamiCodeProgress = (this.participantGP.leftArrow.isInitialPress()) &&
-                    (this.participantGP.rightArrow.isInitialPress()) ? 11 : 0;
-            return true;
+            if (this.participantGP.leftArrow.isPressed() && this.participantGP.rightArrow.isPressed()){
+                konamiCodeProgress = 11;
+            }
+            else if (!this.participantGP.leftArrow.isPressed() && !this.participantGP.rightArrow.isPressed()){
+                konamiCodeProgress = 0;
+            }
         }else if(konamiCodeProgress == 11){
             konamiCodeProgress = 0;
         }
 
-        return false;
+        return konamiCodeProgress == 11;
     }
 }
