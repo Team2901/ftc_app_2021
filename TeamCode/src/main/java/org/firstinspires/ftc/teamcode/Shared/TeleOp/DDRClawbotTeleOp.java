@@ -196,7 +196,8 @@ public class DDRClawbotTeleOp extends OpMode {
         telemetry.addData("Konami Code Progress", konamiCodeProgress);
         telemetry.update();
 
-        danceRoutine(gameMasterGP.b.getValue());
+        if (gameMasterGP.b.getValue())
+            danceRoutine(isActive);
     }
 
     public void power(double left, double right) {
