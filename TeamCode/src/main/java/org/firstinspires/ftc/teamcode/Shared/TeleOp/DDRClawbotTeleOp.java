@@ -207,14 +207,14 @@ public class DDRClawbotTeleOp extends OpMode {
 
     public void danceRoutine(boolean active){
         if(active) {
+            power(-.25, .25);
+
             while (robot.potentiometer.getVoltage() > robot.DANCE_ARM_UP_VOLTAGE) {
                 //move claw all of the way up
                 robot.armMotor.setPower(ClawbotHardware.ARM_UP_POWER);
             }
 
             timer.startTime();
-            power(-.25, .25);
-
             double startTime = timer.milliseconds();
 
             robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
