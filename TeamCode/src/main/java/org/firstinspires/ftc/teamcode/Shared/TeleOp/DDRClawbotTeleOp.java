@@ -7,6 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.DDRGamepad;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 import org.firstinspires.ftc.teamcode.Shared.Hardware.ClawbotHardware;
+import org.firstinspires.ftc.teamcode.Utility.CountDownTimer;
 
 /**
  * Created by Kearneyg20428 on 2/7/2017.
@@ -17,6 +18,7 @@ public class DDRClawbotTeleOp extends OpMode {
 
     final double CLAW_SPEED = 0.05;
     final ClawbotHardware robot = new ClawbotHardware();
+    CountDownTimer countDownTimer = new CountDownTimer(ElapsedTime.Resolution.MILLISECONDS);
     double clawOffset = 0.0;
     boolean isLastClawPressed = false;
     boolean isClawOpen = false;
@@ -61,9 +63,11 @@ public class DDRClawbotTeleOp extends OpMode {
         //another different comment to prove a point
 
         // Moves robot forward using the left joystick
-        if(isKonamiCodeComplete()) {
-            danceRoutine(isActive);
+        if(gameMasterGP.b.getValue()){
+            countDownTimer.setTargetTime(10000);
         }
+        isKonamiCodeComplete();
+        boolean isDancing = danceRoutine(isActive);
 
         if(gameMasterGP.left_bumper.isInitialPress() && difficultyMode > 0){
             difficultyMode--;
@@ -171,20 +175,22 @@ public class DDRClawbotTeleOp extends OpMode {
 
         // If the user is pressing a button and the override is turned off then
         // the participant can use the robot.  Otherwise, the game master has complete control.
-        if(participantInput && !override) {
-            if(difficultyMode == 0){
-                participantLeftPower /= 3;
-                participantRightPower /= 3;
-            } else if(difficultyMode == 1){
-                participantLeftPower *= 2.0/3;
-                participantRightPower *= 2.0/3;
+        if(!isDancing) {
+            if (participantInput && !override) {
+                if (difficultyMode == 0) {
+                    participantLeftPower /= 3;
+                    participantRightPower /= 3;
+                } else if (difficultyMode == 1) {
+                    participantLeftPower *= 2.0 / 3;
+                    participantRightPower *= 2.0 / 3;
+                }
+                // Sets power to motors
+                power(participantLeftPower, participantRightPower);
+                robot.armMotor.setPower(participantArmPower);
+            } else {
+                power(gmLeftPower, gmRightPower);
+                robot.armMotor.setPower(gmArmPower);
             }
-            // Sets power to motors
-            power(participantLeftPower, participantRightPower);
-            robot.armMotor.setPower(participantArmPower);
-        }else{
-            power(gmLeftPower, gmRightPower);
-            robot.armMotor.setPower(gmArmPower);
         }
 
         telemetryDDRGraphic();
@@ -196,8 +202,7 @@ public class DDRClawbotTeleOp extends OpMode {
         telemetry.addData("Konami Code Progress", konamiCodeProgress);
         telemetry.update();
 
-        if (gameMasterGP.b.getValue())
-            danceRoutine(isActive);
+
     }
 
     public void power(double left, double right) {
@@ -205,34 +210,32 @@ public class DDRClawbotTeleOp extends OpMode {
         robot.rightMotor.setPower(-right);
     }
 
-    public void danceRoutine(boolean active){
-        if(active) {
+    public boolean danceRoutine(boolean active){
+        if(active && countDownTimer.hasRemainingTime()) {
             power(-.25, .25);
 
-            while (robot.potentiometer.getVoltage() > robot.DANCE_ARM_UP_VOLTAGE) {
+            if (robot.potentiometer.getVoltage() > robot.DANCE_ARM_UP_VOLTAGE && countDownTimer.getRemainingTime() > 6000) {
                 //move claw all of the way up
                 robot.armMotor.setPower(ClawbotHardware.ARM_UP_POWER);
-            }
-
-            timer.startTime();
-            double startTime = timer.milliseconds();
-
-            robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
-            while(timer.milliseconds() < startTime + 250){}
-            robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
-            while(timer.milliseconds() < startTime + 500){}
-            robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
-            while(timer.milliseconds() < startTime + 750){}
-            robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
-            while(timer.milliseconds() < startTime + 1000){}
-
-            while (robot.potentiometer.getVoltage() < robot.DANCE_ARM_DOWN_VOLTAGE) {
+            } else if(robot.potentiometer.getVoltage() < robot.DANCE_ARM_DOWN_VOLTAGE && countDownTimer.getRemainingTime() < 4000) {
                 //move claw all of the way down
                 robot.armMotor.setPower(ClawbotHardware.ARM_DOWN_POWER);
+            } else {
+                robot.armMotor.setPower(0);
+            }
+            if(countDownTimer.getRemainingTime() < 6000 && countDownTimer.getRemainingTime() > 5500) {
+                robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
+            } else if(countDownTimer.getRemainingTime() > 5000) {
+                robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
+            } else if(countDownTimer.getRemainingTime() > 4500) {
+                robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
+            } else if(countDownTimer.getRemainingTime() > 4000) {
+                robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
             }
 
-            power(0,0);
+            return true;
         }
+        return false;
     }
 
     public void telemetryDDRGraphic(){
@@ -311,6 +314,7 @@ public class DDRClawbotTeleOp extends OpMode {
         else if (konamiCodeProgress == 10){
             if (this.participantGP.leftArrow.isPressed() && this.participantGP.rightArrow.isPressed()){
                 konamiCodeProgress = 11;
+                countDownTimer.setTargetTime(10000);
             }
             else if (!this.participantGP.leftArrow.isPressed() && !this.participantGP.rightArrow.isPressed()){
                 konamiCodeProgress = 0;
