@@ -217,25 +217,33 @@ public class DDRClawbotTeleOp extends OpMode {
 
     public boolean danceRoutine(boolean active){
         if(active && countDownTimer.hasRemainingTime()) {
-            power(-.25, .25);
 
-            if (robot.potentiometer.getVoltage() > robot.DANCE_ARM_UP_VOLTAGE && countDownTimer.getRemainingTime() > 6000) {
+            if (robot.potentiometer.getVoltage() > robot.DANCE_ARM_UP_VOLTAGE && countDownTimer.getRemainingTime() > 7000) {
                 //move claw all of the way up
                 robot.armMotor.setPower(ClawbotHardware.ARM_UP_POWER);
-            } else if(robot.potentiometer.getVoltage() < robot.DANCE_ARM_DOWN_VOLTAGE && countDownTimer.getRemainingTime() < 4000) {
-                //move claw all of the way down
-                robot.armMotor.setPower(ClawbotHardware.ARM_DOWN_POWER);
-            } else {
-                robot.armMotor.setPower(0);
             }
-            if(countDownTimer.getRemainingTime() < 6000 && countDownTimer.getRemainingTime() > 5500) {
+
+            if(countDownTimer.getRemainingTime() < 7000 && countDownTimer.getRemainingTime() > 6750) {
                 robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
-            } else if(countDownTimer.getRemainingTime() > 5000) {
+            } else if(countDownTimer.getRemainingTime() > 6500) {
                 robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
-            } else if(countDownTimer.getRemainingTime() > 4500) {
+            } else if(countDownTimer.getRemainingTime() > 6250) {
                 robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
-            } else if(countDownTimer.getRemainingTime() > 4000) {
+            } else if(countDownTimer.getRemainingTime() > 6000) {
                 robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
+            } else if(countDownTimer.getRemainingTime() > 5750) {
+                robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
+            } else if(countDownTimer.getRemainingTime() > 5500) {
+                robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
+            }
+
+            if(countDownTimer.getRemainingTime() < 5500){
+                power(1,-1);
+            }
+
+            if (robot.potentiometer.getVoltage() < robot.DANCE_ARM_DOWN_VOLTAGE && countDownTimer.getRemainingTime() < 3000) {
+                //move claw all of the way up
+                robot.armMotor.setPower(ClawbotHardware.ARM_DOWN_POWER);
             }
 
             return true;
