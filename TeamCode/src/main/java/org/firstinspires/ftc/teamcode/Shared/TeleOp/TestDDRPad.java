@@ -8,7 +8,6 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.DDRGamepad;
 import org.firstinspires.ftc.teamcode.Shared.Gamepad.ImprovedGamepad;
 
-@Disabled
 @TeleOp(name = "DDR Pad Test", group = "Shared Test")
 public class TestDDRPad extends OpMode {
 
