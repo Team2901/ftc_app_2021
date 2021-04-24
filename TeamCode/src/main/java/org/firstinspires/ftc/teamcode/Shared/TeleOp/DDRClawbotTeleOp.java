@@ -171,8 +171,13 @@ public class DDRClawbotTeleOp extends OpMode {
 
         final boolean participantInput = participantGP.areButtonsActive();
 
-
-
+        // If there is any power set to the left or right motors, checks and moves the arm up if it is under limit.
+        if(participantLeftPower != 0 || participantRightPower != 0 || gmLeftPower != 0 || gmRightPower != 0){
+            if(robot.potentiometer.getVoltage() > ClawbotHardware.ARM_DOWN_SAFE_MOVEMENT_VOLTAGE){
+                participantArmPower = 0.5;
+                gmArmPower = 0.5;
+            }
+        }
         // If the user is pressing a button and the override is turned off then
         // the participant can use the robot.  Otherwise, the game master has complete control.
         if(!isDancing) {

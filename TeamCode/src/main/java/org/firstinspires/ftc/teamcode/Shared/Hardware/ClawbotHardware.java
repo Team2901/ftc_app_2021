@@ -33,6 +33,7 @@ public class ClawbotHardware {
     public static final double ARM_UP_VOLTAGE = 1.35;
     public static final double DANCE_ARM_DOWN_VOLTAGE = 3;
     public static final double DANCE_ARM_UP_VOLTAGE = 1.35;
+    public static final double ARM_DOWN_SAFE_MOVEMENT_VOLTAGE = 3;
     public List<String> failedHardware = new ArrayList<>();
 
     public void init(HardwareMap ahwMap) {
