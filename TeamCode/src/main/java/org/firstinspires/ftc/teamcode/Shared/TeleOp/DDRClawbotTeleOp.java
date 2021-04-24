@@ -29,6 +29,7 @@ public class DDRClawbotTeleOp extends OpMode {
     ImprovedGamepad gameMasterGP;
     ElapsedTime timer = new ElapsedTime();
     int konamiCodeProgress = 0;
+    int beginnerKonamiCodeProgress = 0;
     boolean isActive = false;
 
     @Override
@@ -63,25 +64,25 @@ public class DDRClawbotTeleOp extends OpMode {
         //another different comment to prove a point
 
         // Moves robot forward using the left joystick
-        if(gameMasterGP.b.getValue()){
+        if (gameMasterGP.b.getValue()) {
             countDownTimer.setTargetTime(10000);
         }
         isKonamiCodeComplete();
         boolean isDancing = danceRoutine(isActive);
 
-        if(gameMasterGP.left_bumper.isInitialPress() && difficultyMode > 0){
+        if (gameMasterGP.left_bumper.isInitialPress() && difficultyMode > 0) {
             difficultyMode--;
         }
 
-        if(gameMasterGP.right_bumper.isInitialPress() && difficultyMode < 2){
+        if (gameMasterGP.right_bumper.isInitialPress() && difficultyMode < 2) {
             difficultyMode++;
         }
 
-        if(gameMasterGP.a.isInitialPress() && !gameMasterGP.start.getValue()){
+        if (gameMasterGP.a.isInitialPress() && !gameMasterGP.start.getValue()) {
             override = !override;
         }
 
-        if(gameMasterGP.x.isInitialPress()){
+        if (gameMasterGP.x.isInitialPress()) {
             isActive = !isActive;
         }
 
@@ -96,7 +97,7 @@ public class DDRClawbotTeleOp extends OpMode {
         double maxPower = Math.max(Math.abs(gmLeftPower), Math.abs(gmRightPower));
 
         // Adjusts speeds for the arcs.
-        if(maxPower > 1){
+        if (maxPower > 1) {
             gmRightPower /= maxPower;
             gmLeftPower /= maxPower;
         }
@@ -104,40 +105,40 @@ public class DDRClawbotTeleOp extends OpMode {
         // DDR pad left moves the arm down, DDR pad right moves the arm up, else, it stays in place.
         gmArmPower = gameMasterGP.right_stick_y.getValue() * .5;
 
-        if(this.participantGP.rightArrow.getValue() && this.participantGP.leftArrow.getValue() && difficultyMode > 0){
+        if (this.participantGP.rightArrow.getValue() && this.participantGP.leftArrow.getValue() && difficultyMode > 0) {
             participantLeftPower = -0.75;
             participantRightPower = -0.75;
 
-        } else if(this.participantGP.rightArrow.getValue() && this.participantGP.leftArrow.getValue() && difficultyMode == 0) {
+        } else if (this.participantGP.rightArrow.getValue() && this.participantGP.leftArrow.getValue() && difficultyMode == 0) {
             participantLeftPower = 0;
             participantRightPower = 0;
         }
         //Topleft + Up = arc counterclockwise
         //Left power = 0.75, Right power = 1
-        else if(this.participantGP.leftArrow.getValue() && this.participantGP.upArrow.getValue()){
+        else if (this.participantGP.leftArrow.getValue() && this.participantGP.upArrow.getValue()) {
             participantLeftPower = 0.75;
             participantRightPower = 1;
 
         } //Top right + Up = arc clockwise
         //Left power = 1, Right power = 0.75
-        else if(this.participantGP.rightArrow.getValue() && this.participantGP.upArrow.getValue()){
+        else if (this.participantGP.rightArrow.getValue() && this.participantGP.upArrow.getValue()) {
             participantLeftPower = 1;
             participantRightPower = 0.75;
 
         } //Top left = counterclockwise
         //Left power = -0.75, Right power = 0.75
-        else if(this.participantGP.leftArrow.getValue()){
+        else if (this.participantGP.leftArrow.getValue()) {
             participantLeftPower = -0.75;
             participantRightPower = 0.75;
 
         } //Top right = clockwise
         //Left power = 0.75, Right power = -0.75
-        else if(this.participantGP.rightArrow.getValue()){
+        else if (this.participantGP.rightArrow.getValue()) {
             participantLeftPower = 0.75;
             participantRightPower = -0.75;
         } //Up = straight
         //Left and right motors same power 0.75
-        else if(this.participantGP.upArrow.getValue()){
+        else if (this.participantGP.upArrow.getValue()) {
             participantLeftPower = 0.75;
             participantRightPower = 0.75;
         } else {
@@ -146,27 +147,22 @@ public class DDRClawbotTeleOp extends OpMode {
         }
 
         // DDR pad left moves the arm down, DDR pad right moves the arm up, else, it stays in place.
-        if(this.participantGP.topLeftArrow.getValue() && robot.potentiometer.getVoltage() < ClawbotHardware.ARM_DOWN_VOLTAGE) {
+        if (this.participantGP.topLeftArrow.getValue() && robot.potentiometer.getVoltage() < ClawbotHardware.ARM_DOWN_VOLTAGE) {
             participantArmPower = ClawbotHardware.ARM_DOWN_POWER;
-        } else if(this.participantGP.topRightArrow.getValue() && robot.potentiometer.getVoltage() > ClawbotHardware.ARM_UP_VOLTAGE){
+        } else if (this.participantGP.topRightArrow.getValue() && robot.potentiometer.getVoltage() > ClawbotHardware.ARM_UP_VOLTAGE) {
             participantArmPower = ClawbotHardware.ARM_UP_POWER;
         } else {
             participantArmPower = 0;
         }
 
         // Checks to see if it is the initial press of DDR pad down
-        if(this.participantGP.downArrow.isInitialPress() && !override && !this.participantGP.startButton.getValue()){
+        if (this.participantGP.downArrow.isInitialPress() && !override && !this.participantGP.startButton.getValue()) {
             isClawOpen = !isClawOpen;
-        } else if(this.gameMasterGP.y.isInitialPress()) {
+        } else if (this.gameMasterGP.y.isInitialPress()) {
             isClawOpen = !isClawOpen;
         }
 
-        //If isClawOpen is true, opens the claw, otherwise it closes the claw
-        if(isClawOpen){
-            robot.claw.setPosition(ClawbotHardware.MID_SERVO - ClawbotHardware.MIN_SAFE_CLAW_OFFSET);
-        } else {
-            robot.claw.setPosition(ClawbotHardware.MID_SERVO - ClawbotHardware.MAX_SAFE_CLAW_OFFSET);
-        }
+
 
 
         final boolean participantInput = participantGP.areButtonsActive();
@@ -181,6 +177,12 @@ public class DDRClawbotTeleOp extends OpMode {
         // If the user is pressing a button and the override is turned off then
         // the participant can use the robot.  Otherwise, the game master has complete control.
         if(!isDancing) {
+            //If isClawOpen is true, opens the claw, otherwise it closes the claw
+            if(isClawOpen){
+                robot.claw.setPosition(ClawbotHardware.MID_SERVO - ClawbotHardware.MIN_SAFE_CLAW_OFFSET);
+            } else {
+                robot.claw.setPosition(ClawbotHardware.MID_SERVO - ClawbotHardware.MAX_SAFE_CLAW_OFFSET);
+            }
             if (participantInput && !override) {
                 if (difficultyMode == 0) {
                     participantLeftPower /= 3;
@@ -251,14 +253,14 @@ public class DDRClawbotTeleOp extends OpMode {
         return false;
     }
 
-    public void telemetryDDRGraphic(){
+    public void telemetryDDRGraphic() {
         String lineOne = "";
-        if(participantGP.topLeftArrow.getValue()){
+        if (participantGP.topLeftArrow.getValue()) {
             lineOne += "x|";
         } else {
             lineOne += "  |";
         }
-        if(participantGP.upArrow.getValue()){
+        if (participantGP.upArrow.getValue()) {
             lineOne += "^|";
         } else {
             lineOne += "  |";
@@ -268,17 +270,17 @@ public class DDRClawbotTeleOp extends OpMode {
         }
 
         String lineTwo = "";
-        if(participantGP.leftArrow.getValue()){
+        if (participantGP.leftArrow.getValue()) {
             lineTwo += "<|  |";
         } else {
             lineTwo += "  |  |";
         }
-        if(participantGP.rightArrow.getValue()){
+        if (participantGP.rightArrow.getValue()) {
             lineTwo += ">";
         }
 
         String lineThree;
-        if(participantGP.downArrow.getValue()) {
+        if (participantGP.downArrow.getValue()) {
             lineThree = "  |*|  ";
         } else {
             lineThree = "  |  |  ";
@@ -289,53 +291,60 @@ public class DDRClawbotTeleOp extends OpMode {
         telemetry.addLine(lineThree);
     }
 
-    public boolean isKonamiCodeComplete(){
-        if (!participantGP.areButtonsInitialPress()){
+    public boolean isKonamiCodeComplete() {
+        if (!participantGP.areButtonsInitialPress()) {
             //If no buttons are being pressed, dont check anything
             return false;
         }
-        if (konamiCodeProgress == 0){
+        if (konamiCodeProgress == 0) {
             konamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 1 : 0;
-        }
-        else if (konamiCodeProgress == 1){
+        } else if (konamiCodeProgress == 1) {
             konamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 2 : 0;
-        }
-        else if (konamiCodeProgress == 2){
+        } else if (konamiCodeProgress == 2) {
             konamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 3 : 0;
-        }
-        else if (konamiCodeProgress == 3){
+        } else if (konamiCodeProgress == 3) {
             konamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 4 : 0;
-        }
-        else if (konamiCodeProgress == 4){
+        } else if (konamiCodeProgress == 4) {
             konamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 5 : 0;
-        }
-        else if (konamiCodeProgress == 5){
+        } else if (konamiCodeProgress == 5) {
             konamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 6 : 0;
-        }
-        else if (konamiCodeProgress == 6){
+        } else if (konamiCodeProgress == 6) {
             konamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 7 : 0;
-        }
-        else if (konamiCodeProgress == 7){
+        } else if (konamiCodeProgress == 7) {
             konamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 8 : 0;
-        }
-        else if (konamiCodeProgress == 8){
+        } else if (konamiCodeProgress == 8) {
             konamiCodeProgress = this.participantGP.topLeftArrow.isInitialPress() ? 9 : 0;
-        }
-        else if (konamiCodeProgress == 9){
+        } else if (konamiCodeProgress == 9) {
             konamiCodeProgress = this.participantGP.topRightArrow.isInitialPress() ? 10 : 0;
-        }
-        else if (konamiCodeProgress == 10){
-            if (this.participantGP.leftArrow.isPressed() && this.participantGP.rightArrow.isPressed()){
+        } else if (konamiCodeProgress == 10) {
+            if (this.participantGP.leftArrow.isPressed() && this.participantGP.rightArrow.isPressed()) {
                 konamiCodeProgress = 11;
                 countDownTimer.setTargetTime(10000);
-            }
-            else if (!this.participantGP.leftArrow.isPressed() && !this.participantGP.rightArrow.isPressed()){
+            } else if (!this.participantGP.leftArrow.isPressed() && !this.participantGP.rightArrow.isPressed()) {
                 konamiCodeProgress = 0;
             }
-        }else if(konamiCodeProgress == 11){
+        } else if (konamiCodeProgress == 11) {
             konamiCodeProgress = 0;
         }
 
-        return konamiCodeProgress == 11;
+        if (beginnerKonamiCodeProgress == 0) {
+            beginnerKonamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 1 : 0;
+        } else if (beginnerKonamiCodeProgress == 1) {
+            beginnerKonamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 2 : 0;
+        } else if (beginnerKonamiCodeProgress == 2) {
+            beginnerKonamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 3 : 0;
+        } else if (beginnerKonamiCodeProgress == 3) {
+            beginnerKonamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 4 : 0;
+        } else if (beginnerKonamiCodeProgress == 4) {
+            beginnerKonamiCodeProgress = this.participantGP.topRightArrow.isInitialPress() ? 5 : 0;
+        } else if (beginnerKonamiCodeProgress == 5) {
+            beginnerKonamiCodeProgress = 0;
+        }
+
+        if (difficultyMode == 0)
+            return beginnerKonamiCodeProgress == 5;
+        else
+            return konamiCodeProgress == 11;
+
     }
 }
