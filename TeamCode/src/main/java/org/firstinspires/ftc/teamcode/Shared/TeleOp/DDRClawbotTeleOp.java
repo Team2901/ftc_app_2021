@@ -225,6 +225,11 @@ public class DDRClawbotTeleOp extends OpMode {
             if (robot.potentiometer.getVoltage() > robot.DANCE_ARM_UP_VOLTAGE && countDownTimer.getRemainingTime() > 7000) {
                 //move claw all of the way up
                 robot.armMotor.setPower(ClawbotHardware.ARM_UP_POWER);
+            } else if (robot.potentiometer.getVoltage() < robot.DANCE_ARM_DOWN_VOLTAGE && countDownTimer.getRemainingTime() < 3000) {
+                //move claw all of the way up
+                robot.armMotor.setPower(ClawbotHardware.ARM_DOWN_POWER);
+            } else {
+                robot.armMotor.setPower(0);
             }
 
             if(countDownTimer.getRemainingTime() < 7000 && countDownTimer.getRemainingTime() > 6750) {
@@ -243,11 +248,6 @@ public class DDRClawbotTeleOp extends OpMode {
 
             if(countDownTimer.getRemainingTime() < 5500 && countDownTimer.getRemainingTime() > 3000){
                 power(1,-1);
-            }
-
-            if (robot.potentiometer.getVoltage() < robot.DANCE_ARM_DOWN_VOLTAGE && countDownTimer.getRemainingTime() < 3000) {
-                //move claw all of the way up
-                robot.armMotor.setPower(ClawbotHardware.ARM_DOWN_POWER);
             }
 
             return true;
