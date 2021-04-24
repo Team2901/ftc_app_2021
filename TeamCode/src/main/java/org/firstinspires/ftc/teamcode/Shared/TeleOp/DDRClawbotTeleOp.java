@@ -228,13 +228,13 @@ public class DDRClawbotTeleOp extends OpMode {
             } else {
                 robot.armMotor.setPower(0);
             }
-            if(countDownTimer.getRemainingTime() < 6000) {
+            if(countDownTimer.getRemainingTime() < 6000 && countDownTimer.getRemainingTime() > 5500) {
                 robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
-            } else if(countDownTimer.getRemainingTime() < 5500) {
+            } else if(countDownTimer.getRemainingTime() > 5000) {
                 robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
-            } else if(countDownTimer.getRemainingTime() < 5000) {
+            } else if(countDownTimer.getRemainingTime() > 4500) {
                 robot.claw.setPosition(robot.MID_SERVO - robot.MAX_SAFE_CLAW_OFFSET);
-            } else if(countDownTimer.getRemainingTime() < 4500 && countDownTimer.getRemainingTime() > 4000) {
+            } else if(countDownTimer.getRemainingTime() > 4000) {
                 robot.claw.setPosition(robot.MID_SERVO - robot.MIN_SAFE_CLAW_OFFSET);
             }
 
