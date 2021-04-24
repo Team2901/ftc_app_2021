@@ -207,6 +207,7 @@ public class DDRClawbotTeleOp extends OpMode {
         telemetry.addData("Participant Input", participantInput);
         telemetry.addData("Potentiometer", robot.potentiometer.getVoltage());
         telemetry.addData("Konami Code Progress", konamiCodeProgress);
+        telemetry.addData("Beginner Konami Code Progress", beginnerKonamiCodeProgress);
         telemetry.update();
 
 
@@ -217,6 +218,7 @@ public class DDRClawbotTeleOp extends OpMode {
         robot.rightMotor.setPower(-right);
     }
 
+    //only run dance routine if timer is going
     public boolean danceRoutine(boolean active){
         if(active && countDownTimer.hasRemainingTime()) {
 
@@ -291,60 +293,63 @@ public class DDRClawbotTeleOp extends OpMode {
         telemetry.addLine(lineThree);
     }
 
-    public boolean isKonamiCodeComplete() {
+    public void isKonamiCodeComplete() {
         if (!participantGP.areButtonsInitialPress()) {
             //If no buttons are being pressed, dont check anything
-            return false;
+            return;
         }
-        if (konamiCodeProgress == 0) {
-            konamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 1 : 0;
-        } else if (konamiCodeProgress == 1) {
-            konamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 2 : 0;
-        } else if (konamiCodeProgress == 2) {
-            konamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 3 : 0;
-        } else if (konamiCodeProgress == 3) {
-            konamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 4 : 0;
-        } else if (konamiCodeProgress == 4) {
-            konamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 5 : 0;
-        } else if (konamiCodeProgress == 5) {
-            konamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 6 : 0;
-        } else if (konamiCodeProgress == 6) {
-            konamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 7 : 0;
-        } else if (konamiCodeProgress == 7) {
-            konamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 8 : 0;
-        } else if (konamiCodeProgress == 8) {
-            konamiCodeProgress = this.participantGP.topLeftArrow.isInitialPress() ? 9 : 0;
-        } else if (konamiCodeProgress == 9) {
-            konamiCodeProgress = this.participantGP.topRightArrow.isInitialPress() ? 10 : 0;
-        } else if (konamiCodeProgress == 10) {
-            if (this.participantGP.leftArrow.isPressed() && this.participantGP.rightArrow.isPressed()) {
-                konamiCodeProgress = 11;
-                countDownTimer.setTargetTime(10000);
-            } else if (!this.participantGP.leftArrow.isPressed() && !this.participantGP.rightArrow.isPressed()) {
+        if (difficultyMode != 0) {
+            if (konamiCodeProgress == 0) {
+                konamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 1 : 0;
+            } else if (konamiCodeProgress == 1) {
+                konamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 2 : 0;
+            } else if (konamiCodeProgress == 2) {
+                konamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 3 : 0;
+            } else if (konamiCodeProgress == 3) {
+                konamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 4 : 0;
+            } else if (konamiCodeProgress == 4) {
+                konamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 5 : 0;
+            } else if (konamiCodeProgress == 5) {
+                konamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 6 : 0;
+            } else if (konamiCodeProgress == 6) {
+                konamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 7 : 0;
+            } else if (konamiCodeProgress == 7) {
+                konamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 8 : 0;
+            } else if (konamiCodeProgress == 8) {
+                konamiCodeProgress = this.participantGP.topLeftArrow.isInitialPress() ? 9 : 0;
+            } else if (konamiCodeProgress == 9) {
+                konamiCodeProgress = this.participantGP.topRightArrow.isInitialPress() ? 10 : 0;
+            } else if (konamiCodeProgress == 10) {
+                if (this.participantGP.leftArrow.isPressed() && this.participantGP.rightArrow.isPressed()) {
+                    konamiCodeProgress = 11;
+                    countDownTimer.setTargetTime(10000);
+                } else if (!this.participantGP.leftArrow.isPressed() && !this.participantGP.rightArrow.isPressed()) {
+                    konamiCodeProgress = 0;
+                }
+            } else if (konamiCodeProgress == 11) {
                 konamiCodeProgress = 0;
             }
-        } else if (konamiCodeProgress == 11) {
-            konamiCodeProgress = 0;
         }
 
-        if (beginnerKonamiCodeProgress == 0) {
-            beginnerKonamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 1 : 0;
-        } else if (beginnerKonamiCodeProgress == 1) {
-            beginnerKonamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 2 : 0;
-        } else if (beginnerKonamiCodeProgress == 2) {
-            beginnerKonamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 3 : 0;
-        } else if (beginnerKonamiCodeProgress == 3) {
-            beginnerKonamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 4 : 0;
-        } else if (beginnerKonamiCodeProgress == 4) {
-            beginnerKonamiCodeProgress = this.participantGP.topRightArrow.isInitialPress() ? 5 : 0;
-        } else if (beginnerKonamiCodeProgress == 5) {
-            beginnerKonamiCodeProgress = 0;
+        if (difficultyMode == 0) {
+            if (beginnerKonamiCodeProgress == 0) {
+                beginnerKonamiCodeProgress = this.participantGP.upArrow.isInitialPress() ? 1 : 0;
+            } else if (beginnerKonamiCodeProgress == 1) {
+                beginnerKonamiCodeProgress = this.participantGP.downArrow.isInitialPress() ? 2 : 0;
+            } else if (beginnerKonamiCodeProgress == 2) {
+                beginnerKonamiCodeProgress = this.participantGP.leftArrow.isInitialPress() ? 3 : 0;
+            } else if (beginnerKonamiCodeProgress == 3) {
+                beginnerKonamiCodeProgress = this.participantGP.rightArrow.isInitialPress() ? 4 : 0;
+            } else if (beginnerKonamiCodeProgress == 4) {
+                if (this.participantGP.topRightArrow.isInitialPress()) {
+                    beginnerKonamiCodeProgress = 5;
+                    countDownTimer.setTargetTime(10000);
+                } else {
+                    beginnerKonamiCodeProgress = 0;
+                }
+            } else if (beginnerKonamiCodeProgress == 5) {
+                beginnerKonamiCodeProgress = 0;
+            }
         }
-
-        if (difficultyMode == 0)
-            return beginnerKonamiCodeProgress == 5;
-        else
-            return konamiCodeProgress == 11;
-
     }
 }
