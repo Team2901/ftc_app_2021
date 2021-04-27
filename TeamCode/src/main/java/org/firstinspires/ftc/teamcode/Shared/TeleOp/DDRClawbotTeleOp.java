@@ -201,6 +201,7 @@ public class DDRClawbotTeleOp extends OpMode {
         }
 
         telemetryDDRGraphic();
+        telemetry.addData("Arm Power:", robot.armMotor.getPower());
         telemetry.addData("Override", override);
         telemetry.addData("Is Active", isActive);
         telemetry.addData("Mode", difficultyNames[difficultyMode]);
@@ -248,6 +249,8 @@ public class DDRClawbotTeleOp extends OpMode {
 
             if(countDownTimer.getRemainingTime() < 5500 && countDownTimer.getRemainingTime() > 3000){
                 power(1,-1);
+            } else {
+                power(0, 0);
             }
 
             return true;
